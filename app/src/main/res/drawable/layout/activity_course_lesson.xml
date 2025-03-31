@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+
+        <!-- Header -->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Bài 1"
+                android:textColor="@android:color/black"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="40dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="@android:color/black" />
+        </RelativeLayout>
+
+        <!-- Video Player -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="24dp"
+            android:background="#333333">
+
+            <!-- Video Thumbnail/Preview -->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+
+            <!-- Video Player Controls Overlay -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- Top Bar -->
+                <!--                <LinearLayout-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:background="#66000000"-->
+                <!--                    android:orientation="horizontal"-->
+                <!--                    android:padding="8dp">-->
+
+                <!--                    <TextView-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:text="01:14"-->
+                <!--                        android:textColor="@android:color/white"-->
+                <!--                        android:textSize="14sp" />-->
+
+                <!--                    <View-->
+                <!--                        android:layout_width="0dp"-->
+                <!--                        android:layout_height="1dp"-->
+                <!--                        android:layout_weight="1" />-->
+
+                <!--                    <ImageView-->
+                <!--                        android:layout_width="16dp"-->
+                <!--                        android:layout_height="16dp"-->
+                <!--                        android:layout_marginEnd="4dp"-->
+                <!--                        android:src="@drawable/ic_signal"-->
+                <!--                        android:tint="@android:color/white" />-->
+
+                <!--                    <ImageView-->
+                <!--                        android:layout_width="16dp"-->
+                <!--                        android:layout_height="16dp"-->
+                <!--                        android:layout_marginEnd="4dp"-->
+                <!--                        android:src="@drawable/ic_wifi"-->
+                <!--                        android:tint="@android:color/white" />-->
+
+                <!--                    <ImageView-->
+                <!--                        android:layout_width="16dp"-->
+                <!--                        android:layout_height="16dp"-->
+                <!--                        android:src="@drawable/ic_battery"-->
+                <!--                        android:tint="@android:color/white" />-->
+                <!--                </LinearLayout>-->
+
+                <!-- Back Button -->
+
+
+                <!-- Center Play Button -->
+                <ImageButton
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_centerInParent="true"
+                    android:background="@android:color/transparent"
+                    app:tint="@android:color/white" />
+
+                <!-- Replay Button -->
+                <ImageButton
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_toEndOf="@id/btnBack"
+                    android:background="@android:color/transparent"
+                    app:tint="@android:color/white"
+                    tools:ignore="NotSibling" />
+
+                <!-- Fullscreen Button -->
+<!--                <ImageButton-->
+<!--                    android:layout_width="24dp"-->
+<!--                    android:layout_height="24dp"-->
+<!--                    android:layout_alignParentEnd="true"-->
+<!--                    android:layout_alignParentBottom="true"-->
+<!--                    android:layout_margin="16dp"-->
+<!--                    android:background="@android:color/transparent"-->
+<!--                    android:src="@drawable/ic_fullscreen"-->
+<!--                    android:tint="@android:color/white" />-->
+            </RelativeLayout>
+        </FrameLayout>
+
+        <!-- Lesson Content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp"
+            android:paddingBottom="24dp">
+
+            <!-- Lesson Title -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:text="Phần 1: Structure (Hình khối)"
+                android:textColor="@android:color/black"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <!-- Lesson Description -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:lineSpacingExtra="6dp"
+                android:text="Vẽ dáng người (figure drawing) luôn là bài học khó nhằn dành cho những ai vừa mới loạng choạng bước chân vào tập vẽ. Bài học này hướng dẫn kỹ thuật vẽ người đơn giản và phối cảnh sơ khởi, giúp những người mới khắc phục các lỗi như: vẽ dáng người bị cứng, phẳng và thiếu năng lượng. Mỗi video đều được Nguyễn minh họa chân thực bằng những hình vẽ cực kì dễ thương và cũng rất dễ hiểu"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
+
+            <!-- Complete Button -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginTop="16dp">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_button_bg"
+                    android:paddingVertical="16dp"
+                    android:text="Hoàn thành"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

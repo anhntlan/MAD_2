@@ -42,14 +42,14 @@
         <ImageButton
             android:id="@+id/notificationButton"
             android:layout_width="48dp"
-            android:layout_height="38dp"
-            android:layout_marginEnd="8dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Notifications"
+            android:layout_height="48dp"
             android:src="@drawable/ic_notification"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="?attr/selectableItemBackgroundBorderless"
             app:layout_constraintEnd_toStartOf="@id/menuButton"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="Notifications" />
 
         <ImageButton
             android:id="@+id/menuButton"
@@ -524,6 +524,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toTopOf="@id/faceSubtitle2" />
+
                             <TextView
                                 android:id="@+id/faceSubtitle2"
                                 android:layout_width="0dp"
