@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2F2F2"
+    tools:context=".MainActivity">
+
+    <!-- App Bar -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/logoImage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_logo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:contentDescription="HiPen Logo" />
+
+        <TextView
+            android:id="@+id/appTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="HiPen"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:layout_marginStart="12dp"
+            app:layout_constraintStart_toEndOf="@id/logoImage"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <ImageButton
+            android:id="@+id/notificationButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_notification"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintEnd_toStartOf="@id/menuButton"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="Notifications" />
+
+        <ImageButton
+            android:id="@+id/menuButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_more_vert"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:contentDescription="Menu" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Main Content -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/appBar"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="16dp">
+
+            <!-- Search Bar -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/searchContainer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/filterButton"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="12dp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:cardBackgroundColor="#FFFFFF">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingHorizontal="12dp">
+
+                        <ImageView
+                            android:id="@+id/searchIcon"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_search"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:contentDescription="Search" />
+
+                        <EditText
+                            android:id="@+id/searchEditText"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:background="@null"
+                            android:hint="Search"
+                            android:textSize="16sp"
+                            android:layout_marginStart="8dp"
+                            app:layout_constraintStart_toEndOf="@id/searchIcon"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:importantForAutofill="no"
+                            android:inputType="text" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/filterButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/searchContainer"
+                app:layout_constraintBottom_toBottomOf="@id/searchContainer"
+                app:cardBackgroundColor="#E5E5E5">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_filter"
+                    android:layout_gravity="center"
+                    android:contentDescription="Filter" />
+            </androidx.cardview.widget.CardView>
+
+            <!-- Continue Learning Section -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/continueSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                app:layout_constraintTop_toBottomOf="@id/searchContainer">
+
+                <TextView
+                    android:id="@+id/continueSectionTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tiếp tục học"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#000000"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_chevron_right"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/continueSectionTitle"
+                    app:layout_constraintBottom_toBottomOf="@id/continueSectionTitle"
+                    android:contentDescription="View all" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/continueCoursesCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintTop_toBottomOf="@id/continueSectionTitle"
+                    app:cardBackgroundColor="#FFFFFF">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <!-- Landscape Drawing Course -->
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/landscapeCourse"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="24dp">
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/landscapeImageContainer"
+                                android:layout_width="120dp"
+                                android:layout_height="80dp"
+                                app:cardCornerRadius="8dp"
+                                app:cardElevation="0dp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent">
+
+                                <FrameLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <ImageView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:src="@drawable/img_landscape"
+                                        android:scaleType="centerCrop"
+                                        android:contentDescription="Landscape painting" />
+
+                                    <ImageView
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:layout_gravity="center"
+                                        android:padding="4dp"
+                                        android:contentDescription="Play video" />
+                                </FrameLayout>
+                            </androidx.cardview.widget.CardView>
+
+                            <TextView
+                                android:id="@+id/landscapeTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="Vẽ phong cảnh"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:textColor="#000000"
+                                android:layout_marginStart="16dp"
+                                app:layout_constraintStart_toEndOf="@id/landscapeImageContainer"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toTopOf="@id/landscapeSubtitle" />
+
+                            <TextView
+                                android:id="@+id/landscapeSubtitle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="1 video"
+                                android:textSize="14sp"
+                                android:textColor="#666666"
+                                android:layout_marginStart="16dp"
+                                app:layout_constraintStart_toEndOf="@id/landscapeImageContainer"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/landscapeTitle"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <!-- Face Drawing Course -->
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/faceCourse"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/faceImageContainer"
+                                android:layout_width="120dp"
+                                android:layout_height="80dp"
+                                app:cardCornerRadius="8dp"
+                                app:cardElevation="0dp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent">
+
+                                <FrameLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <ImageView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:src="@drawable/img_face"
+                                        android:scaleType="centerCrop"
+                                        android:contentDescription="Face drawing" />
+
+<!--                                    <View-->
+<!--                                        android:layout_width="16dp"-->
+<!--                                        android:layout_height="16dp"-->
+<!--                                        android:background="@drawable/circle_yellow"-->
+<!--                                        android:layout_gravity="top|end"-->
+<!--                                        android:layout_margin="-8dp" />-->
+                                </FrameLayout>
+                            </androidx.cardview.widget.CardView>
+
+                            <TextView
+                                android:id="@+id/faceTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="Vẽ mặt"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:textColor="#000000"
+                                android:layout_marginStart="16dp"
+                                app:layout_constraintStart_toEndOf="@id/faceImageContainer"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toTopOf="@id/faceSubtitle" />
+
+                            <TextView
+                                android:id="@+id/faceSubtitle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="1 video"
+                                android:textSize="14sp"
+                                android:textColor="#666666"
+                                android:layout_marginStart="16dp"
+                                app:layout_constraintStart_toEndOf="@id/faceImageContainer"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/faceTitle"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Popular Courses Section -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/popularSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                app:layout_constraintTop_toBottomOf="@id/continueSection">
+
+                <TextView
+                    android:id="@+id/popularSectionTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Khóa học phổ biến"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#000000"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_chevron_right"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/popularSectionTitle"
+                    app:layout_constraintBottom_toBottomOf="@id/popularSectionTitle"
+                    android:contentDescription="View all" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/popularCoursesCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintTop_toBottomOf="@id/popularSectionTitle"
+                    app:cardBackgroundColor="#FFFFFF">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <!-- Human Body Drawing Course -->
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/bodyDrawingCourse"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="24dp">
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/bodyDrawingImageContainer"
+                                android:layout_width="120dp"
+                                android:layout_height="80dp"
+                                app:cardCornerRadius="8dp"
+                                app:cardElevation="0dp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent">
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:src="@drawable/img_face"
+                                    android:scaleType="centerCrop"
+                                    android:contentDescription="Human body drawing" />
+                            </androidx.cardview.widget.CardView>
+
+                            <TextView
+                                android:id="@+id/bodyDrawingTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="Vẽ cơ thể người"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:textColor="#000000"
+                                android:layout_marginStart="16dp"
+                                app:layout_constraintStart_toEndOf="@id/bodyDrawingImageContainer"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toTopOf="@id/bodyDrawingSubtitle" />
+
+                            <TextView
+                                android:id="@+id/bodyDrawingSubtitle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="14 bài học"
+                                android:textSize="14sp"
+                                android:textColor="#666666"
+                                android:layout_marginStart="16dp"
+                                app:layout_constraintStart_toEndOf="@id/bodyDrawingImageContainer"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/bodyDrawingTitle"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <!-- Objects Drawing Course -->
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/objectsDrawingCourse"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="24dp">
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/objectsDrawingImageContainer"
+                                android:layout_width="120dp"
+                                android:layout_height="80dp"
+                                app:cardCornerRadius="8dp"
+                                app:cardElevation="0dp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent">
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:src="@drawable/img_landscape"
+                                    android:scaleType="centerCrop"
+                                    android:contentDescription="Objects drawing" />
+                            </androidx.cardview.widget.CardView>
+
+                            <TextView
+                                android:id="@+id/objectsDrawingTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="Vẽ cảnh vật"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:textColor="#000000"
+                                android:layout_marginStart="16dp"
+                                app:layout_constraintStart_toEndOf="@id/objectsDrawingImageContainer"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toTopOf="@id/objectsDrawingSubtitle" />
+
+                            <TextView
+                                android:id="@+id/objectsDrawingSubtitle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="14 bài học"
+                                android:textSize="14sp"
+                                android:textColor="#666666"
+                                android:layout_marginStart="16dp"
+                                app:layout_constraintStart_toEndOf="@id/objectsDrawingImageContainer"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/objectsDrawingTitle"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <!-- Face Drawing Course (repeated) -->
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/faceCourse2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/faceImageContainer2"
+                                android:layout_width="120dp"
+                                android:layout_height="80dp"
+                                app:cardCornerRadius="8dp"
+                                app:cardElevation="0dp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent">
+
+                                <FrameLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <ImageView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:src="@drawable/img_face"
+                                        android:scaleType="centerCrop"
+                                        android:contentDescription="Face drawing" />
+
+                                    <View
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        android:layout_gravity="top|end"
+                                        android:layout_margin="-8dp" />
+                                </FrameLayout>
+                            </androidx.cardview.widget.CardView>
+
+                            <TextView
+                                android:id="@+id/faceTitle2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="Vẽ mặt"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:textColor="#000000"
+                                android:layout_marginStart="16dp"
+                                app:layout_constraintStart_toEndOf="@id/faceImageContainer2"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toTopOf="@id/faceSubtitle2" />
+
+                            <TextView
+                                android:id="@+id/faceSubtitle2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="1 video"
+                                android:textSize="14sp"
+                                android:textColor="#666666"
+                                android:layout_marginStart="16dp"
+                                app:layout_constraintStart_toEndOf="@id/faceImageContainer2"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/faceTitle2"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/bottom_nav_menu"
+        app:labelVisibilityMode="unlabeled"
+        android:background="#FFFFFF" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
