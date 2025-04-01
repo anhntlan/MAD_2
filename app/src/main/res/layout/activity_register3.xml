@@ -47,7 +47,7 @@
 
     <EditText
         android:id="@+id/etEmail"
-        android:layout_width="470dp"
+        android:layout_width="340dp"
         android:layout_height="84dp"
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="144dp"

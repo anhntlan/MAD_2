@@ -1,4 +1,4 @@
-package com.example.hipenjava;
+package com.example.hipenjava.Activities.Auth;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,37 +10,40 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class RegisterActivity1 extends AppCompatActivity {
+import com.example.hipenjava.R;
 
-    private EditText etEmail;
+public class RegisterActivity2 extends AppCompatActivity {
+    private EditText etName;
     private Button btnContinue;
     private ImageButton btnBack;
-
+    private String userEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register1);
+        setContentView(R.layout.activity_register2);
 
         // Initialize views
-        etEmail = findViewById(R.id.etEmail);
+        etName = findViewById(R.id.etEmail);
         btnContinue = findViewById(R.id.btnContinue);
         btnBack = findViewById(R.id.btnBack);
+
+        // Retrieve email from previous activity
+        userEmail = getIntent().getStringExtra("EMAIL");
 
         // Handle Continue button click
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = etEmail.getText().toString().trim();
+                String name = etName.getText().toString().trim();
 
-                if (!email.isEmpty()) {
-                    // Proceed to next activity with email data
-                    Intent intent = new Intent(RegisterActivity1.this, com.example.hipenjava.RegisterActivity2.class);
-                    intent.putExtra("EMAIL", email);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(RegisterActivity1.this, "Please enter your email", Toast.LENGTH_SHORT).show();
+                if (!name.isEmpty()) {
+                    // Proceed to next activity with email & name data
+                    Intent intent = new Intent(RegisterActivity2.this, RegisterActivity3.class);
+                    intent.putExtra("EMAIL", userEmail);// Passing Email
+                    intent.putExtra("NAME", name);   // Passing Name
+                    startActivity(intent); // 🔹 Moves to RegisterActivity3
+                    Toast.makeText(RegisterActivity2.this, "Please enter your name", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -53,5 +56,4 @@ public class RegisterActivity1 extends AppCompatActivity {
             }
         });
     }
-
 }

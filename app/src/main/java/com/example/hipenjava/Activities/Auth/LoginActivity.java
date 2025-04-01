@@ -1,4 +1,4 @@
-package com.example.hipenjava;
+package com.example.hipenjava.Activities.Auth;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,13 +12,15 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.hipenjava.R;
+
 public class LoginActivity extends AppCompatActivity {
     private EditText etEmail, etPassword;
     private Button btnLogin;
     private TextView tvRegister;
     private ImageButton btnTogglePassword;
 
-    private DatabaseHelper databaseHelper;
+    private com.example.hipenjava.DatabaseHelper databaseHelper;
     private boolean isPasswordVisible = false;
 
     @Override
@@ -34,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         // Initialize SQLite Database Helper
-        databaseHelper = new DatabaseHelper(this);
+        databaseHelper = new com.example.hipenjava.DatabaseHelper(this);
 
 
         // Handle login button click
@@ -61,9 +63,9 @@ public class LoginActivity extends AppCompatActivity {
 
                     // Redirect based on user role
                     if (role.equals("admin")) {
-                        startActivity(new Intent(LoginActivity.this, HomeActivity.class)); // Admin Dashboard
+                        startActivity(new Intent(LoginActivity.this, com.example.hipenjava.Activities.HomeActivity.class)); // Admin Dashboard
                     } else {
-                        startActivity(new Intent(LoginActivity.this, HomeActivity.class)); // Regular User Home
+                        startActivity(new Intent(LoginActivity.this, com.example.hipenjava.Activities.HomeActivity.class)); // Regular User Home
                     }
                     finish();
                 } else {
@@ -76,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity1.class);
+                Intent intent = new Intent(LoginActivity.this, com.example.hipenjava.Activities.Auth.RegisterActivity1.class);
                 startActivity(intent);
             }
         });

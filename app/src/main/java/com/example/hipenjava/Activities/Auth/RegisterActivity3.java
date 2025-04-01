@@ -1,4 +1,4 @@
-package com.example.hipenjava;
+package com.example.hipenjava.Activities.Auth;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,9 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.hipenjava.DatabaseHelper;
+import com.example.hipenjava.R;
 
 
 public class RegisterActivity3 extends AppCompatActivity {

@@ -13,7 +13,7 @@
         android:icon="@drawable/ic_draw"
         android:title="Draw" />
     <item
-        android:id="@+id/navigation_achievements"
+        android:id="@+id/navigation_challenge"
         android:icon="@drawable/ic_trophy"
         android:title="Achievements" />
     <item
