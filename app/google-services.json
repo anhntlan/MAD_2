@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "156101695809",
+    "project_id": "mad-2-ca26d",
+    "storage_bucket": "mad-2-ca26d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:156101695809:android:0500b69ebfce7c2025a9c0",
+        "android_client_info": {
+          "package_name": "com.example.hipenjava"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWFQsA-SNCrvQi9NUt7MldxFFMwbEnR3A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
