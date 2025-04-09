@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#EAD3D0"
+    tools:context="com.example.hipenjava.Activities.Challenge.ChallengeListActivity">
+
+    <!-- Header -->
+    <TextView
+        android:id="@+id/headerTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thử thách sáng tạo"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="16dp"
+        android:background="@android:color/white"/>
+
+    <!-- RecyclerView for the Challenge List -->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewChallenges"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp"
+        android:scrollbars="vertical" />
+</LinearLayout>
