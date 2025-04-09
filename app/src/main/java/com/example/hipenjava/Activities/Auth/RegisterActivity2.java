@@ -43,7 +43,6 @@ public class RegisterActivity2 extends AppCompatActivity {
                     intent.putExtra("EMAIL", userEmail);// Passing Email
                     intent.putExtra("NAME", name);   // Passing Name
                     startActivity(intent); // 🔹 Moves to RegisterActivity3
-                    Toast.makeText(RegisterActivity2.this, "Please enter your name", Toast.LENGTH_SHORT).show();
                 }
             }
         });
