@@ -56,6 +56,10 @@ public class HomeActivity extends BaseActivity {
                 Intent intent = new Intent(HomeActivity.this, CourseListActivity.class);
                 startActivity(intent);
                 return true;
+//            }           else if (id == R.id.navigation_home) {
+//                Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
+//                startActivity(intent);
+//                return true;
             } else if (id == R.id.navigation_draw) {
                 Intent intent = new Intent(HomeActivity.this, CourseListActivity.class);
                 startActivity(intent);

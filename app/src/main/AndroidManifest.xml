@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,9 +15,17 @@
         android:theme="@style/Theme.HipenJava"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.Courses.LessonDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Courses.CourseDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Courses.CourseLearningActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.BaseActivity"
             android:exported="false" />
-
         <activity
             android:name=".Activities.Courses.CourseListActivity"
             android:exported="false" />
@@ -36,9 +46,6 @@
             android:exported="false" />
         <activity
             android:name=".Activities.HomeActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activities.Auth.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,6 +53,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Activities.Auth.LoginActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

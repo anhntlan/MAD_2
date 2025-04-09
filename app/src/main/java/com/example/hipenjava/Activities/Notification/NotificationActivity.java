@@ -20,11 +20,17 @@ public class NotificationActivity extends AppCompatActivity {
 
         btnBack = findViewById(R.id.btnBack);
 
+//        btnBack.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(NotificationActivity.this, HomeActivity.class);
+//                startActivity(intent);
+//            }
+//        });
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(NotificationActivity.this, HomeActivity.class);
-                startActivity(intent);
+                finish(); // Quay lại màn hình trước (CourseListActivity)
             }
         });
     }

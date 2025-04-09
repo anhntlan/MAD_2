@@ -279,219 +279,220 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- Popular Courses Section -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/popularSection"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                app:layout_constraintTop_toBottomOf="@id/continueSection">
+<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                android:id="@+id/popularSection"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="24dp"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/continueSection">-->
 
-                <TextView
-                    android:id="@+id/popularSectionTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Khóa học phổ biến"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="#000000"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+<!--                <TextView-->
+<!--                    android:id="@+id/popularSectionTitle"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Khóa học phổ biến"-->
+<!--                    android:textSize="20sp"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:textColor="#000000"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent" />-->
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_chevron_right"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/popularSectionTitle"
-                    app:layout_constraintBottom_toBottomOf="@id/popularSectionTitle"
-                    android:contentDescription="View all" />
+<!--                <ImageView-->
+<!--                    android:layout_width="24dp"-->
+<!--                    android:layout_height="24dp"-->
+<!--                    android:src="@drawable/ic_chevron_right"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="@id/popularSectionTitle"-->
+<!--                    app:layout_constraintBottom_toBottomOf="@id/popularSectionTitle"-->
+<!--                    android:contentDescription="View all" />-->
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/popularCoursesCard"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="0dp"
-                    app:layout_constraintTop_toBottomOf="@id/popularSectionTitle"
-                    app:cardBackgroundColor="#FFFFFF">
+<!--                <androidx.cardview.widget.CardView-->
+<!--                    android:id="@+id/popularCoursesCard"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="12dp"-->
+<!--                    app:cardCornerRadius="16dp"-->
+<!--                    app:cardElevation="0dp"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/popularSectionTitle"-->
+<!--                    app:cardBackgroundColor="#FFFFFF">-->
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="16dp">
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="vertical"-->
+<!--                        android:padding="16dp">-->
 
-                        <!-- Human Body Drawing Course -->
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/bodyDrawingCourse"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="24dp">
+<!--                        &lt;!&ndash; Human Body Drawing Course &ndash;&gt;-->
+<!--                        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                            android:id="@+id/bodyDrawingCourse"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginBottom="24dp">-->
 
-                            <androidx.cardview.widget.CardView
-                                android:id="@+id/bodyDrawingImageContainer"
-                                android:layout_width="120dp"
-                                android:layout_height="80dp"
-                                app:cardCornerRadius="8dp"
-                                app:cardElevation="0dp"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent">
+<!--                            <androidx.cardview.widget.CardView-->
+<!--                                android:id="@+id/bodyDrawingImageContainer"-->
+<!--                                android:layout_width="120dp"-->
+<!--                                android:layout_height="80dp"-->
+<!--                                app:cardCornerRadius="8dp"-->
+<!--                                app:cardElevation="0dp"-->
+<!--                                app:layout_constraintStart_toStartOf="parent"-->
+<!--                                app:layout_constraintTop_toTopOf="parent"-->
+<!--                                app:layout_constraintBottom_toBottomOf="parent">-->
 
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:src="@drawable/img_face"
-                                    android:scaleType="centerCrop"
-                                    android:contentDescription="Human body drawing" />
-                            </androidx.cardview.widget.CardView>
+<!--                                <ImageView-->
+<!--                                    android:layout_width="match_parent"-->
+<!--                                    android:layout_height="match_parent"-->
+<!--                                    android:src="@drawable/img_face"-->
+<!--                                    android:scaleType="centerCrop"-->
+<!--                                    android:contentDescription="Human body drawing" />-->
+<!--                            </androidx.cardview.widget.CardView>-->
 
-                            <TextView
-                                android:id="@+id/bodyDrawingTitle"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:text="Vẽ cơ thể người"
-                                android:textSize="18sp"
-                                android:textStyle="bold"
-                                android:textColor="#000000"
-                                android:layout_marginStart="16dp"
-                                app:layout_constraintStart_toEndOf="@id/bodyDrawingImageContainer"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toTopOf="@id/bodyDrawingSubtitle" />
+<!--                            <TextView-->
+<!--                                android:id="@+id/bodyDrawingTitle"-->
+<!--                                android:layout_width="0dp"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text="Vẽ cơ thể người"-->
+<!--                                android:textSize="18sp"-->
+<!--                                android:textStyle="bold"-->
+<!--                                android:textColor="#000000"-->
+<!--                                android:layout_marginStart="16dp"-->
+<!--                                app:layout_constraintStart_toEndOf="@id/bodyDrawingImageContainer"-->
+<!--                                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                                app:layout_constraintTop_toTopOf="parent"-->
+<!--                                app:layout_constraintBottom_toTopOf="@id/bodyDrawingSubtitle" />-->
 
-                            <TextView
-                                android:id="@+id/bodyDrawingSubtitle"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:text="14 bài học"
-                                android:textSize="14sp"
-                                android:textColor="#666666"
-                                android:layout_marginStart="16dp"
-                                app:layout_constraintStart_toEndOf="@id/bodyDrawingImageContainer"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/bodyDrawingTitle"
-                                app:layout_constraintBottom_toBottomOf="parent" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
+<!--                            <TextView-->
+<!--                                android:id="@+id/bodyDrawingSubtitle"-->
+<!--                                android:layout_width="0dp"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text="14 bài học"-->
+<!--                                android:textSize="14sp"-->
+<!--                                android:textColor="#666666"-->
+<!--                                android:layout_marginStart="16dp"-->
+<!--                                app:layout_constraintStart_toEndOf="@id/bodyDrawingImageContainer"-->
+<!--                                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                                app:layout_constraintTop_toBottomOf="@id/bodyDrawingTitle"-->
+<!--                                app:layout_constraintBottom_toBottomOf="parent" />-->
+<!--                        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
-                        <!-- Objects Drawing Course -->
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/objectsDrawingCourse"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="24dp">
+<!--                        &lt;!&ndash; Objects Drawing Course &ndash;&gt;-->
+<!--                        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                            android:id="@+id/objectsDrawingCourse"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginBottom="24dp">-->
 
-                            <androidx.cardview.widget.CardView
-                                android:id="@+id/objectsDrawingImageContainer"
-                                android:layout_width="120dp"
-                                android:layout_height="80dp"
-                                app:cardCornerRadius="8dp"
-                                app:cardElevation="0dp"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent">
+<!--                            <androidx.cardview.widget.CardView-->
+<!--                                android:id="@+id/objectsDrawingImageContainer"-->
+<!--                                android:layout_width="120dp"-->
+<!--                                android:layout_height="80dp"-->
+<!--                                app:cardCornerRadius="8dp"-->
+<!--                                app:cardElevation="0dp"-->
+<!--                                app:layout_constraintStart_toStartOf="parent"-->
+<!--                                app:layout_constraintTop_toTopOf="parent"-->
+<!--                                app:layout_constraintBottom_toBottomOf="parent">-->
 
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:src="@drawable/img_landscape"
-                                    android:scaleType="centerCrop"
-                                    android:contentDescription="Objects drawing" />
-                            </androidx.cardview.widget.CardView>
+<!--                                <ImageView-->
+<!--                                    android:layout_width="match_parent"-->
+<!--                                    android:layout_height="match_parent"-->
+<!--                                    android:src="@drawable/img_landscape"-->
+<!--                                    android:scaleType="centerCrop"-->
+<!--                                    android:contentDescription="Objects drawing" />-->
+<!--                            </androidx.cardview.widget.CardView>-->
 
-                            <TextView
-                                android:id="@+id/objectsDrawingTitle"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:text="Vẽ cảnh vật"
-                                android:textSize="18sp"
-                                android:textStyle="bold"
-                                android:textColor="#000000"
-                                android:layout_marginStart="16dp"
-                                app:layout_constraintStart_toEndOf="@id/objectsDrawingImageContainer"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toTopOf="@id/objectsDrawingSubtitle" />
+<!--                            <TextView-->
+<!--                                android:id="@+id/objectsDrawingTitle"-->
+<!--                                android:layout_width="0dp"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text="Vẽ cảnh vật"-->
+<!--                                android:textSize="18sp"-->
+<!--                                android:textStyle="bold"-->
+<!--                                android:textColor="#000000"-->
+<!--                                android:layout_marginStart="16dp"-->
+<!--                                app:layout_constraintStart_toEndOf="@id/objectsDrawingImageContainer"-->
+<!--                                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                                app:layout_constraintTop_toTopOf="parent"-->
+<!--                                app:layout_constraintBottom_toTopOf="@id/objectsDrawingSubtitle" />-->
 
-                            <TextView
-                                android:id="@+id/objectsDrawingSubtitle"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:text="14 bài học"
-                                android:textSize="14sp"
-                                android:textColor="#666666"
-                                android:layout_marginStart="16dp"
-                                app:layout_constraintStart_toEndOf="@id/objectsDrawingImageContainer"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/objectsDrawingTitle"
-                                app:layout_constraintBottom_toBottomOf="parent" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
+<!--                            <TextView-->
+<!--                                android:id="@+id/objectsDrawingSubtitle"-->
+<!--                                android:layout_width="0dp"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text="14 bài học"-->
+<!--                                android:textSize="14sp"-->
+<!--                                android:textColor="#666666"-->
+<!--                                android:layout_marginStart="16dp"-->
+<!--                                app:layout_constraintStart_toEndOf="@id/objectsDrawingImageContainer"-->
+<!--                                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                                app:layout_constraintTop_toBottomOf="@id/objectsDrawingTitle"-->
+<!--                                app:layout_constraintBottom_toBottomOf="parent" />-->
+<!--                        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
-                        <!-- Face Drawing Course (repeated) -->
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/faceCourse2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+<!--                        &lt;!&ndash; Face Drawing Course (repeated) &ndash;&gt;-->
+<!--                        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                            android:id="@+id/faceCourse2"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content">-->
 
-                            <androidx.cardview.widget.CardView
-                                android:id="@+id/faceImageContainer2"
-                                android:layout_width="120dp"
-                                android:layout_height="80dp"
-                                app:cardCornerRadius="8dp"
-                                app:cardElevation="0dp"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent">
+<!--                            <androidx.cardview.widget.CardView-->
+<!--                                android:id="@+id/faceImageContainer2"-->
+<!--                                android:layout_width="120dp"-->
+<!--                                android:layout_height="80dp"-->
+<!--                                app:cardCornerRadius="8dp"-->
+<!--                                app:cardElevation="0dp"-->
+<!--                                app:layout_constraintStart_toStartOf="parent"-->
+<!--                                app:layout_constraintTop_toTopOf="parent"-->
+<!--                                app:layout_constraintBottom_toBottomOf="parent">-->
 
-                                <FrameLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
+<!--                                <FrameLayout-->
+<!--                                    android:layout_width="match_parent"-->
+<!--                                    android:layout_height="match_parent">-->
 
-                                    <ImageView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:src="@drawable/img_face"
-                                        android:scaleType="centerCrop"
-                                        android:contentDescription="Face drawing" />
+<!--                                    <ImageView-->
+<!--                                        android:layout_width="match_parent"-->
+<!--                                        android:layout_height="match_parent"-->
+<!--                                        android:src="@drawable/img_face"-->
+<!--                                        android:scaleType="centerCrop"-->
+<!--                                        android:contentDescription="Face drawing" />-->
 
-                                    <View
-                                        android:layout_width="16dp"
-                                        android:layout_height="16dp"
-                                        android:layout_gravity="top|end"
-                                        android:layout_margin="-8dp" />
-                                </FrameLayout>
-                            </androidx.cardview.widget.CardView>
+<!--                                    <View-->
+<!--                                        android:layout_width="16dp"-->
+<!--                                        android:layout_height="16dp"-->
+<!--                                        android:layout_gravity="top|end"-->
+<!--                                        android:layout_margin="-8dp" />-->
+<!--                                </FrameLayout>-->
+<!--                            </androidx.cardview.widget.CardView>-->
 
-                            <TextView
-                                android:id="@+id/faceTitle2"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:text="Vẽ mặt"
-                                android:textSize="18sp"
-                                android:textStyle="bold"
-                                android:textColor="#000000"
-                                android:layout_marginStart="16dp"
-                                app:layout_constraintStart_toEndOf="@id/faceImageContainer2"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toTopOf="@id/faceSubtitle2" />
-                            <TextView
-                                android:id="@+id/faceSubtitle2"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:text="1 video"
-                                android:textSize="14sp"
-                                android:textColor="#666666"
-                                android:layout_marginStart="16dp"
-                                app:layout_constraintStart_toEndOf="@id/faceImageContainer2"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/faceTitle2"
-                                app:layout_constraintBottom_toBottomOf="parent" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+<!--                            <TextView-->
+<!--                                android:id="@+id/faceTitle2"-->
+<!--                                android:layout_width="0dp"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text="Vẽ mặt"-->
+<!--                                android:textSize="18sp"-->
+<!--                                android:textStyle="bold"-->
+<!--                                android:textColor="#000000"-->
+<!--                                android:layout_marginStart="16dp"-->
+<!--                                app:layout_constraintStart_toEndOf="@id/faceImageContainer2"-->
+<!--                                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                                app:layout_constraintTop_toTopOf="parent"-->
+<!--                                app:layout_constraintBottom_toTopOf="@id/faceSubtitle2" />-->
+<!--                            <TextView-->
+<!--                                android:id="@+id/faceSubtitle2"-->
+<!--                                android:layout_width="0dp"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text="1 video"-->
+<!--                                android:textSize="14sp"-->
+<!--                                android:textColor="#666666"-->
+<!--                                android:layout_marginStart="16dp"-->
+<!--                                app:layout_constraintStart_toEndOf="@id/faceImageContainer2"-->
+<!--                                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                                app:layout_constraintTop_toBottomOf="@id/faceTitle2"-->
+<!--                                app:layout_constraintBottom_toBottomOf="parent" />-->
+<!--                        </androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--                    </LinearLayout>-->
+<!--                </androidx.cardview.widget.CardView>-->
+<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--            -->
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
