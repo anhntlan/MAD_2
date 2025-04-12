@@ -35,7 +35,6 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.Chal
 
     @Override
     public void onBindViewHolder(@NonNull ChallengeViewHolder holder, int position) {
-        Log.d("tag", "bbb on bind view holder " + position);
         Challenge challenge = challengeList.get(position);
         holder.title.setText(challenge.getTitle());
         holder.status.setText(challenge.getStatus());

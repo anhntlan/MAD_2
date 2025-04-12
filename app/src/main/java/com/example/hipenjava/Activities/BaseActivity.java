@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.hipenjava.Activities.Challenge.ChallengeListActivity;
 import com.example.hipenjava.Activities.Courses.CourseListActivity;
 import com.example.hipenjava.Activities.Notification.NotificationActivity;
 import com.example.hipenjava.R;
@@ -73,7 +74,7 @@ public class BaseActivity extends AppCompatActivity {
                 startActivity(new Intent(this, CourseListActivity.class));
                 return true;
             } else if (itemId == R.id.navigation_challenge) {
-                startActivity(new Intent(this, CourseListActivity.class));
+                startActivity(new Intent(this, ChallengeListActivity.class));
                 return true;
             }
 
