@@ -2,8 +2,11 @@ package com.example.hipenjava.Activities.Courses;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -33,6 +36,8 @@ public class CourseListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private CourseAdapter adapter;
     private List<Course> courseList;
+    private List<Course> filteredList = new ArrayList<>();
+    private EditText searchEditText;
     private DatabaseReference courseRef;
     private ImageButton btnNotification,btnMenu;
 
@@ -47,27 +52,45 @@ public class CourseListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         courseList = new ArrayList<>();
-        adapter = new CourseAdapter(this, courseList);
+//        adapter = new CourseAdapter(this, courseList);
+//        recyclerView.setAdapter(adapter);
+        adapter = new CourseAdapter(this, filteredList);
         recyclerView.setAdapter(adapter);
 
-        courseRef = FirebaseDatabase.getInstance().getReference("courses");
+        searchEditText = findViewById(R.id.searchEditText);
+        loadCourses();
 
-        courseRef.addValueEventListener(new ValueEventListener() {
+        searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                courseList.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Course course = dataSnapshot.getValue(Course.class);
-                    courseList.add(course);
-                }
-                adapter.notifyDataSetChanged();
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterCourses(s.toString());
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(CourseListActivity.this, "Lỗi tải dữ liệu!", Toast.LENGTH_SHORT).show();
-            }
+            public void afterTextChanged(Editable s) {}
         });
+//
+//        courseRef = FirebaseDatabase.getInstance().getReference("courses");
+//
+//        courseRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                courseList.clear();
+//                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                    Course course = dataSnapshot.getValue(Course.class);
+//                    courseList.add(course);
+//                }
+//                adapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Toast.makeText(CourseListActivity.this, "Lỗi tải dữ liệu!", Toast.LENGTH_SHORT).show();
+//            }
+//        });
         btnNotification = findViewById(R.id.btnNotification);
         bottomNavigation = findViewById(R.id.bottomNavigation);
 
@@ -100,19 +123,37 @@ public class CourseListActivity extends AppCompatActivity {
             }
             return false;
         });
-//        adapter.setOnItemClickListener(new CourseAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(Course course) {
-//                if (course != null && course.getId()!= 0) {
-//                    Intent intent = new Intent(CourseListActivity.this, CourseDetailActivity.class);
-//                    intent.putExtra("courseId", course.getId()); // Gửi ID khóa học
-//                    startActivity(intent);
-//                } else {
-//                    Log.e("CourseListActivity", "courseId is null or empty");
-//                    Toast.makeText(CourseListActivity.this, "Không thể tải thông tin khóa học", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
+
+    }
+    private void loadCourses() {
+        DatabaseReference courseRef = FirebaseDatabase.getInstance().getReference("courses");
+
+        courseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                courseList.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Course course = dataSnapshot.getValue(Course.class);
+                    courseList.add(course);
+                }
+                filteredList.clear();
+                filteredList.addAll(courseList);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+    }
+
+    private void filterCourses(String keyword) {
+        filteredList.clear();
+        for (Course course : courseList) {
+            if (course.getName().toLowerCase().contains(keyword.toLowerCase())) {
+                filteredList.add(course);
+            }
+        }
+        adapter.notifyDataSetChanged();
     }
 
 }
