@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -26,6 +27,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class LessonDetailActivity extends AppCompatActivity {
 
@@ -86,12 +93,16 @@ public class LessonDetailActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot data : snapshot.getChildren()) {
                             LessonContent content = data.getValue(LessonContent.class);
-                            if (content.getType().equals("text")) {
-                                lessonTextContent.setText(content.getDetail());
-                                lessonTextContent.setVisibility(View.VISIBLE);
-                            } else if (content.getType().equals("video")) {
+                       
+                            if ("text".equals(content.getType())) {
+                                String url = content.getDetail();
+                                loadWebContent(url);
+//                                String formattedDetail = Html.fromHtml(content.getDetail(), Html.FROM_HTML_MODE_LEGACY).toString();
+//                                lessonTextContent.setText(formattedDetail);
+//                                lessonTextContent.setVisibility(View.VISIBLE);
+                            }else if (content.getType().equals("video")) {
                                 String videoUrl = content.getDetail();
-
+                                fullscreenBtn.setVisibility(View.VISIBLE);
                                 fullscreenBtn.setOnClickListener(v -> {
                                     Intent intent = new Intent(LessonDetailActivity.this, FullScreenVideoActivity.class);
                                     intent.putExtra("video_url", videoUrl);
@@ -115,4 +126,42 @@ public class LessonDetailActivity extends AppCompatActivity {
                     public void onCancelled(@NonNull DatabaseError error) {}
                 });
     }
+    private void loadWebContent(String url) {
+        new Thread(() -> {
+            try {
+                URL webUrl = new URL(url);
+                HttpURLConnection connection = (HttpURLConnection) webUrl.openConnection();
+                connection.setConnectTimeout(5000);
+                connection.connect();
+
+                InputStream stream = connection.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+                StringBuilder htmlContent = new StringBuilder();
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    htmlContent.append(line);
+                }
+
+                reader.close();
+                connection.disconnect();
+
+                runOnUiThread(() -> {
+//                    String formattedContent = Html.fromHtml(htmlContent.toString(),
+//                            Html.FROM_HTML_MODE_LEGACY).toString();
+//                    lessonTextContent.setText(formattedContent);
+                    lessonTextContent.setText(Html.fromHtml(htmlContent.toString(),
+                            Html.FROM_HTML_MODE_LEGACY));
+                    lessonTextContent.setVisibility(View.VISIBLE);
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() -> {
+                    Toast.makeText(LessonDetailActivity.this,
+                            "Không thể tải nội dung bài học", Toast.LENGTH_SHORT).show();
+                });
+            }
+        }).start();
+    }
+
 }

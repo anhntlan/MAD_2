@@ -52,8 +52,8 @@
                 android:id="@+id/imgClass"
                 android:layout_width="182dp"
                 android:layout_height="170dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:src="@drawable/img_class"
 
                 android:visibility="gone"
@@ -63,9 +63,10 @@
                 android:id="@+id/notificationContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:paddingBottom="30dp"
-                android:paddingTop="30dp" />
+                android:paddingHorizontal="10dp"
+                android:paddingTop="20dp" />
         </LinearLayout>
     </ScrollView>
 
