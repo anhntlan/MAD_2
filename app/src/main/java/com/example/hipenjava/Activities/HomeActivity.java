@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.hipenjava.Activities.Challenge.ChallengeListActivity;
 import com.example.hipenjava.Activities.Courses.CourseListActivity;
+import com.example.hipenjava.Activities.Image.ImageActivity;
 import com.example.hipenjava.Activities.Notification.NotificationActivity;
 import com.example.hipenjava.Activities.BaseActivity;
 import com.example.hipenjava.R;
@@ -63,7 +64,7 @@ public class HomeActivity extends BaseActivity {
 //                startActivity(intent);
 //                return true;
             } else if (id == R.id.navigation_draw) {
-                Intent intent = new Intent(HomeActivity.this, CourseListActivity.class);
+                Intent intent = new Intent(HomeActivity.this, ImageActivity.class);
                 startActivity(intent);
                 return true;
             } else if (id == R.id.navigation_challenge) {

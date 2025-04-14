@@ -123,6 +123,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
@@ -132,6 +133,9 @@ import com.example.hipenjava.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
@@ -139,8 +143,8 @@ public class CourseDetailActivity extends AppCompatActivity {
 
     TextView courseName, courseDuration, courseLevel, courseLessonNum, courseDescription;
     ImageView courseImage;
-    Button enrollBtn ;
-    int selectedCourseId ;
+    Button enrollBtn;
+    int selectedCourseId;
 
 
     @SuppressLint({"MissingInflatedId", "WrongViewCast"})
@@ -177,9 +181,9 @@ public class CourseDetailActivity extends AppCompatActivity {
         String imageUrl = intent.getStringExtra("image");
 
         courseName.setText(name);
-        courseDuration.setText(  String.valueOf(duration)  );
+        courseDuration.setText(String.valueOf(duration));
         courseLevel.setText(level);
-        courseLessonNum.setText( String.valueOf(lessonNum));
+        courseLessonNum.setText(String.valueOf(lessonNum));
         courseDescription.setText(description);
 
         Glide.with(this)
@@ -187,47 +191,78 @@ public class CourseDetailActivity extends AppCompatActivity {
                 .placeholder(R.drawable.img_placeholder)
                 .into(courseImage);
 
-        enrollBtn.setOnClickListener(v -> {
-            String currentUserId = FirebaseAuth.getInstance().getUid();  // hoặc dùng userID đã có
-            if (currentUserId == null) {
-                Toast.makeText(this, "Bạn cần đăng nhập!", Toast.LENGTH_SHORT).show();
-                return;
-            }
+        // Check if the user has already started the course
+        String currentUserId = FirebaseAuth.getInstance().getUid();
+        if (currentUserId == null) {
+            Toast.makeText(this, "Bạn cần đăng nhập!", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("course_user");
+            ref.orderByChild("userID").equalTo(currentUserId)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            boolean hasStarted = false;
+                            for (DataSnapshot data : snapshot.getChildren()) {
+                                Integer courseId = data.child("courseID").getValue(Integer.class);
+                                if (courseId != null && courseId == selectedCourseId) {
+                                    hasStarted = true;
+                                    break;
+                                }
+                            }
 
-            HashMap<String, Object> enrollData = new HashMap<>();
-            enrollData.put("userID", currentUserId);
-            enrollData.put("courseID", selectedCourseId);  // <-- bạn cần truyền đúng ID của khóa học
+                            if (hasStarted) {
+                                enrollBtn.setText("Tiếp tục học");
+                            } else {
+                                enrollBtn.setText("Bắt đầu học");
+                            }
 
-            ref.push().setValue(enrollData)
-                    .addOnSuccessListener(unused -> {
-                        Toast.makeText(this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+                            boolean finalHasStarted = hasStarted;
+                            enrollBtn.setOnClickListener(v -> {
+                                if (finalHasStarted) {
+                                    // Navigate to CourseLearningActivity
+                                    Intent i = new Intent(CourseDetailActivity.this, CourseLearningActivity.class);
+                                    i.putExtra("courseID", selectedCourseId);
+                                    startActivity(i);
+                                } else {
+                                    // Enroll the user in the course
+                                    HashMap<String, Object> enrollData = new HashMap<>();
+                                    enrollData.put("userID", currentUserId);
+                                    enrollData.put("courseID", selectedCourseId);
 
-                        Intent i = new Intent(this, CourseLearningActivity.class);
-                        i.putExtra("courseID", selectedCourseId);  // Truyền ID để lấy danh sách bài học
-                        startActivity(i);
-                    })
-                    .addOnFailureListener(e ->
-                            Toast.makeText(this, "Đăng ký thất bại!", Toast.LENGTH_SHORT).show()
-                    );
-        });
+                                    ref.push().setValue(enrollData)
+                                            .addOnSuccessListener(unused -> {
+                                                Toast.makeText(CourseDetailActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
 
+                                                Intent i = new Intent(CourseDetailActivity.this, CourseLearningActivity.class);
+                                                i.putExtra("courseID", selectedCourseId);
+                                                startActivity(i);
+                                            })
+                                            .addOnFailureListener(e ->
+                                                    Toast.makeText(CourseDetailActivity.this, "Đăng ký thất bại!", Toast.LENGTH_SHORT).show()
+                                            );
+                                }
+                            });
+                        }
 
-//        btnBack.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(CourseDetailActivity.this, CourseListActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(CourseDetailActivity.this, "Lỗi khi kiểm tra trạng thái học!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish(); // Quay lại màn hình trước (CourseListActivity)
-            }
-        });
+            btnBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish(); // Quay lại màn hình trước (CourseListActivity)
+                }
+            });
 
+        }
     }
-}
+
+
+
+

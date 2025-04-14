@@ -89,9 +89,15 @@ dependencies {
     annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
 
     //Cloudinary
+    implementation("com.cloudinary:cloudinary-android:2.3.1")
+
     implementation ("com.squareup.okhttp3:okhttp:4.9.3")
     implementation ("com.squareup.okio:okio:2.10.0")
 
     implementation ("androidx.annotation:annotation:1.3.0")
+
+
+
+
 }
 
