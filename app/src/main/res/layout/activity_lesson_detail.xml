@@ -1,7 +1,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <!-- Header section stays fixed at top -->
     <RelativeLayout
@@ -10,6 +11,7 @@
         android:layout_height="wrap_content"
         android:paddingHorizontal="16dp"
         android:paddingVertical="20dp"
+        android:background="@color/darkPink"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
@@ -23,8 +25,7 @@
             android:id="@+id/lessonName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_toEndOf="@id/btnBackLesson"
+            android:layout_centerInParent="true"
             android:textColor="@android:color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -58,8 +59,11 @@
 
             <!-- Video content -->
             <RelativeLayout
+                android:id="@+id/videoContainer"
+
                 android:layout_width="match_parent"
-                android:layout_height="200dp">
+                android:layout_height="200dp"
+                android:visibility="gone">
 
                 <VideoView
                     android:id="@+id/lessonVideoContent"
@@ -84,17 +88,21 @@
             </RelativeLayout>
 
             <!-- Complete button -->
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
+
 
                 android:id="@+id/btnComplete"
                 android:layout_width="144dp"
                 android:layout_height="59dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="15dp"
                 android:text="Hoàn thành"
-                />
-<!--            app:layout_constraintTop_toBottomOf="@id/header_layout">-->
+                android:textColor="@android:color/black"
+                android:background="@drawable/rounded_button_bg"
+                android:stateListAnimator="@null"
+                android:backgroundTint="@color/darkPink"
 
+                android:textAllCaps="false" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

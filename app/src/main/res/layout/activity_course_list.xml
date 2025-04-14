@@ -31,12 +31,11 @@
 
             <!-- Search Bar -->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/searchContainer"
+                android:id="@+id/searchContainerrr"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/filterButton"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginEnd="12dp">
 
@@ -84,14 +83,14 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/filterButton"
+                android:id="@+id/filterButtontt"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/searchContainer"
-                app:layout_constraintBottom_toBottomOf="@id/searchContainer"
+                app:layout_constraintTop_toTopOf="@id/searchContainerrr"
+                app:layout_constraintBottom_toBottomOf="@id/searchContainerrr"
                 app:cardBackgroundColor="#E5E5E5">
 
                 <ImageView

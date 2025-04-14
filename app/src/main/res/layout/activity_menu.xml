@@ -1,59 +1,47 @@
-
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/lightPink">
 
     <RelativeLayout
-        android:id="@+id/header_noti"
-
+        android:id="@+id/header_menu"
         android:layout_width="match_parent"
         android:layout_height="84dp"
         android:paddingHorizontal="16dp"
         android:paddingVertical="16dp"
-        tools:ignore="MissingConstraints">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/btnBacknoti"
+            android:id="@+id/btnBackMenu"
             android:layout_width="41dp"
             android:layout_height="33dp"
             android:layout_centerVertical="true"
-            android:layout_marginStart="0dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_arrow_back"
             app:tint="@android:color/black" />
-
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Thông báo "
-            android:layout_centerVertical="true"
-
+            android:text="Menu"
             android:textColor="@android:color/black"
             android:textSize="22sp"
             android:textStyle="bold" />
     </RelativeLayout>
 
-
-    <ScrollView
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnLogout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:fillViewport="true"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Đăng xuất"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_noti"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="0dp">
+        android:background="@drawable/btn_bg"/>
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewNotifications"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            />
-    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

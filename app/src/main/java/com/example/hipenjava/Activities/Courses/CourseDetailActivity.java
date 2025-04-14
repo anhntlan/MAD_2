@@ -146,6 +146,7 @@ public class CourseDetailActivity extends AppCompatActivity {
     Button enrollBtn;
     int selectedCourseId;
 
+    private boolean isUserEnrolled = false;
 
     @SuppressLint({"MissingInflatedId", "WrongViewCast"})
     @Override

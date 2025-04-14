@@ -12,10 +12,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hipenjava.Activities.HomeActivity;
+import com.example.hipenjava.Activities.MenuActivity;
 import com.example.hipenjava.Activities.Notification.NotificationActivity;
 import com.example.hipenjava.R;
 import com.example.hipenjava.models.Course;
@@ -42,7 +44,8 @@ public class CourseListActivity extends AppCompatActivity {
     private ImageButton btnNotification,btnMenu;
 
 
-
+    private CardView allLevelFilter, beginnerFilter, intermediateFilter, advancedFilter;
+    private String currentLevel = "all";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,8 +55,6 @@ public class CourseListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         courseList = new ArrayList<>();
-//        adapter = new CourseAdapter(this, courseList);
-//        recyclerView.setAdapter(adapter);
         adapter = new CourseAdapter(this, filteredList);
         recyclerView.setAdapter(adapter);
 
@@ -66,31 +67,50 @@ public class CourseListActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                filterCourses(s.toString());
+                filterCoursesName(s.toString());
             }
 
             @Override
             public void afterTextChanged(Editable s) {}
         });
-//
-//        courseRef = FirebaseDatabase.getInstance().getReference("courses");
-//
-//        courseRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                courseList.clear();
-//                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-//                    Course course = dataSnapshot.getValue(Course.class);
-//                    courseList.add(course);
-//                }
-//                adapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Toast.makeText(CourseListActivity.this, "Lỗi tải dữ liệu!", Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        btnMenu = findViewById(R.id.btnMenu);
+        btnMenu.setOnClickListener(v -> {
+            Intent intent = new Intent(CourseListActivity.this, MenuActivity.class);
+            startActivity(intent);
+        });
+
+
+        // Initialize filter buttons
+        allLevelFilter = findViewById(R.id.allLevelFilter);
+        beginnerFilter = findViewById(R.id.beginnerFilter);
+        intermediateFilter = findViewById(R.id.intermediateFilter);
+        advancedFilter = findViewById(R.id.advancedFilter);
+
+        // Set click listeners
+        allLevelFilter.setOnClickListener(v -> {
+            setActiveFilter(allLevelFilter);
+            currentLevel = "all";
+            filterCoursesLevel(searchEditText.getText().toString());
+        });
+
+        beginnerFilter.setOnClickListener(v -> {
+            setActiveFilter(beginnerFilter);
+            currentLevel = "cơ bản";
+            filterCoursesLevel(searchEditText.getText().toString());
+        });
+
+        intermediateFilter.setOnClickListener(v -> {
+            setActiveFilter(intermediateFilter);
+            currentLevel = "trung bình";
+            filterCoursesLevel(searchEditText.getText().toString());
+        });
+
+        advancedFilter.setOnClickListener(v -> {
+            setActiveFilter(advancedFilter);
+            currentLevel = "nâng cao";
+            filterCoursesLevel(searchEditText.getText().toString());
+        });
+
         btnNotification = findViewById(R.id.btnNotification);
         bottomNavigation = findViewById(R.id.bottomNavigation);
 
@@ -125,6 +145,40 @@ public class CourseListActivity extends AppCompatActivity {
         });
 
     }
+
+
+    private void setActiveFilter(CardView activeFilter) {
+        // Reset all filters
+        allLevelFilter.setCardBackgroundColor(getResources().getColor(android.R.color.white));
+        beginnerFilter.setCardBackgroundColor(getResources().getColor(android.R.color.white));
+        intermediateFilter.setCardBackgroundColor(getResources().getColor(android.R.color.white));
+        advancedFilter.setCardBackgroundColor(getResources().getColor(android.R.color.white));
+
+        // Set active filter
+        activeFilter.setCardBackgroundColor(getResources().getColor(R.color.darkPink));
+    }
+
+    private void filterCoursesLevel(String keyword) {
+        filteredList.clear();
+        for (Course course : courseList) {
+            boolean matchesKeyword = course.getName().toLowerCase().contains(keyword.toLowerCase());
+            boolean matchesLevel = currentLevel.equals("all") || course.getLevel().toLowerCase().equals(currentLevel);
+
+            if (matchesKeyword && matchesLevel) {
+                filteredList.add(course);
+            }
+        }
+        adapter.notifyDataSetChanged();
+    }
+    private void filterCoursesName(String keyword) {
+        filteredList.clear();
+        for (Course course : courseList) {
+            if (course.getName().toLowerCase().contains(keyword.toLowerCase())) {
+                filteredList.add(course);
+            }
+        }
+        adapter.notifyDataSetChanged();
+    }
     private void loadCourses() {
         DatabaseReference courseRef = FirebaseDatabase.getInstance().getReference("courses");
 
@@ -146,14 +200,6 @@ public class CourseListActivity extends AppCompatActivity {
         });
     }
 
-    private void filterCourses(String keyword) {
-        filteredList.clear();
-        for (Course course : courseList) {
-            if (course.getName().toLowerCase().contains(keyword.toLowerCase())) {
-                filteredList.add(course);
-            }
-        }
-        adapter.notifyDataSetChanged();
-    }
+
 
 }

@@ -6,14 +6,14 @@ public class Notification {
     private String name;
     private String timeUp;
     private String detail;
-    private String type; // New field
+    private String type;
 
-
+    private boolean read;
     public Notification() {
     }
 
 
-    public Notification(int id, String name, String detail, String timeUp) {
+    public Notification(int id, String name, String detail, String timeUp,boolean read) {
         this.id = id;
         this.name = name;
         this.detail = detail;

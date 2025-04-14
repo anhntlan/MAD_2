@@ -41,6 +41,11 @@ public class HomeActivity extends BaseActivity {
             }
         });
 
+        btnMenu = findViewById(R.id.btnMenu);
+        btnMenu.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, MenuActivity.class);
+            startActivity(intent);
+        });
         LinearLayout navigationCourses = findViewById(R.id.navigation_courses_home);
 
         navigationCourses.setOnClickListener(new View.OnClickListener() {

@@ -20,15 +20,19 @@
 
             android:layout_width="46dp"
             android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:paddingLeft="10dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_arrow_back" />
+
 
         <TextView
             android:id="@+id/notiName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_toEndOf="@id/btnBackNotiDetail"
+            android:layout_centerInParent="true"
+
             android:textColor="@android:color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
