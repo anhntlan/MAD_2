@@ -3,6 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="light_pink">#F8E6E0</color>
+    <color name="brown_pink">#E4D2D2</color>
     <color name="pink">#EAB8B8</color>
     <color name="cardBackground">#EFEAEA</color>
     <color name="completedLessonBackground">#E4D2D2</color>

@@ -69,6 +69,9 @@
         <activity
             android:name=".Activities.Challenge.ChallengeDetailActivity"
             android:exported="false" />
+        <activity
+            android:name=".Activities.Challenge.UploadArtworkActivity"
+            android:exported="false" />
 
 
         <!-- Default Activity -->

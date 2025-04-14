@@ -13,9 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/light_pink"
+        android:layout_marginTop="45dp"
+        android:textStyle="bold"
         app:navigationIcon="@drawable/ic_arrow_back"
         app:title="Vẽ bầu trời"
-        app:titleTextColor="@android:color/white" />
+        app:titleTextColor="@android:color/black" />
+
 
     <!-- Image -->
     <ImageView

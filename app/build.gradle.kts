@@ -73,6 +73,7 @@ dependencies {
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.activity:activity:1.7.2")
     implementation("androidx.constraintlayout:constraintlayout:2.2.0-alpha13")
+    implementation ("androidx.recyclerview:recyclerview:1.3.1")
 
     // Firebase (BOM auto-manages versions)
     implementation(platform("com.google.firebase:firebase-bom:33.12.0"))

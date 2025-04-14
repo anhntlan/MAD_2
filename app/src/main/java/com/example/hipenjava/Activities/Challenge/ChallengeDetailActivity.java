@@ -19,6 +19,8 @@ public class ChallengeDetailActivity extends AppCompatActivity {
     private TextView textTimer;
     private Button btnUpload, btnVote;
 
+    private Toolbar toolbar;
+
     private Challenge challenge;
 
     @Override
@@ -27,7 +29,7 @@ public class ChallengeDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_challenge_detail);
 
         // Setup Toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(v -> finish());
@@ -52,6 +54,7 @@ public class ChallengeDetailActivity extends AppCompatActivity {
 
     private void openUploadActivity() {
         Intent intent = new Intent(this, UploadArtworkActivity.class);
+        intent.putExtra("challengeId", challenge.getId());
         startActivity(intent);
     }
 
@@ -96,6 +99,11 @@ public class ChallengeDetailActivity extends AppCompatActivity {
         textTimer = findViewById(R.id.textTimer);
         btnUpload = findViewById(R.id.btnUpload);
         btnVote = findViewById(R.id.btnVote);
+
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(challenge.getName());
+        }
 
         // Button Click Listeners
         btnUpload.setOnClickListener(v -> openUploadActivity());
