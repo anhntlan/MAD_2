@@ -4,4 +4,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="cardBackground">#EFEAEA</color>
     <color name="completedLessonBackground">#E4D2D2</color>
+    <color name="gray">#888888</color>
+    <color name="primary">#6200EE</color> <!-- Màu tím đậm -->
+    <color name="primary_dark">#3700B3</color> <!-- Màu tím tối hơn -->
+    <color name="primary_light">#BB86FC</color> <!-- Màu tím sáng -->
+    <color name="accent">#03DAC5</color> <!-- Màu xanh ngọc -->
 </resources>

@@ -54,6 +54,9 @@
         <activity
             android:name=".Activities.Auth.RegisterActivity3"
             android:exported="false" />
+        <activity android:name=".Activities.Image.ImageActivity" />
+        <activity android:name=".Activities.Image.EditImageActivity" />
+
         <activity
             android:name=".Activities.HomeActivity"
             android:exported="true">
