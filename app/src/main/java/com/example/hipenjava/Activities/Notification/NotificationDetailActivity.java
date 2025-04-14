@@ -1,6 +1,7 @@
 package com.example.hipenjava.Activities.Notification;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -27,8 +28,10 @@ public class NotificationDetailActivity extends AppCompatActivity {
         String detail = getIntent().getStringExtra("notificationDetail");
         String type = getIntent().getStringExtra("notificationType");
 
+        String formattedDetail = Html.fromHtml(detail, Html.FROM_HTML_MODE_LEGACY).toString();
+        notificationDetail.setText(formattedDetail);
         notificationName.setText(name);
-        notificationDetail.setText(detail);
+
 
          imgClass = findViewById(R.id.imgClass);
 
@@ -36,6 +39,7 @@ public class NotificationDetailActivity extends AppCompatActivity {
         if ("class".equals(type)) {
             imgClass.setVisibility(View.VISIBLE);
         }
+
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
