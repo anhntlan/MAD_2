@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.hipenjava.R;
 
 import java.util.List;
@@ -36,9 +37,11 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.Chal
     @Override
     public void onBindViewHolder(@NonNull ChallengeViewHolder holder, int position) {
         Challenge challenge = challengeList.get(position);
-        holder.title.setText(challenge.getTitle());
+        holder.title.setText(challenge.getName());
         holder.status.setText(challenge.getStatus());
-        holder.image.setImageResource(challenge.getImageResId());
+        Glide.with(holder.itemView.getContext())
+                .load(challenge.getImageUrl())
+                .into(holder.image);
 
         holder.btnViewDetails.setOnClickListener(v -> {
             if (context != null) {
@@ -46,6 +49,7 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeAdapter.Chal
                 Log.d("ChallengeAdapter", "Context is not null, proceeding with Intent.");
 
                 Intent intent = new Intent(context, ChallengeDetailActivity.class);
+                intent.putExtra("challengeId", challenge.getId());
                 context.startActivity(intent);
             } else {
                 // Handle case where context is null
