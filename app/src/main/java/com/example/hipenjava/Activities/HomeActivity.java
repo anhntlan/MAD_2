@@ -1,8 +1,11 @@
 package com.example.hipenjava.Activities;
 
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +13,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,17 +28,21 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.hipenjava.Activities.Courses.CourseListActivity;
+import com.example.hipenjava.Activities.Favorite.FavoritePostsActivity;
 import com.example.hipenjava.Activities.Image.EditImageActivity;
 import com.example.hipenjava.Activities.Image.ImageActivity;
 import com.example.hipenjava.Activities.Image.ImageAdapter;
 import com.example.hipenjava.Activities.Image.ImageModel;
 import com.example.hipenjava.Activities.Courses.CourseHomeActivity;
 import com.example.hipenjava.Activities.Notification.NotificationActivity;
+import com.example.hipenjava.Activities.Post.MainActivityPost;
 import com.example.hipenjava.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -45,6 +53,7 @@ import com.example.hipenjava.Activities.Post.PostAdapter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -82,8 +91,10 @@ public class HomeActivity extends BaseActivity {
             }
         });
 
-        LinearLayout favoriteContainer = findViewById(R.id.favoriteImagesContainer);
+        LinearLayout favoriteImagesContainer = findViewById(R.id.favoriteImagesContainer);
         RelativeLayout favoriteSection = findViewById(R.id.favoriteSection);
+        TextView tvNoFavoritesShort = findViewById(R.id.tvNoFavoritesShort);
+
 
         // Khi nhấn mũi tên → chuyển trang
         favoriteSection.setOnClickListener(v -> {
@@ -91,7 +102,9 @@ public class HomeActivity extends BaseActivity {
         });
 
         // Load dữ liệu yêu thích từ Firestore
-        loadFavoriteImages(favoriteContainer);
+
+        loadFavoriteImages(favoriteImagesContainer, tvNoFavoritesShort);
+
 
         btnMenu = findViewById(R.id.btnMenu);
         btnMenu.setOnClickListener(v -> {
@@ -132,10 +145,6 @@ public class HomeActivity extends BaseActivity {
                 Intent intent = new Intent(HomeActivity.this, CourseHomeActivity.class);
                 startActivity(intent);
                 return true;
-//            }           else if (id == R.id.navigation_home) {
-//                Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
-//                startActivity(intent);
-//                return true;
             } else if (id == R.id.navigation_draw) {
                 Intent intent = new Intent(HomeActivity.this, ImageActivity.class);
 
@@ -264,20 +273,24 @@ public class HomeActivity extends BaseActivity {
                     textNoImages.setVisibility(View.VISIBLE);
                 });
     }
-    protected void onResume() {
+    /*protected void onResume() {
         super.onResume();
         loadLatestImages(); // Reload after adding/editing
-    }
+    }*/
 
     @Override
     protected void onResume() {
         super.onResume();
         // Tải lại dữ liệu yêu thích khi quay lại màn hình
-        LinearLayout favoriteContainer = findViewById(R.id.favoriteImagesContainer);
-        loadFavoriteImages(favoriteContainer);
+        LinearLayout favoriteImagesContainer = findViewById(R.id.favoriteImagesContainer);
+        TextView tvNoFavoritesShort = findViewById(R.id.tvNoFavoritesShort);
+
+        loadFavoriteImages(favoriteImagesContainer, tvNoFavoritesShort);
+
+        loadLatestImages();
     }
 
-    private void loadFavoriteImages(LinearLayout container) {
+    /*private void loadFavoriteImages(LinearLayout container) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String userId = FirebaseAuth.getInstance().getUid();
 
@@ -364,6 +377,99 @@ public class HomeActivity extends BaseActivity {
                 .addOnFailureListener(e -> {
                     Log.e(TAG, "Error loading likes: " + e.getMessage());
                 });
+    }*/
+    private void loadFavoriteImages(LinearLayout container, TextView noFavoritesTextView) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userId = FirebaseAuth.getInstance().getUid();
+
+        if (userId == null) {
+            Log.e(TAG, "User not logged in");
+            return;
+        }
+
+        db.collection("likes")
+                .whereEqualTo("userId", userId)
+                .get()
+                .addOnSuccessListener(likesSnapshot -> {
+                    List<String> likedPostIds = new ArrayList<>();
+                    for (DocumentSnapshot doc : likesSnapshot.getDocuments()) {
+                        String postId = doc.getString("postId");
+                        if (postId != null) {
+                            likedPostIds.add(postId);
+                        }
+                    }
+
+                    if (likedPostIds.isEmpty()) {
+                        Log.d(TAG, "No liked posts found");
+                        container.removeAllViews();
+                        noFavoritesTextView.setVisibility(View.VISIBLE); // Hiện dòng thông báo
+                        return;
+                    }
+
+                    db.collection("posts")
+                            .whereIn(FieldPath.documentId(), likedPostIds)
+                            .get()
+                            .addOnSuccessListener(postsSnapshot -> {
+                                container.removeAllViews();
+                                int count = 0;
+
+                                if (postsSnapshot.isEmpty()) {
+                                    Log.d(TAG, "No posts found with the liked IDs");
+                                    noFavoritesTextView.setVisibility(View.VISIBLE);
+                                    return;
+                                }
+
+                                for (DocumentSnapshot postDoc : postsSnapshot.getDocuments()) {
+                                    if (count >= 3) break;
+
+                                    String imageUrl = postDoc.getString("imageUrl");
+                                    String postId = postDoc.getId();
+
+                                    if (imageUrl != null && !imageUrl.isEmpty()) {
+                                        ImageView imageView = new ImageView(this);
+                                        int sizeInPx = (int) (120 * getResources().getDisplayMetrics().density);
+                                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(sizeInPx, sizeInPx);
+                                        params.setMargins(4, 0, 4, 0);
+                                        imageView.setLayoutParams(params);
+                                        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                                        imageView.setBackgroundColor(Color.WHITE);
+
+                                        Glide.with(this)
+                                                .load(imageUrl)
+                                                .placeholder(R.drawable.default_avatar)
+                                                .error(R.drawable.default_avatar)
+                                                .into(imageView);
+
+                                        final String finalPostId = postId;
+                                        imageView.setOnClickListener(v -> {
+                                            Intent intent = new Intent(this, MainActivityPost.class);
+                                            intent.putExtra("postId", finalPostId);
+                                            startActivity(intent);
+                                        });
+
+                                        container.addView(imageView);
+                                        count++;
+                                    }
+                                }
+
+                                // Ẩn hoặc hiện thông báo tùy theo có ảnh hay không
+                                if (count == 0) {
+                                    Log.d(TAG, "No images found in liked posts");
+                                    noFavoritesTextView.setVisibility(View.VISIBLE);
+                                } else {
+                                    noFavoritesTextView.setVisibility(View.GONE);
+                                }
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.e(TAG, "Error loading posts: " + e.getMessage());
+                                noFavoritesTextView.setVisibility(View.VISIBLE);
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error loading likes: " + e.getMessage());
+                    noFavoritesTextView.setVisibility(View.VISIBLE);
+                });
     }
+
 }
 
