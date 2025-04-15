@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.hipenjava.Activities.BaseActivity;
 import com.example.hipenjava.Activities.Courses.CourseListActivity;
 import com.example.hipenjava.Activities.HomeActivity;
+import com.example.hipenjava.Activities.Image.ImageActivity;
 import com.example.hipenjava.R;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -88,7 +89,7 @@ public class ChallengeListActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             } else if (id == R.id.navigation_draw) {
-                Intent intent = new Intent(ChallengeListActivity.this, HomeActivity.class);
+                Intent intent = new Intent(ChallengeListActivity.this, ImageActivity.class);
                 startActivity(intent);
                 return true;
             } else if (id == R.id.navigation_courses) {

@@ -2,23 +2,21 @@ package com.example.hipenjava.Activities.Challenge;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.hipenjava.Activities.Image.ImageModel;
 import com.example.hipenjava.R;
-import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,17 +42,19 @@ public class VoteActivity extends AppCompatActivity {
 
         challengeId = getIntent().getStringExtra("challengeId");
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Bình chọn");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(v -> finish());
-
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         userId = user != null ? user.getUid() : null;
 
         db = FirebaseFirestore.getInstance();
         artworksRef = db.collection("submitted_artwork");
+
+        ImageView btnBack = findViewById(R.id.backButton);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed(); // Or finish(); or custom logic
+            }
+        });
 
         artworkList = new ArrayList<>();
         artworkAdapter = new SubmittedArtworkAdapter(artworkList, this);
@@ -143,8 +143,8 @@ public class VoteActivity extends AppCompatActivity {
         vote.put("artworkId", artwork.getId());
         db.collection("artworkVote").add(vote)
                 .addOnSuccessListener(documentReference -> {
-                    Toast.makeText(VoteActivity.this, "Vote saved!", Toast.LENGTH_SHORT).show();
-                }).addOnFailureListener(e -> Toast.makeText(VoteActivity.this, "Error saving vote", Toast.LENGTH_SHORT).show());
+                    Toast.makeText(VoteActivity.this, "Đã lưu Vote!", Toast.LENGTH_SHORT).show();
+                }).addOnFailureListener(e -> Toast.makeText(VoteActivity.this, "Lỗi khi lưu Vote", Toast.LENGTH_SHORT).show());
     }
 
     private void removeVote(SubmittedArtwork artwork) {
@@ -155,7 +155,7 @@ public class VoteActivity extends AppCompatActivity {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
                         snapshot.getReference().delete()
-                                .addOnSuccessListener(aVoid -> Toast.makeText(VoteActivity.this, "Vote removed!", Toast.LENGTH_SHORT).show());
+                                .addOnSuccessListener(aVoid -> Toast.makeText(VoteActivity.this, "Đã bỏ Vote!", Toast.LENGTH_SHORT).show());
                     }
                 });
     }

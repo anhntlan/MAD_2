@@ -20,7 +20,7 @@ public class ChallengeDetailActivity extends AppCompatActivity {
     private TextView textTimer;
     private Button btnUpload, btnVote, btnResult;
 
-    private Toolbar toolbar;
+    private ImageView btnBack;
 
     private Challenge challenge;
 
@@ -28,14 +28,6 @@ public class ChallengeDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_challenge_detail);
-
-        // Setup Toolbar
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(v -> {
-            finish();
-        });
 
         getChallengeFromIntent();
     }
@@ -99,6 +91,8 @@ public class ChallengeDetailActivity extends AppCompatActivity {
     private void setupUIContent(){
         ImageView image = findViewById(R.id.imageChallenge);
         TextView textView = findViewById(R.id.textDescription);
+        TextView challengeName = findViewById(R.id.headerTitle);
+        challengeName.setText(challenge.getName());
 
         Glide.with(ChallengeDetailActivity.this)
                 .load(challenge.getImageUrl())
@@ -111,10 +105,13 @@ public class ChallengeDetailActivity extends AppCompatActivity {
         btnVote = findViewById(R.id.btnVote);
         btnResult = findViewById(R.id.btnResult);
 
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(challenge.getName());
-        }
+        btnBack = findViewById(R.id.backButton);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed(); // Or finish(); or custom logic
+            }
+        });
 
         // Button Click Listeners
         btnUpload.setOnClickListener(v -> openUploadActivity());

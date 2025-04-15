@@ -40,12 +40,6 @@ public class ArtworkResultAdapter extends RecyclerView.Adapter<ArtworkResultAdap
         holder.voteIcon.setOnClickListener(v -> {
             boolean isVoted = !holder.voteIcon.isSelected();
             holder.voteIcon.setSelected(isVoted);
-            if (isVoted) {
-                holder.voteIcon.setImageResource(R.drawable.ic_redheart);
-            } else {
-                holder.voteIcon.setImageResource(R.drawable.ic_heart);
-            }
-            holder.voteCount.setText(String.valueOf(artwork.getVoteCount()));
         });
 
         if (holder.topTag == null){

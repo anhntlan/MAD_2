@@ -5,28 +5,66 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/light_pink"
-    android:padding="16dp">
+    android:padding="0dp">
 
-    <!-- Toolbar with Back Button -->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/light_pink"
-        android:layout_marginTop="45dp"
-        android:textStyle="bold"
-        app:navigationIcon="@drawable/ic_arrow_back"
-        app:title="Vẽ bầu trời"
-        app:titleTextColor="@android:color/black" />
+<!--    instead of toolbar-->
 
 
     <!-- Image -->
-    <ImageView
-        android:id="@+id/imageChallenge"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/img_sky" />
+        android:layout_height="wrap_content"
+        android:background="@color/light_pink"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingTop="45dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="12dp">
+
+        <!-- Back Icon -->
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="Back"
+            android:focusable="true"
+            android:src="@drawable/ic_arrow_back" />
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/headerTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Vẽ bầu trời"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_gravity="center"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
+        app:cardUseCompatPadding="true"
+        app:cardPreventCornerOverlap="false">
+
+        <ImageView
+            android:id="@+id/imageChallenge"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_sky"
+            android:backgroundTint="@android:color/white"
+/>
+    </androidx.cardview.widget.CardView>
 
     <!-- Description -->
     <TextView
@@ -34,7 +72,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Bầu trời là một chủ đề nghệ thuật đầy cảm hứng, có thể thể hiện nhiều sắc thái cảm xúc và phong cách khác nhau..."
-        android:textSize="16sp"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:paddingHorizontal="20dp"
         android:paddingTop="8dp" />
 
     <!-- Countdown Timer -->
@@ -45,7 +85,8 @@
         android:text="Thời gian còn lại: 06:00:42"
         android:textStyle="italic"
         android:paddingTop="8dp"
-        android:textSize="14sp" />
+        android:paddingHorizontal="20dp"
+        android:textSize="15sp" />
 
     <!-- Upload Button -->
     <Button
@@ -53,10 +94,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Tải lên tác phẩm"
+        android:textSize="15sp"
         android:drawableStart="@drawable/ic_upload"
         android:backgroundTint="@color/pink"
         android:textColor="@color/white"
         android:padding="10dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
         android:layout_marginTop="10dp" />
 
     <!-- Vote Button -->
@@ -67,6 +111,8 @@
         android:text="Bình chọn"
         android:backgroundTint="@color/pink"
         android:textColor="@color/white"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
         android:padding="10dp"
         android:layout_marginTop="10dp" />
 
@@ -78,6 +124,9 @@
         android:text="Xem kết quả"
         android:backgroundTint="@color/pink"
         android:textColor="@color/white"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:textSize="15sp"
         android:padding="10dp"
         android:layout_marginTop="10dp"
         android:visibility="gone" />

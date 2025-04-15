@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -50,7 +51,9 @@ public class ArtworkAdapter extends RecyclerView.Adapter<ArtworkAdapter.ArtViewH
         holder.nameText.setText(art.getName());
 
         // Show overlay only if this item is selected
-        holder.overlay.setVisibility(position == selectedPosition ? View.VISIBLE : View.GONE);
+        boolean isSelected = position == selectedPosition;
+        holder.overlay.setVisibility(isSelected ? View.VISIBLE : View.GONE);
+        holder.selectedOverlay.setVisibility(isSelected ? View.VISIBLE : View.GONE);
 
         holder.itemView.setOnClickListener(v -> {
             int pos = holder.getBindingAdapterPosition();
@@ -74,6 +77,8 @@ public class ArtworkAdapter extends RecyclerView.Adapter<ArtworkAdapter.ArtViewH
 
     public static class ArtViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView, overlay;
+        View selectedOverlay;
+        FrameLayout artContainer;
         TextView nameText;
 
         public ArtViewHolder(@NonNull View itemView) {
@@ -81,6 +86,8 @@ public class ArtworkAdapter extends RecyclerView.Adapter<ArtworkAdapter.ArtViewH
             imageView = itemView.findViewById(R.id.artImage);
             overlay = itemView.findViewById(R.id.tickOverlay);
             nameText = itemView.findViewById(R.id.artName);
+            selectedOverlay = itemView.findViewById(R.id.selectedOverlay);
+            artContainer = itemView.findViewById(R.id.artContainer);
         }
     }
 }

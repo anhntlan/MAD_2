@@ -2,7 +2,9 @@ package com.example.hipenjava.Activities.Challenge;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,12 +41,6 @@ public class UploadArtworkActivity extends AppCompatActivity {
 
         challengeId = getIntent().getStringExtra("challengeId");
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Tải lên tác phẩm");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(v -> finish());
-
         recyclerView = findViewById(R.id.recyclerView);
         uploadButton = findViewById(R.id.uploadButton);
         uploadButton.setEnabled(false);
@@ -52,6 +48,14 @@ public class UploadArtworkActivity extends AppCompatActivity {
         adapter = new ArtworkAdapter(artworkList, this, selected -> {
             selectedArtwork = selected;
             uploadButton.setEnabled(true);
+        });
+
+        ImageView btnBack = findViewById(R.id.backButton);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed(); // Or finish(); or custom logic
+            }
         });
 
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
