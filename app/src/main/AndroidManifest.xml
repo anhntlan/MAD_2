@@ -72,6 +72,9 @@
         <activity
             android:name=".Activities.Challenge.UploadArtworkActivity"
             android:exported="false" />
+        <activity
+            android:name=".Activities.Challenge.VoteActivity"
+            android:exported="false" />
 
 
         <!-- Default Activity -->
