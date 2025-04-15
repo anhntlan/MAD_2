@@ -13,6 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hipenjava.Activities.Notification.NotificationDetailActivity;
 import com.example.hipenjava.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -36,7 +42,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public void onBindViewHolder(@NonNull NotificationViewHolder holder, int position) {
         Notification notification = notifications.get(position);
         holder.name.setText(notification.getName());
-        holder.timeUp.setText(notification.getTimeUp());
+//        holder.timeUp.setText(notification.getTimeUp());
+
+        String userId = FirebaseAuth.getInstance().getUid();
+        DatabaseReference userNotificationRef = FirebaseDatabase.getInstance()
+                .getReference("user_notifications").child(userId).child(String.valueOf(notification.getId()));
 
         // Set icon based on type
         if ("event".equals(notification.getType())) {
@@ -44,6 +54,22 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         } else if ("class".equals(notification.getType())) {
             holder.icon.setImageResource(R.drawable.noti_zoom);
         }
+
+        // Check if the notification is read for the current user
+        userNotificationRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean isRead = snapshot.exists() && snapshot.getValue(Boolean.class);
+                if (isRead) {
+                    holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.lightPink)); // Gray for read
+                } else {
+                    holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.white)); // White for unread
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, NotificationDetailActivity.class);
             intent.putExtra("notificationID", notification.getId());
@@ -51,7 +77,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             intent.putExtra("notificationDetail", notification.getDetail());
             intent.putExtra("notificationType", notification.getType());
 
+            // Mark as read for the current user
+            userNotificationRef.setValue(true);
+
             context.startActivity(intent);
+
         });
     }
 
@@ -67,7 +97,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         public NotificationViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.notification_name);
-            timeUp = itemView.findViewById(R.id.notification_timeup);
+//            timeUp = itemView.findViewById(R.id.notification_timeup);
             icon = itemView.findViewById(R.id.notification_icon);
         }
     }

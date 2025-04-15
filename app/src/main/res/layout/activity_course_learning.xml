@@ -10,9 +10,10 @@ android:layout_height="match_parent">
             android:id="@+id/header_lessons"
 
             android:layout_width="match_parent"
-            android:layout_height="84dp"
+            android:layout_height="73dp"
             android:paddingHorizontal="16dp"
             android:paddingVertical="16dp"
+            android:background="@color/darkPink"
         tools:ignore="MissingConstraints">
 
         <ImageButton
@@ -30,12 +31,10 @@ android:layout_height="match_parent">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="30dp"
-                android:layout_toEndOf="@id/btnBackLessonlist"
                 android:text="Danh sách Bài học "
+                android:layout_centerInParent="true"
                 android:textColor="@android:color/black"
-                android:textSize="22sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
         </RelativeLayout>
 

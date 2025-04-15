@@ -15,6 +15,23 @@
         android:theme="@style/Theme.HipenJava"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.Courses.CourseCompletedActivity"
+            android:exported="false" />
+
+        <meta-data
+            android:name="com.google.android.gms.auth.api.credentials.CREDENTIAL_PICKER_ENABLED"
+            android:value="true" />
+
+        <activity
+            android:name=".Activities.Courses.CourseListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Courses.ContinueLearningActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.MenuActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.Notification.NotificationDetailActivity"
             android:exported="false" />
         <activity
@@ -37,7 +54,7 @@
             android:name=".Activities.BaseActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.Courses.CourseListActivity"
+            android:name=".Activities.Courses.CourseHomeActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.Notification.NotificationActivity"
@@ -59,6 +76,9 @@
 
         <activity
             android:name=".Activities.HomeActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.Auth.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -66,9 +86,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Activities.Auth.LoginActivity"
-            android:exported="true" />
     </application>
 
 </manifest>

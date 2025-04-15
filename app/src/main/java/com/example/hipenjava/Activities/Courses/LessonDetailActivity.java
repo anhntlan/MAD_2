@@ -8,7 +8,9 @@ import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -42,6 +44,7 @@ public class LessonDetailActivity extends AppCompatActivity {
     private ImageButton btnBack;
     private int lessonID;
     ImageButton fullscreenBtn ;
+    RelativeLayout videocntainer;
 
 
     @SuppressLint("MissingInflatedId")
@@ -60,6 +63,7 @@ public class LessonDetailActivity extends AppCompatActivity {
         String lessonName = getIntent().getStringExtra("lessonName");
         lessonNameText.setText(lessonName);
 
+        videocntainer = findViewById(R.id.videoContainer);
         fullscreenBtn = findViewById(R.id.fullscreenBtn);
         btnBack.setOnClickListener(v -> finish());
 
@@ -95,12 +99,14 @@ public class LessonDetailActivity extends AppCompatActivity {
                             LessonContent content = data.getValue(LessonContent.class);
                        
                             if ("text".equals(content.getType())) {
+                                videocntainer.setVisibility(View.GONE);
+                                lessonTextContent.setVisibility(View.VISIBLE);
                                 String url = content.getDetail();
                                 loadWebContent(url);
-//                                String formattedDetail = Html.fromHtml(content.getDetail(), Html.FROM_HTML_MODE_LEGACY).toString();
-//                                lessonTextContent.setText(formattedDetail);
-//                                lessonTextContent.setVisibility(View.VISIBLE);
+
                             }else if (content.getType().equals("video")) {
+                                videocntainer.setVisibility(View.VISIBLE);
+                                lessonTextContent.setVisibility(View.GONE);
                                 String videoUrl = content.getDetail();
                                 fullscreenBtn.setVisibility(View.VISIBLE);
                                 fullscreenBtn.setOnClickListener(v -> {
@@ -118,6 +124,7 @@ public class LessonDetailActivity extends AppCompatActivity {
 
                                 lessonVideoContent.setMediaController(mediaController);
                                 lessonVideoContent.requestFocus();
+
                             }
                         }
                     }
@@ -147,9 +154,7 @@ public class LessonDetailActivity extends AppCompatActivity {
                 connection.disconnect();
 
                 runOnUiThread(() -> {
-//                    String formattedContent = Html.fromHtml(htmlContent.toString(),
-//                            Html.FROM_HTML_MODE_LEGACY).toString();
-//                    lessonTextContent.setText(formattedContent);
+
                     lessonTextContent.setText(Html.fromHtml(htmlContent.toString(),
                             Html.FROM_HTML_MODE_LEGACY));
                     lessonTextContent.setVisibility(View.VISIBLE);
@@ -163,5 +168,39 @@ public class LessonDetailActivity extends AppCompatActivity {
             }
         }).start();
     }
+//    private void markLessonAsComplete(int lessonID, int courseID) {
+//        String userId = FirebaseAuth.getInstance().getUid();
+//        DatabaseReference userLessonsRef = FirebaseDatabase.getInstance().getReference("user_lessons").child(userId);
+//
+//        // Đánh dấu bài học là hoàn thành
+//        userLessonsRef.child(String.valueOf(lessonID)).setValue(true).addOnSuccessListener(unused -> {
+//            // Kiểm tra xem tất cả các bài học trong khóa học đã hoàn thành chưa
+//            DatabaseReference lessonsRef = FirebaseDatabase.getInstance().getReference("lesson");
+//            lessonsRef.orderByChild("courseID").equalTo(courseID).addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    boolean allCompleted = true;
+//                    for (DataSnapshot data : snapshot.getChildren()) {
+//                        int id = data.child("id").getValue(Integer.class);
+//                        if (!userLessonsRef.child(String.valueOf(id)).exists()) {
+//                            allCompleted = false;
+//                            break;
+//                        }
+//                    }
+//
+//                    if (allCompleted) {
+//                        // Lưu trạng thái hoàn thành khóa học
+//                        DatabaseReference completedCoursesRef = FirebaseDatabase.getInstance().getReference("completed_courses").child(userId);
+//                        completedCoursesRef.child(String.valueOf(courseID)).setValue(true);
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//                    // Xử lý lỗi
+//                }
+//            });
+//        });
+//    }
 
 }

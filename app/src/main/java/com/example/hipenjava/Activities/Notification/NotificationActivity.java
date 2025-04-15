@@ -14,6 +14,7 @@ import com.example.hipenjava.Activities.HomeActivity;
 import com.example.hipenjava.R;
 import com.example.hipenjava.models.Notification;
 import com.example.hipenjava.models.NotificationAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -47,19 +48,29 @@ public class NotificationActivity extends AppCompatActivity {
             }
         });
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadNotifications(); // Reload notifications to update the read status
+    }
     private void loadNotifications() {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("notifications");
+        String userId = FirebaseAuth.getInstance().getUid();
+        DatabaseReference notificationsRef = FirebaseDatabase.getInstance().getReference("notifications");
+        DatabaseReference userNotificationsRef = FirebaseDatabase.getInstance().getReference("user_notifications").child(userId);
 
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        notificationsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 notificationList.clear();
                 for (DataSnapshot data : snapshot.getChildren()) {
                     Notification notification = data.getValue(Notification.class);
-                    notificationList.add(notification);
+                    if (notification != null) {
+                        notificationList.add(notification);
+                    }
                 }
                 adapter.notifyDataSetChanged();
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}

@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "156101695809",
+    "firebase_url": "https://mad-2-ca26d-default-rtdb.firebaseio.com",
     "project_id": "mad-2-ca26d",
     "storage_bucket": "mad-2-ca26d.firebasestorage.app"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.example.hipenjava"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "156101695809-77q7ngrttfspq1hnepqkb52fcc781ifp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hipenjava",
+            "certificate_hash": "43df570ddf5921dfd59813f07f7d6fe9604cffc6"
+          }
+        },
+        {
+          "client_id": "156101695809-rjum56p7qsvbtrm46u96btk80n41gu5l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCWFQsA-SNCrvQi9NUt7MldxFFMwbEnR3A"
@@ -20,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "156101695809-rjum56p7qsvbtrm46u96btk80n41gu5l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

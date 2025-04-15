@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+
+    <color name="white">#FFFFFF</color>
     <color name="cardBackground">#EFEAEA</color>
     <color name="completedLessonBackground">#E4D2D2</color>
     <color name="gray">#888888</color>
@@ -11,4 +12,7 @@
     <color name="accent">#03DAC5</color> <!-- Màu xanh ngọc -->
     <color name="purple_500">#6200EE</color>
 
+    <color name="darkPink">#E4D2D2</color>
+    <color name="lightPink">#EFEAEA</color>
+    <color name="bg">#F2F2F2</color>
 </resources>
