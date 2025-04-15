@@ -168,5 +168,39 @@ public class LessonDetailActivity extends AppCompatActivity {
             }
         }).start();
     }
+//    private void markLessonAsComplete(int lessonID, int courseID) {
+//        String userId = FirebaseAuth.getInstance().getUid();
+//        DatabaseReference userLessonsRef = FirebaseDatabase.getInstance().getReference("user_lessons").child(userId);
+//
+//        // Đánh dấu bài học là hoàn thành
+//        userLessonsRef.child(String.valueOf(lessonID)).setValue(true).addOnSuccessListener(unused -> {
+//            // Kiểm tra xem tất cả các bài học trong khóa học đã hoàn thành chưa
+//            DatabaseReference lessonsRef = FirebaseDatabase.getInstance().getReference("lesson");
+//            lessonsRef.orderByChild("courseID").equalTo(courseID).addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    boolean allCompleted = true;
+//                    for (DataSnapshot data : snapshot.getChildren()) {
+//                        int id = data.child("id").getValue(Integer.class);
+//                        if (!userLessonsRef.child(String.valueOf(id)).exists()) {
+//                            allCompleted = false;
+//                            break;
+//                        }
+//                    }
+//
+//                    if (allCompleted) {
+//                        // Lưu trạng thái hoàn thành khóa học
+//                        DatabaseReference completedCoursesRef = FirebaseDatabase.getInstance().getReference("completed_courses").child(userId);
+//                        completedCoursesRef.child(String.valueOf(courseID)).setValue(true);
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//                    // Xử lý lỗi
+//                }
+//            });
+//        });
+//    }
 
 }

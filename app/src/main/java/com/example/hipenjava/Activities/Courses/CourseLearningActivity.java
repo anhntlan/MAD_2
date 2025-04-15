@@ -164,6 +164,7 @@ public class CourseLearningActivity extends AppCompatActivity {
             Intent intent = new Intent(this, LessonDetailActivity.class);
             intent.putExtra("lessonID", lesson.getId());
             intent.putExtra("lessonName", lesson.getName());
+            intent.putExtra("courseID", courseID);
             startActivity(intent);
         });
     }

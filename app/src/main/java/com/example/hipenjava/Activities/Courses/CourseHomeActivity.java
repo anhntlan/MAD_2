@@ -18,12 +18,14 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.hipenjava.Activities.Auth.LoginActivity;
 import com.example.hipenjava.Activities.HomeActivity;
 import com.example.hipenjava.Activities.MenuActivity;
 import com.example.hipenjava.Activities.Notification.NotificationActivity;
 import com.example.hipenjava.R;
 import com.example.hipenjava.models.Course;
 import com.example.hipenjava.models.CourseAdapter;
+import com.example.hipenjava.models.Lesson;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -33,7 +35,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CourseHomeActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigation;
@@ -46,11 +50,12 @@ public class CourseHomeActivity extends AppCompatActivity {
     private DatabaseReference courseRef;
     private ImageButton btnNotification,btnMenu;
 
-    private List<Course> continueLearningList = new ArrayList<>();
+    private List<Course> continueLearningList = new ArrayList<>(), completedCourseList = new ArrayList<>();
+
     private CardView allLevelFilter, beginnerFilter, intermediateFilter, advancedFilter;
     private String currentLevel = "all";
-    private RecyclerView recyclerViewContinueLearning;
-    private CourseAdapter continueLearningAdapter;
+    private RecyclerView recyclerViewContinueLearning, recyclerViewCompletedLearning;
+    private CourseAdapter continueLearningAdapter,completedCourseAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +99,22 @@ public class CourseHomeActivity extends AppCompatActivity {
         coursesLabel.setOnClickListener(courseListClickListener);
         allCourseArrow.setOnClickListener(courseListClickListener);
 
+        // course completed
+        TextView completedLearningLabel = findViewById(R.id.coursesCompletedLabel);
+        ImageView completedLearningArrow = findViewById(R.id.coursesCompletedArrow);
+
+        View.OnClickListener completedClickListener = v -> {
+            Intent intent = new Intent(CourseHomeActivity.this, CourseCompletedActivity.class);
+            startActivity(intent);
+        };
+
+        completedLearningLabel.setOnClickListener(completedClickListener);
+        completedLearningArrow.setOnClickListener(completedClickListener);
+        recyclerViewCompletedLearning = findViewById(R.id.recyclerViewCompletedCourses);
+        recyclerViewCompletedLearning.setLayoutManager(new LinearLayoutManager(this));
+        completedCourseAdapter = new CourseAdapter(this, completedCourseList);
+        recyclerViewCompletedLearning.setAdapter(completedCourseAdapter);
+        loadCompletedCourses();
 
         btnMenu = findViewById(R.id.btnMenu);
         btnMenu.setOnClickListener(v -> {
@@ -138,6 +159,106 @@ public class CourseHomeActivity extends AppCompatActivity {
         });
 
     }
+
+    private void loadCompletedCourses() {
+        String currentUserId = FirebaseAuth.getInstance().getUid();
+        if (currentUserId == null) {
+            Toast.makeText(this, "Bạn cần đăng nhập!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        DatabaseReference lessonsRef = FirebaseDatabase.getInstance().getReference("lesson");
+        DatabaseReference userLessonsRef = FirebaseDatabase.getInstance().getReference("user_lessons").child(currentUserId);
+
+        lessonsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot lessonsSnapshot) {
+                userLessonsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot userLessonsSnapshot) {
+                        HashMap<Integer, List<Integer>> courseLessonsMap = new HashMap<>();
+                        List<Integer> completedCourseIds = new ArrayList<>();
+
+                        // Group lessons by courseID
+                        for (DataSnapshot lessonSnapshot : lessonsSnapshot.getChildren()) {
+                            int courseId = lessonSnapshot.child("courseID").getValue(Integer.class);
+                            int lessonId = lessonSnapshot.child("id").getValue(Integer.class);
+
+                            courseLessonsMap.putIfAbsent(courseId, new ArrayList<>());
+                            courseLessonsMap.get(courseId).add(lessonId);
+                        }
+
+                        // Check if all lessons of a course are completed
+                        for (Map.Entry<Integer, List<Integer>> entry : courseLessonsMap.entrySet()) {
+                            int courseId = entry.getKey();
+                            List<Integer> lessonIds = entry.getValue();
+
+                            boolean allCompleted = true;
+                            for (int lessonId : lessonIds) {
+                                if (!userLessonsSnapshot.hasChild(String.valueOf(lessonId))) {
+                                    allCompleted = false;
+                                    break;
+                                }
+                            }
+
+                            if (allCompleted) {
+                                completedCourseIds.add(courseId);
+                            }
+                        }
+
+                        // Load completed courses
+                        loadCompletedCoursesDetails(completedCourseIds);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(CourseHomeActivity.this, "Lỗi tải danh sách bài học đã hoàn thành", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(CourseHomeActivity.this, "Lỗi tải danh sách bài học", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void loadCompletedCoursesDetails(List<Integer> completedCourseIds) {
+        DatabaseReference coursesRef = FirebaseDatabase.getInstance().getReference("courses");
+        coursesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<Course> completedCourses = new ArrayList<>();
+                for (DataSnapshot courseSnapshot : snapshot.getChildren()) {
+                    Course course = courseSnapshot.getValue(Course.class);
+                    if (course != null && completedCourseIds.contains(course.getId())) {
+                        completedCourses.add(course);
+                    }
+                }
+
+                // Display completed courses (e.g., in a RecyclerView)
+                displayCompletedCourses(completedCourses);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(CourseHomeActivity.this, "Lỗi tải danh sách khóa học", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void displayCompletedCourses(List<Course> completedCourses) {
+        // Implement logic to display the completed courses in your UI (e.g., RecyclerView)
+        // Example:
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewCompletedCourses);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        CourseAdapter adapter = new CourseAdapter(this, completedCourses);
+        recyclerView.setAdapter(adapter);
+    }
+
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -158,7 +279,7 @@ public class CourseHomeActivity extends AppCompatActivity {
                         continueLearningList.clear();
                         int count =0;
                         for (DataSnapshot data : snapshot.getChildren()) {
-                            if(count >= 2) break; // Limit to 5 courses
+                            if(count >= 1) break; // Limit to 5 courses
                             Integer courseId = data.child("courseID").getValue(Integer.class);
                             Log.d("ContinueLearning", "Found courseID: " + courseId);
 
@@ -194,7 +315,7 @@ public class CourseHomeActivity extends AppCompatActivity {
                 int count = 0;
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    if(count >= 2) break; // Limit to 5 courses
+                    if(count >= 1) break; // Limit to 5 courses
 
                     Course course = dataSnapshot.getValue(Course.class);
                     courseList.add(course);
@@ -206,6 +327,7 @@ public class CourseHomeActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
 
                loadContinueLearningCourses();
+                loadCompletedCourses();
 
             }
 
