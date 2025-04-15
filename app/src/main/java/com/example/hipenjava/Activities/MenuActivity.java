@@ -13,6 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.hipenjava.Activities.Auth.LoginActivity;
 import com.example.hipenjava.R;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -43,10 +46,27 @@ public class MenuActivity extends AppCompatActivity {
         userProfileImage = findViewById(R.id.userProfileImage);
         userCoursesCount = findViewById(R.id.userCoursesCount);
 
+        // Initialize GoogleSignInClient
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, gso);
+
         btnBackMenu.setOnClickListener(v -> finish());
 
         btnLogout.setOnClickListener(v -> {
+            // Sign out from Firebase
             mAuth.signOut();
+
+            // Sign out from Google
+            googleSignInClient.signOut().addOnCompleteListener(task -> {
+                Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            });
+
             Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

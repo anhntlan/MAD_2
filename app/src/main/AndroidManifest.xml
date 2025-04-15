@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HipenJava"
         tools:targetApi="31" >
+        <meta-data
+            android:name="com.google.android.gms.auth.api.credentials.CREDENTIAL_PICKER_ENABLED"
+            android:value="true" />
         <activity
             android:name=".Activities.Courses.CourseListActivity"
             android:exported="false" />
