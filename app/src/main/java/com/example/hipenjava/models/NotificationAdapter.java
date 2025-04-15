@@ -42,7 +42,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public void onBindViewHolder(@NonNull NotificationViewHolder holder, int position) {
         Notification notification = notifications.get(position);
         holder.name.setText(notification.getName());
-        holder.timeUp.setText(notification.getTimeUp());
+//        holder.timeUp.setText(notification.getTimeUp());
 
         String userId = FirebaseAuth.getInstance().getUid();
         DatabaseReference userNotificationRef = FirebaseDatabase.getInstance()
@@ -97,7 +97,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         public NotificationViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.notification_name);
-            timeUp = itemView.findViewById(R.id.notification_timeup);
+//            timeUp = itemView.findViewById(R.id.notification_timeup);
             icon = itemView.findViewById(R.id.notification_icon);
         }
     }

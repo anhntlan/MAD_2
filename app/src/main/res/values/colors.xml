@@ -6,4 +6,5 @@
     <color name="cardBackground">#EFEAEA</color>
     <color name="darkPink">#E4D2D2</color>
     <color name="lightPink">#EFEAEA</color>
+    <color name="bg">#F2F2F2</color>
 </resources>

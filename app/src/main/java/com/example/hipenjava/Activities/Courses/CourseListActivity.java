@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,6 +25,7 @@ import com.example.hipenjava.R;
 import com.example.hipenjava.models.Course;
 import com.example.hipenjava.models.CourseAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,7 +46,7 @@ public class CourseListActivity extends AppCompatActivity {
     private DatabaseReference courseRef;
     private ImageButton btnNotification,btnMenu;
 
-
+    private List<Course> continueLearningList = new ArrayList<>();
     private CardView allLevelFilter, beginnerFilter, intermediateFilter, advancedFilter;
     private String currentLevel = "all";
     @Override
@@ -58,9 +61,22 @@ public class CourseListActivity extends AppCompatActivity {
         adapter = new CourseAdapter(this, filteredList);
         recyclerView.setAdapter(adapter);
 
+        // continueLearning courses
+        TextView continueLearningLabel = findViewById(R.id.continueLearningLabel);
+        ImageView continueLearningArrow = findViewById(R.id.continueLearningArrow);
+
+//        loadContinueLearningCourses();
+        View.OnClickListener continueLearningClickListener = v -> {
+            Intent intent = new Intent(CourseListActivity.this, ContinueLearningActivity.class);
+            startActivity(intent);
+        };
+
+        continueLearningLabel.setOnClickListener(continueLearningClickListener);
+        continueLearningArrow.setOnClickListener(continueLearningClickListener);
+
+//        SEARCH BAR
         searchEditText = findViewById(R.id.searchEditText);
         loadCourses();
-
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -73,6 +89,7 @@ public class CourseListActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {}
         });
+
         btnMenu = findViewById(R.id.btnMenu);
         btnMenu.setOnClickListener(v -> {
             Intent intent = new Intent(CourseListActivity.this, MenuActivity.class);
@@ -80,13 +97,12 @@ public class CourseListActivity extends AppCompatActivity {
         });
 
 
-        // Initialize filter buttons
+        //  filter buttons
         allLevelFilter = findViewById(R.id.allLevelFilter);
         beginnerFilter = findViewById(R.id.beginnerFilter);
         intermediateFilter = findViewById(R.id.intermediateFilter);
         advancedFilter = findViewById(R.id.advancedFilter);
 
-        // Set click listeners
         allLevelFilter.setOnClickListener(v -> {
             setActiveFilter(allLevelFilter);
             currentLevel = "all";
@@ -111,6 +127,7 @@ public class CourseListActivity extends AppCompatActivity {
             filterCoursesLevel(searchEditText.getText().toString());
         });
 
+        // notification
         btnNotification = findViewById(R.id.btnNotification);
         bottomNavigation = findViewById(R.id.bottomNavigation);
 
@@ -145,6 +162,12 @@ public class CourseListActivity extends AppCompatActivity {
         });
 
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadCourses();
+    }
+
 
 
     private void setActiveFilter(CardView activeFilter) {
@@ -193,6 +216,9 @@ public class CourseListActivity extends AppCompatActivity {
                 filteredList.clear();
                 filteredList.addAll(courseList);
                 adapter.notifyDataSetChanged();
+
+//                loadContinueLearningCourses();
+
             }
 
             @Override

@@ -1,18 +1,23 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg"
     >
 
     <!-- Header section stays fixed at top -->
+
+    <!-- Scrollable content section -->
     <RelativeLayout
         android:id="@+id/header_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/darkPink"
         android:paddingHorizontal="16dp"
         android:paddingVertical="20dp"
-        android:background="@color/darkPink"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp">
 
         <ImageButton
             android:id="@+id/btnBackLesson"
@@ -31,12 +36,10 @@
             android:textStyle="bold" />
     </RelativeLayout>
 
-    <!-- Scrollable content section -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
-        android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header_layout">
 

@@ -4,7 +4,7 @@ package com.example.hipenjava.models;
 public class Notification {
     private int id;
     private String name;
-    private String timeUp;
+//    private String timeUp;
     private String detail;
     private String type;
 
@@ -13,11 +13,11 @@ public class Notification {
     }
 
 
-    public Notification(int id, String name, String detail, String timeUp,boolean read) {
+    public Notification(int id, String name, String detail,boolean read) {
         this.id = id;
         this.name = name;
         this.detail = detail;
-        this.timeUp = timeUp;
+//        this.timeUp = timeUp;
     }
 
 
@@ -37,13 +37,13 @@ public class Notification {
         this.name = name;
     }
 
-    public String getTimeUp() {
-        return timeUp;
-    }
-
-    public void setTimeUp(String timeUp) {
-        this.timeUp = timeUp;
-    }
+//    public String getTimeUp() {
+//        return timeUp;
+//    }
+//
+//    public void setTimeUp(String timeUp) {
+//        this.timeUp = timeUp;
+//    }
 
     public String getDetail() {
         return detail;
