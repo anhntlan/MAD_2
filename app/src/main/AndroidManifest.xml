@@ -38,6 +38,27 @@
             android:name=".Activities.HomeActivity"
             android:exported="false" />
         <activity
+            android:name=".Activities.Post.MainActivityPost"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Post.CreatePostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Post.CommentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Gallery.ArtworkDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Gallery.ArtGalleryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Gallery.ArtworksActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Favorite.FavoritePostsActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.Auth.LoginActivity"
             android:exported="true">
             <intent-filter>
