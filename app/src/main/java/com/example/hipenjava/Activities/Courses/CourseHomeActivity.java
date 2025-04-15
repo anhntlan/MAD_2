@@ -105,6 +105,7 @@ public class CourseHomeActivity extends AppCompatActivity {
 
         View.OnClickListener completedClickListener = v -> {
             Intent intent = new Intent(CourseHomeActivity.this, CourseCompletedActivity.class);
+
             startActivity(intent);
         };
 

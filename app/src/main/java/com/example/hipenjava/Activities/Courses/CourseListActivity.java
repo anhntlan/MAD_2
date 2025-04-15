@@ -149,6 +149,11 @@ public class CourseListActivity extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 }
+                else if (id == R.id.navigation_courses) {
+                    Intent intent = new Intent(com.example.hipenjava.Activities.Courses.CourseListActivity.this, CourseHomeActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
                 return false;
             });
 

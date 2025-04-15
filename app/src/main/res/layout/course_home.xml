@@ -32,11 +32,11 @@
             <!-- continueLearning Courses Section -->
 
             <TextView
-                android:id="@+id/continueLearningLabel"
+                android:id="@+id/coursesLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Tiếp tục học"
+                android:text="Tất cả khóa học"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -45,7 +45,7 @@
 
 
             <ImageView
-                android:id="@+id/continueLearningArrow"
+                android:id="@+id/coursesArrow"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginTop="24dp"
@@ -58,44 +58,44 @@
             <!-- Continue Learning Section -->
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewContinueLearning"
+                android:id="@+id/recyclerViewCourses"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
 
-                app:layout_constraintTop_toBottomOf="@id/continueLearningLabel"
+                app:layout_constraintTop_toBottomOf="@id/coursesLabel"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <!-- Course List -->
             <TextView
-                android:id="@+id/coursesLabel"
+                android:id="@+id/continueLearningLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Tất cả khóa học"
+                android:text="Khóa học đang học"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recyclerViewContinueLearning" />
+                app:layout_constraintTop_toBottomOf="@id/recyclerViewCourses" />
 
             <ImageView
-                android:id="@+id/coursesArrow"
+                android:id="@+id/continueLearningArrow"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginTop="10dp"
                 android:src="@drawable/ic_arrow_right"
                 app:tint="@android:color/black"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recyclerViewContinueLearning" />
+                app:layout_constraintTop_toBottomOf="@id/recyclerViewCourses" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewCourses"
+                android:id="@+id/recyclerViewContinueLearning"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/coursesLabel"
+                app:layout_constraintTop_toBottomOf="@id/continueLearningLabel"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 <!--            completed courses-->
@@ -109,7 +109,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recyclerViewCourses" />
+                app:layout_constraintTop_toBottomOf="@id/recyclerViewContinueLearning" />
 
             <ImageView
                 android:id="@+id/coursesCompletedArrow"
@@ -119,7 +119,7 @@
                 android:src="@drawable/ic_arrow_right"
                 app:tint="@android:color/black"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recyclerViewCourses" />
+                app:layout_constraintTop_toBottomOf="@id/recyclerViewContinueLearning" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewCompletedCourses"
@@ -141,6 +141,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_nav_menu"
         app:labelVisibilityMode="unlabeled"
+        android:elevation="0dp"
+        style="@style/NoShadowBottomNavigationView"
+
         android:background="#FFFFFF" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
