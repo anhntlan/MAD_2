@@ -9,4 +9,6 @@
     <color name="primary_dark">#3700B3</color> <!-- Màu tím tối hơn -->
     <color name="primary_light">#BB86FC</color> <!-- Màu tím sáng -->
     <color name="accent">#03DAC5</color> <!-- Màu xanh ngọc -->
+    <color name="purple_500">#6200EE</color>
+
 </resources>

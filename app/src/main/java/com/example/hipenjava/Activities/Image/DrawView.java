@@ -63,20 +63,40 @@ public class DrawView extends View{
     }
 
     @Override
+//    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+//        super.onSizeChanged(w, h, oldw, oldh);
+//        if (bitmap == null) {
+//            bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+//            canvas = new Canvas(bitmap);
+//            if (isNewBitmap) {
+//                canvas.drawColor(Color.WHITE); // Vẽ nền trắng nếu tạo mới
+//            }
+//        }
+//        if (pendingImagePath != null) {
+//            loadBitmapInternal(pendingImagePath);
+//            pendingImagePath = null;
+//        }
+//    }
+
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+
         if (bitmap == null) {
             bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
             canvas = new Canvas(bitmap);
-            if (isNewBitmap) {
-                canvas.drawColor(Color.WHITE); // Vẽ nền trắng nếu tạo mới
+
+            if (pendingImagePath == null && isNewBitmap) {
+
+                canvas.drawColor(Color.WHITE);
             }
         }
+
         if (pendingImagePath != null) {
             loadBitmapInternal(pendingImagePath);
             pendingImagePath = null;
         }
     }
+
 
     @Override
     protected void onDraw(Canvas canvas) {
