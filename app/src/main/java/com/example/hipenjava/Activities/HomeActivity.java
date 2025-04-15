@@ -7,13 +7,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
-import com.example.hipenjava.Activities.Courses.CourseListActivity;
+import com.example.hipenjava.Activities.Courses.CourseHomeActivity;
 import com.example.hipenjava.Activities.Notification.NotificationActivity;
-import com.example.hipenjava.Activities.BaseActivity;
 import com.example.hipenjava.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -51,14 +46,14 @@ public class HomeActivity extends BaseActivity {
         navigationCourses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, CourseListActivity.class);
+                Intent intent = new Intent(HomeActivity.this, CourseHomeActivity.class);
                 startActivity(intent);
             }
         });
         bottomNavigation.setOnNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.navigation_courses) {
-                Intent intent = new Intent(HomeActivity.this, CourseListActivity.class);
+                Intent intent = new Intent(HomeActivity.this, CourseHomeActivity.class);
                 startActivity(intent);
                 return true;
 //            }           else if (id == R.id.navigation_home) {
@@ -66,15 +61,15 @@ public class HomeActivity extends BaseActivity {
 //                startActivity(intent);
 //                return true;
             } else if (id == R.id.navigation_draw) {
-                Intent intent = new Intent(HomeActivity.this, CourseListActivity.class);
+                Intent intent = new Intent(HomeActivity.this, CourseHomeActivity.class);
                 startActivity(intent);
                 return true;
             } else if (id == R.id.navigation_challenge) {
-                Intent intent = new Intent(HomeActivity.this, CourseListActivity.class);
+                Intent intent = new Intent(HomeActivity.this, CourseHomeActivity.class);
                 startActivity(intent);
                 return true;
             } else if (id == R.id.navigation_community) {
-                Intent intent = new Intent(HomeActivity.this, CourseListActivity.class);
+                Intent intent = new Intent(HomeActivity.this, CourseHomeActivity.class);
                 startActivity(intent);
                 return true;
             }

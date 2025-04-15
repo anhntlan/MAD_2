@@ -177,33 +177,6 @@
             </HorizontalScrollView>
 
 
-            <!-- continueLearning Courses Section -->
-
-            <TextView
-                android:id="@+id/continueLearningLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="Tiếp tục học"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/levelFilterContainer"
-                app:layout_constraintEnd_toStartOf="@id/continueLearningArrow" />
-
-            <ImageView
-                android:id="@+id/continueLearningArrow"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="24dp"
-                android:src="@drawable/ic_arrow_right"
-                app:tint="@android:color/black"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/levelFilterContainer" />
-
-
-
 
             <!-- Course List -->
             <TextView
@@ -216,9 +189,9 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/continueLearningLabel" />
+                app:layout_constraintTop_toBottomOf="@id/levelFilterContainer" />
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewCourses"
+                android:id="@+id/recyclerViewCoursesList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
