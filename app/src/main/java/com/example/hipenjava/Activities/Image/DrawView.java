@@ -63,20 +63,7 @@ public class DrawView extends View{
     }
 
     @Override
-//    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-//        super.onSizeChanged(w, h, oldw, oldh);
-//        if (bitmap == null) {
-//            bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-//            canvas = new Canvas(bitmap);
-//            if (isNewBitmap) {
-//                canvas.drawColor(Color.WHITE); // Vẽ nền trắng nếu tạo mới
-//            }
-//        }
-//        if (pendingImagePath != null) {
-//            loadBitmapInternal(pendingImagePath);
-//            pendingImagePath = null;
-//        }
-//    }
+
 
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -99,14 +86,31 @@ public class DrawView extends View{
 
 
     @Override
+
+
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawBitmap(bitmap, 0, 0, null);
+
+        // ✅ Luôn vẽ nền trắng trước
+        canvas.drawColor(Color.WHITE);
+
+        // ✅ Nếu có ảnh thì vẽ ảnh nền
+        if (bitmap != null) {
+            canvas.drawBitmap(bitmap, 0, 0, null);
+        }
+
+        // ✅ Vẽ các nét đã vẽ
         for (int i = 0; i < paths.size(); i++) {
             canvas.drawPath(paths.get(i), paints.get(i));
         }
+
+        // ✅ Vẽ nét hiện tại đang vẽ
         canvas.drawPath(path, paint);
     }
+
+
+
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -115,33 +119,26 @@ public class DrawView extends View{
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                startNewPath(x, y);
+                path = new Path();
+                path.moveTo(x, y);
                 break;
+
             case MotionEvent.ACTION_MOVE:
                 path.lineTo(x, y);
                 invalidate();
                 break;
+
             case MotionEvent.ACTION_UP:
-                finalizePath();
+                // ✅ Chỉ khi nhấc tay mới lưu path vào danh sách
+                paths.add(path);
+                paints.add(new Paint(paint));  // Lưu style hiện tại
+                path = new Path(); // Reset để không vẽ lại path cũ
+                invalidate();
                 break;
         }
         return true;
     }
 
-    private void startNewPath(float x, float y) {
-        path = new Path();
-        path.moveTo(x, y);
-        paths.add(path);
-
-        Paint newPaint = new Paint(paint);
-        paints.add(newPaint);
-        invalidate();
-    }
-
-    private void finalizePath() {
-        canvas.drawPath(path, paint);
-        invalidate();
-    }
 
 
     public void setBrushColor(int color){
@@ -155,26 +152,43 @@ public class DrawView extends View{
         paint.setColor(isEraser ? Color.WHITE : Color.BLACK);
     }
 
-
-
-
-    public void clearCanvas() {
-        paths.clear();
-        paints.clear();
-        bitmap.eraseColor(Color.WHITE);
-        invalidate();
-    }
-
-    public Bitmap getBitmap() {
-        Bitmap result = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas tempCanvas = new Canvas(result);
-
-        tempCanvas.drawBitmap(bitmap, 0, 0, null);
-        for (int i = 0; i < paths.size(); i++) {
-            tempCanvas.drawPath(paths.get(i), paints.get(i));
+    public void undo() {
+        if (!paths.isEmpty() && !paints.isEmpty()) {
+            paths.remove(paths.size() - 1);
+            paints.remove(paints.size() - 1);
+            invalidate();
         }
-        return result;
     }
+
+
+
+public void clearCanvas() {
+    paths.clear();
+    paints.clear();
+    path.reset();
+    invalidate();
+}
+
+
+
+
+public Bitmap getBitmap() {
+    Bitmap result = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+    Canvas tempCanvas = new Canvas(result);
+
+    tempCanvas.drawColor(Color.WHITE); // vẽ nền trắng
+
+    if (bitmap != null) {
+        tempCanvas.drawBitmap(bitmap, 0, 0, null); // vẽ ảnh gốc nếu có
+    }
+
+    for (int i = 0; i < paths.size(); i++) {
+        tempCanvas.drawPath(paths.get(i), paints.get(i)); // vẽ nét vẽ
+    }
+
+    return result;
+}
+
 
 
     public void loadBitmap(String imagePath) {
