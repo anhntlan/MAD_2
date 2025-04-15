@@ -1,214 +1,4 @@
-/*
-package com.example.hipenjava.Activities.Post;
-
-import android.app.Dialog;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.view.View;
-import android.view.Window;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
-import com.example.hipenjava.Activities.Gallery.ArtGalleryActivity;
-import com.example.hipenjava.Models.Post;
-import com.example.hipenjava.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class MainActivityPost extends AppCompatActivity {
-
-    private static final int PICK_IMAGE_REQUEST = 1;
-
-    private RecyclerView recyclerView;
-    private PostAdapter postAdapter;
-    private List<Post> postList;
-    private FirebaseFirestore db;
-    private FirebaseAuth auth;
-    private FirebaseUser currentUser;
-
-    private TextView createPostPrompt;
-    //private ImageView galleryButton;
-    private ImageView btnBack;
-    private ImageView btnGallery, ivCurrentUserAvatar;
-
-    private Uri selectedImageUri;
-
-    private String userAvatar;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_post);
-
-        // Initialize Firebase
-        db = FirebaseFirestore.getInstance();
-        auth = FirebaseAuth.getInstance();
-        currentUser = auth.getCurrentUser();
-
-        if (currentUser == null) {
-            // User not logged in, redirect to login
-            finish();
-            return;
-        }
-
-        // Initialize views
-        recyclerView = findViewById(R.id.recyclerViewPosts);
-        createPostPrompt = findViewById(R.id.createPostPrompt);
-        btnGallery = findViewById(R.id.btnGallery);
-        btnBack = findViewById(R.id.btnBack);
-        btnGallery = findViewById(R.id.btnGallery);
-
-        //để hiển thị avatar
-        ivCurrentUserAvatar = findViewById(R.id.ivCurrentUserAvatar);
-        db.collection("Users").document(currentUser.getUid()).get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        userAvatar = documentSnapshot.getString("avatar");
-
-                        if (userAvatar != null && !userAvatar.isEmpty()) {
-                            Glide.with(MainActivityPost.this)
-                                    .load(userAvatar)
-                                    .placeholder(R.drawable.default_avatar) // ảnh mặc định nếu URL rỗng
-                                    .error(R.drawable.default_avatar)       // ảnh lỗi nếu load thất bại
-                                    .into(ivCurrentUserAvatar);
-                        }
-                    }
-                })
-                .addOnFailureListener(e ->
-                        Toast.makeText(MainActivityPost.this, "Không thể tải avatar", Toast.LENGTH_SHORT).show()
-                );
-
-
-
-        // Setup RecyclerView
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        postList = new ArrayList<>();
-        postAdapter = new PostAdapter(this, postList);
-        recyclerView.setAdapter(postAdapter);
-
-        // Load posts
-        loadPosts();
-
-        // Setup create post prompt
-        createPostPrompt.setOnClickListener(v -> showCreatePostDialog());
-
-        // Setup gallery button
-        btnGallery.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setType("image/*");
-            startActivityForResult(intent, PICK_IMAGE_REQUEST);
-        });
-
-        // Setup back button
-        btnBack.setOnClickListener(v -> finish());
-
-        // Setup gallery button
-        btnGallery.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivityPost.this, ArtGalleryActivity.class);
-            startActivity(intent);
-        });
-    }
-
-    private void loadPosts() {
-        // Check if user is liked each post
-        String userId = currentUser.getUid();
-
-        db.collection("posts")
-                .orderBy("timestamp", Query.Direction.DESCENDING)
-                .addSnapshotListener((value, error) -> {
-                    if (error != null) {
-                        Toast.makeText(MainActivityPost.this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    if (value != null) {
-                        postList.clear();
-                        for (DocumentSnapshot document : value.getDocuments()) {
-                            Post post = document.toObject(Post.class);
-                            if (post != null) {
-                                post.setId(document.getId());
-
-                                // Check if user liked this post
-                                db.collection("likes")
-                                        .whereEqualTo("postId", post.getId())
-                                        .whereEqualTo("userId", userId)
-                                        .get()
-                                        .addOnSuccessListener(likeSnapshots -> {
-                                            post.setLikedByCurrentUser(!likeSnapshots.isEmpty());
-                                            postAdapter.notifyDataSetChanged();
-                                        });
-
-                                postList.add(post);
-                            }
-                        }
-                        postAdapter.notifyDataSetChanged();
-                    }
-                });
-    }
-
-    private void showCreatePostDialog() {
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_create_post);
-        dialog.setCancelable(true);
-
-        EditText postContent = dialog.findViewById(R.id.editTextPostContent);
-        ImageView addImageButton = dialog.findViewById(R.id.addImageButton);
-        TextView postButton = dialog.findViewById(R.id.buttonPost);
-
-        addImageButton.setOnClickListener(v -> {
-            // Open image picker
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setType("image/*");
-            startActivityForResult(intent, PICK_IMAGE_REQUEST);
-            dialog.dismiss();
-        });
-
-        postButton.setOnClickListener(v -> {
-            String content = postContent.getText().toString().trim();
-            if (!content.isEmpty()) {
-                // Create post without image
-                Intent intent = new Intent(MainActivityPost.this, CreatePostActivity.class);
-                intent.putExtra("content", content);
-                startActivity(intent);
-                dialog.dismiss();
-            } else {
-                Toast.makeText(MainActivityPost.this, "Vui lòng nhập nội dung", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        dialog.show();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            selectedImageUri = data.getData();
-
-            // Navigate to create post with selected image
-            Intent intent = new Intent(MainActivityPost.this, CreatePostActivity.class);
-            intent.putExtra("imageUri", selectedImageUri.toString());
-            startActivity(intent);
-        }
-    }
-}
-*/
+// MainActivityPost.java (Đã chỉnh sửa để dùng ảnh từ Firestore collection "images")
 
 package com.example.hipenjava.Activities.Post;
 
@@ -218,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -227,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -239,26 +31,22 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import java.util.Set;
 
 public class MainActivityPost extends AppCompatActivity {
-
-    private static final int PICK_IMAGE_REQUEST = 1;
 
     private RecyclerView recyclerView;
     private PostAdapter postAdapter;
     private List<Post> postList;
     private FirebaseFirestore db;
     private FirebaseAuth auth;
-    private FirebaseStorage storage;
     private FirebaseUser currentUser;
 
     private TextView createPostPrompt;
@@ -267,6 +55,7 @@ public class MainActivityPost extends AppCompatActivity {
     private ImageView ivCurrentUserAvatar;
 
     private Uri selectedImageUri;
+    private String selectedImageUrlFromFirestore = null;
     private String userAvatar, userName;
 
     @Override
@@ -274,10 +63,8 @@ public class MainActivityPost extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_post);
 
-        // Initialize Firebase
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
-        storage = FirebaseStorage.getInstance();
         currentUser = auth.getCurrentUser();
 
         if (currentUser == null) {
@@ -285,60 +72,46 @@ public class MainActivityPost extends AppCompatActivity {
             return;
         }
 
-        // Initialize views
         recyclerView = findViewById(R.id.recyclerViewPosts);
         createPostPrompt = findViewById(R.id.createPostPrompt);
         btnBack = findViewById(R.id.btnBack);
         btnGallery = findViewById(R.id.btnGallery);
         ivCurrentUserAvatar = findViewById(R.id.ivCurrentUserAvatar);
 
-        // Load user avatar
         db.collection("Users").document(currentUser.getUid()).get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         userAvatar = documentSnapshot.getString("avatar");
                         userName = documentSnapshot.getString("userName");
-                        if (userAvatar != null && !userAvatar.isEmpty()) {
-                            Glide.with(MainActivityPost.this)
-                                    .load(userAvatar)
-                                    .placeholder(R.drawable.default_avatar)
-                                    .error(R.drawable.default_avatar)
-                                    .into(ivCurrentUserAvatar);
-                        }
+                        Glide.with(this).load(userAvatar)
+                                .placeholder(R.drawable.default_avatar)
+                                .into(ivCurrentUserAvatar);
                     }
-                })
-                .addOnFailureListener(e ->
-                        Toast.makeText(MainActivityPost.this, "Không thể tải avatar", Toast.LENGTH_SHORT).show());
+                });
 
-        // Setup RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         postList = new ArrayList<>();
         postAdapter = new PostAdapter(this, postList);
         recyclerView.setAdapter(postAdapter);
 
-        // Load posts
         loadPosts();
 
-        // Setup create post prompt
         createPostPrompt.setOnClickListener(v -> showCreatePostDialog());
-
-        // Setup back button
         btnBack.setOnClickListener(v -> finish());
-
-        // Setup gallery button
         btnGallery.setOnClickListener(v -> {
+            // Mở thư viện ảnh nghệ thuật nếu muốn
             Intent intent = new Intent(MainActivityPost.this, ArtGalleryActivity.class);
             startActivity(intent);
         });
     }
 
-    private void loadPosts() {
+    /*private void loadPosts() {
         String userId = currentUser.getUid();
         db.collection("posts")
                 .orderBy("timestamp", Query.Direction.DESCENDING)
                 .addSnapshotListener((value, error) -> {
                     if (error != null) {
-                        Toast.makeText(MainActivityPost.this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                         return;
                     }
                     if (value != null) {
@@ -347,117 +120,110 @@ public class MainActivityPost extends AppCompatActivity {
                             Post post = document.toObject(Post.class);
                             if (post != null) {
                                 post.setId(document.getId());
-                                db.collection("likes")
-                                        .whereEqualTo("postId", post.getId())
-                                        .whereEqualTo("userId", userId)
-                                        .get()
-                                        .addOnSuccessListener(likeSnapshots -> {
-                                            post.setLikedByCurrentUser(!likeSnapshots.isEmpty());
-                                            postAdapter.notifyDataSetChanged();
-                                        });
                                 postList.add(post);
                             }
                         }
                         postAdapter.notifyDataSetChanged();
                     }
                 });
+    }*/
+    private void loadPosts() {
+        String userId = currentUser.getUid();
+
+        db.collection("posts")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        Toast.makeText(this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (value != null) {
+                        postList.clear();
+                        List<String> postIds = new ArrayList<>();
+
+                        for (DocumentSnapshot document : value.getDocuments()) {
+                            Post post = document.toObject(Post.class);
+                            if (post != null) {
+                                post.setId(document.getId());
+                                postList.add(post);
+                                postIds.add(post.getId());
+                            }
+                        }
+
+                        if (postIds.isEmpty()) {
+                            postAdapter.notifyDataSetChanged();
+                            return;
+                        }
+
+                        // Lấy danh sách các post đã được like bởi user hiện tại
+                        db.collection("likes")
+                                .whereEqualTo("userId", userId)
+                                .whereIn("postId", postIds)
+                                .get()
+                                .addOnSuccessListener(likesSnapshot -> {
+                                    Set<String> likedPostIds = new HashSet<>();
+                                    for (DocumentSnapshot likeDoc : likesSnapshot.getDocuments()) {
+                                        likedPostIds.add(likeDoc.getString("postId"));
+                                    }
+
+                                    // Đánh dấu những bài đã like
+                                    for (Post post : postList) {
+                                        post.setLikedByCurrentUser(likedPostIds.contains(post.getId()));
+                                    }
+
+                                    postAdapter.notifyDataSetChanged();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(this, "Lỗi khi kiểm tra like: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    postAdapter.notifyDataSetChanged(); // vẫn hiển thị bài viết
+                                });
+                    }
+                });
     }
 
+
     private void showCreatePostDialog() {
-        final Dialog dialog = new Dialog(this);
+        Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_create_post);
-        dialog.setCancelable(true);
 
-        /*TextView postContent = dialog.findViewById(R.id.editTextPostContent);
-        ImageView addImageButton = dialog.findViewById(R.id.addImageButton);
-        ImageView ivSelectedImage = dialog.findViewById(R.id.ivSelectedImage);
-        ImageView btnRemoveImage = dialog.findViewById(R.id.btnRemoveImage);
-        TextView postButton = dialog.findViewById(R.id.buttonPost);
-        ProgressBar progressBar = dialog.findViewById(R.id.progressBar);
-*/
-        // Header views
         ImageView ivUserAvatar = dialog.findViewById(R.id.ivUserAvatar);
         TextView tvUserName = dialog.findViewById(R.id.tvUserName);
-        ImageView btnClose = dialog.findViewById(R.id.btnClose);
-
-        // Other views
         TextView postContent = dialog.findViewById(R.id.editTextPostContent);
         ImageView addImageButton = dialog.findViewById(R.id.addImageButton);
         ImageView ivSelectedImage = dialog.findViewById(R.id.ivSelectedImage);
         ImageView btnRemoveImage = dialog.findViewById(R.id.btnRemoveImage);
         TextView postButton = dialog.findViewById(R.id.buttonPost);
+        ImageView btnClose = dialog.findViewById(R.id.btnClose);
         ProgressBar progressBar = dialog.findViewById(R.id.progressBar);
 
-        // Set user info in header
-        if (userAvatar != null && !userAvatar.isEmpty()) {
-            Glide.with(this)
-                    .load(userAvatar)
-                    .placeholder(R.drawable.default_avatar)
-                    .error(R.drawable.default_avatar)
-                    .into(ivUserAvatar);
-        }
+
+
+        Glide.with(this).load(userAvatar).placeholder(R.drawable.default_avatar).into(ivUserAvatar);
         tvUserName.setText(userName != null ? userName : "Người dùng");
+
+        addImageButton.setOnClickListener(v -> showImagePickerDialog(ivSelectedImage, btnRemoveImage));
+
+        btnRemoveImage.setOnClickListener(v -> {
+            selectedImageUrlFromFirestore = null;
+            ivSelectedImage.setVisibility(View.GONE);
+            btnRemoveImage.setVisibility(View.GONE);
+        });
 
         // Close button
         btnClose.setOnClickListener(v -> dialog.dismiss());
 
-        // Display selected image if exists
-        if (selectedImageUri != null) {
-            ivSelectedImage.setVisibility(View.VISIBLE);
-            btnRemoveImage.setVisibility(View.VISIBLE);
-            Glide.with(this)
-                    .load(selectedImageUri)
-                    .into(ivSelectedImage);
-        } else {
-            ivSelectedImage.setVisibility(View.GONE);
-            btnRemoveImage.setVisibility(View.GONE);
-        }
-
-        addImageButton.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setType("image/*");
-            startActivityForResult(intent, PICK_IMAGE_REQUEST);
-        });
-
-        btnRemoveImage.setOnClickListener(v -> {
-            selectedImageUri = null;
-            ivSelectedImage.setVisibility(View.GONE);
-            btnRemoveImage.setVisibility(View.GONE);
-        });
 
         postButton.setOnClickListener(v -> {
             String content = postContent.getText().toString().trim();
-            if (content.isEmpty() && selectedImageUri == null) {
-                Toast.makeText(MainActivityPost.this, "Vui lòng nhập nội dung hoặc chọn ảnh", Toast.LENGTH_SHORT).show();
+            if (content.isEmpty() && selectedImageUrlFromFirestore == null) {
+                Toast.makeText(this, "Vui lòng nhập nội dung hoặc chọn ảnh", Toast.LENGTH_SHORT).show();
                 return;
             }
-
             progressBar.setVisibility(View.VISIBLE);
             postButton.setEnabled(false);
-
-            // Fetch user info if not already fetched
-            if (userName == null || userAvatar == null) {
-                db.collection("Users").document(currentUser.getUid()).get()
-                        .addOnSuccessListener(documentSnapshot -> {
-                            if (documentSnapshot.exists()) {
-                                userName = documentSnapshot.getString("userName");
-                                userAvatar = documentSnapshot.getString("avatar");
-                                proceedWithPost(content, progressBar, postButton, dialog);
-                            } else {
-                                progressBar.setVisibility(View.GONE);
-                                postButton.setEnabled(true);
-                                Toast.makeText(MainActivityPost.this, "Không tìm thấy thông tin người dùng!", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .addOnFailureListener(e -> {
-                            progressBar.setVisibility(View.GONE);
-                            postButton.setEnabled(true);
-                            Toast.makeText(MainActivityPost.this, "Lỗi lấy thông tin người dùng: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        });
-            } else {
-                proceedWithPost(content, progressBar, postButton, dialog);
-            }
+            savePostToFirestore(content, selectedImageUrlFromFirestore, progressBar, postButton, dialog);
         });
 
         //chỉnh kích thuóc dialog
@@ -476,52 +242,51 @@ public class MainActivityPost extends AppCompatActivity {
             // Set dialog height to max 70% of screen height
             params.height = WindowManager.LayoutParams.WRAP_CONTENT;
             window.setAttributes(params);
-
-            /*// Optional: Add dim background behind dialog
-            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            window.setDimAmount(0.6f); // Dim amount (0.0f to 1.0f)*/
         }
         dialog.show();
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
 
-    private void proceedWithPost(String content, ProgressBar progressBar, TextView postButton, Dialog dialog) {
-        if (selectedImageUri != null) {
-            uploadImageAndCreatePost(content, progressBar, postButton, dialog);
-        } else {
-            savePostToFirestore(content, null, progressBar, postButton, dialog);
-        }
-    }
 
-    private void uploadImageAndCreatePost(String content, ProgressBar progressBar, TextView postButton, Dialog dialog) {
-        String fileName = UUID.randomUUID().toString() + ".jpg";
-        StorageReference storageRef = storage.getReference()
-                .child("post_images")
-                .child(currentUser.getUid())
-                .child(fileName);
+    private void showImagePickerDialog(ImageView ivSelectedImage, ImageView btnRemoveImage) {
+        Dialog imageDialog = new Dialog(this);
+        imageDialog.setContentView(R.layout.dialog_image_picker);
 
-        storageRef.putFile(selectedImageUri)
-                .addOnSuccessListener(taskSnapshot -> storageRef.getDownloadUrl()
-                        .addOnSuccessListener(uri -> {
-                            String imageUrl = uri.toString();
-                            savePostToFirestore(content, imageUrl, progressBar, postButton, dialog);
-                        })
-                        .addOnFailureListener(e -> {
-                            progressBar.setVisibility(View.GONE);
-                            postButton.setEnabled(true);
-                            Toast.makeText(MainActivityPost.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }))
-                .addOnFailureListener(e -> {
-                    progressBar.setVisibility(View.GONE);
-                    postButton.setEnabled(true);
-                    Toast.makeText(MainActivityPost.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        RecyclerView recyclerView = imageDialog.findViewById(R.id.recyclerViewImages);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        ImageView btnCloseDialog = imageDialog.findViewById(R.id.btnCloseDialog);
+
+        List<String> imageUrls = new ArrayList<>();
+        ImageAdapter imageAdapter = new ImageAdapter(imageUrls, url -> {
+            selectedImageUrlFromFirestore = url;
+            Glide.with(this).load(url).into(ivSelectedImage);
+            ivSelectedImage.setVisibility(View.VISIBLE);
+            btnRemoveImage.setVisibility(View.VISIBLE);
+            imageDialog.dismiss();
+        });
+        btnCloseDialog.setOnClickListener(v -> imageDialog.dismiss());
+
+        recyclerView.setAdapter(imageAdapter);
+
+        db.collection("images")
+                .whereEqualTo("userId", currentUser.getUid())
+                .get()
+                .addOnSuccessListener(snapshot -> {
+                    for (DocumentSnapshot doc : snapshot) {
+                        String url = doc.getString("imageUrl");
+                        if (url != null) imageUrls.add(url);
+                    }
+                    imageAdapter.notifyDataSetChanged();
                 });
+
+        imageDialog.show();
     }
 
     private void savePostToFirestore(String content, String imageUrl, ProgressBar progressBar, TextView postButton, Dialog dialog) {
         Map<String, Object> postData = new HashMap<>();
         postData.put("userId", currentUser.getUid());
-        postData.put("userName", userName != null ? userName : "Người dùng");
-        postData.put("userAvatar", userAvatar != null ? userAvatar : "");
+        postData.put("userName", userName);
+        postData.put("userAvatar", userAvatar);
         postData.put("content", content);
         postData.put("imageUrl", imageUrl);
         postData.put("timestamp", new Date());
@@ -532,23 +297,14 @@ public class MainActivityPost extends AppCompatActivity {
                 .add(postData)
                 .addOnSuccessListener(documentReference -> {
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(MainActivityPost.this, "Đăng bài thành công!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Đăng bài thành công!", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
-                    selectedImageUri = null; // Reset selected image
                 })
                 .addOnFailureListener(e -> {
                     progressBar.setVisibility(View.GONE);
                     postButton.setEnabled(true);
-                    Toast.makeText(MainActivityPost.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            selectedImageUri = data.getData();
-            showCreatePostDialog(); // Reopen dialog to show selected image
-        }
-    }
 }
+

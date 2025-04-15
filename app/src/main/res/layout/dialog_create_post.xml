@@ -47,11 +47,22 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="@null"
-        android:gravity="top"
+        android:gravity="top|start"
         android:hint="Bạn viết gì..."
+        android:inputType="textMultiLine|textCapSentences"
+        android:maxLines="6"
+        android:minLines="3"
         android:padding="8dp"
         android:minHeight="100dp"
-        android:textSize="16sp" />
+        android:fontFamily="sans-serif"
+        android:textSize="16sp"
+        android:imeOptions="actionDone"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:descendantFocusability="afterDescendants"
+        android:privateImeOptions="nm" />
+
+
 
     <!-- Selected Image (keep but hidden as per current logic) -->
     <ImageView

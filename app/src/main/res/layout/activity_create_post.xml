@@ -70,7 +70,8 @@
                 android:hint="Bạn đang nghĩ gì?"
                 android:minHeight="120dp"
                 android:textSize="16sp"
-                android:padding="12dp" />
+                android:padding="12dp"
+                android:privateImeOptions="nm"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"

@@ -1,5 +1,6 @@
 package com.example.hipenjava.Activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,6 +40,7 @@ public class BaseActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottomNavigation);
     }
 
+    @SuppressLint("NonConstantResourceId")
     private void setupListeners() {
         if (btnMenu != null) {
             btnMenu.setOnClickListener(v -> {
@@ -64,6 +66,7 @@ public class BaseActivity extends AppCompatActivity {
             int itemId = item.getItemId();
             Log.d("BaseActivity", "Bottom Nav Clicked: " + item.getTitle());
 
+
             if (itemId == R.id.navigation_draw) {
                 startActivity(new Intent(this, CourseListActivity.class));
                 return true;
@@ -77,10 +80,12 @@ public class BaseActivity extends AppCompatActivity {
                 startActivity(new Intent(this, CourseListActivity.class));
                 return true;
             }
-
+            else {
+                // mặc định là Home
+                startActivity(new Intent(BaseActivity.this, HomeActivity.class));
+            }
             return false;
         });
-
     }
 
     private void openMenu() {

@@ -49,10 +49,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         return new PostViewHolder(view);
     }
 
-    @Override
+    /*@Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
         Post post = postList.get(position);
-        
+
         // Set user info
         holder.tvUserName.setText(post.getUserName());
         if (post.getUserAvatar() != null && !post.getUserAvatar().isEmpty()) {
@@ -64,10 +64,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         } else {
             holder.ivUserAvatar.setImageResource(R.drawable.default_avatar);
         }
-        
+
         // Set post content
         holder.tvContent.setText(post.getContent());
-        
+
         // Set post image if available
         if (post.getImageUrl() != null && !post.getImageUrl().isEmpty()) {
             holder.ivPostImage.setVisibility(View.VISIBLE);
@@ -77,7 +77,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         } else {
             holder.ivPostImage.setVisibility(View.GONE);
         }
-        
+
         // Set timestamp
         if (post.getTimestamp() != null) {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
@@ -86,32 +86,32 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         } else {
             holder.tvTimestamp.setText("");
         }
-        
+
         // Set like count
         holder.tvLikeCount.setText(String.valueOf(post.getLikeCount()));
-        
+
         // Set comment count
         holder.tvCommentCount.setText(String.valueOf(post.getCommentCount()));
-        
+
         // Set like button state
         if (post.isLikedByCurrentUser()) {
             holder.ivLike.setImageResource(R.drawable.ic_like_filled);
         } else {
             holder.ivLike.setImageResource(R.drawable.ic_like);
         }
-        
+
         // Handle like button click
         holder.ivLike.setOnClickListener(v -> {
             toggleLike(post, holder);
         });
-        
+
         // Handle comment button click
         holder.ivComment.setOnClickListener(v -> {
             Intent intent = new Intent(context, CommentActivity.class);
             intent.putExtra("postId", post.getId());
             context.startActivity(intent);
         });
-        
+
         // Handle share button click
         holder.ivShare.setOnClickListener(v -> {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -119,7 +119,87 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             shareIntent.putExtra(Intent.EXTRA_TEXT, post.getContent());
             context.startActivity(Intent.createChooser(shareIntent, "Chia sẻ qua"));
         });
-        
+
+        // Handle comment input
+        holder.btnSendComment.setOnClickListener(v -> {
+            String commentText = holder.etComment.getText().toString().trim();
+            if (!commentText.isEmpty()) {
+                addComment(post.getId(), commentText);
+                holder.etComment.setText("");
+            }
+        });
+    }*/
+    @Override
+    public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
+        Post post = postList.get(position);
+
+        // Set user info
+        holder.tvUserName.setText(post.getUserName());
+        if (post.getUserAvatar() != null && !post.getUserAvatar().isEmpty()) {
+            Glide.with(context)
+                    .load(post.getUserAvatar())
+                    .placeholder(R.drawable.default_avatar)
+                    .circleCrop()
+                    .into(holder.ivUserAvatar);
+        } else {
+            holder.ivUserAvatar.setImageResource(R.drawable.default_avatar);
+        }
+
+        // Set post content
+        holder.tvContent.setText(post.getContent());
+
+        // Set post image if available
+        if (post.getImageUrl() != null && !post.getImageUrl().isEmpty()) {
+            holder.ivPostImage.setVisibility(View.VISIBLE);
+            Glide.with(context)
+                    .load(post.getImageUrl())
+                    .into(holder.ivPostImage);
+        } else {
+            holder.ivPostImage.setVisibility(View.GONE);
+        }
+
+        // Set timestamp
+        if (post.getTimestamp() != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+            String formattedDate = sdf.format(post.getTimestamp().toDate());
+            holder.tvTimestamp.setText(formattedDate);
+        } else {
+            holder.tvTimestamp.setText("");
+        }
+
+        // Set like count
+        holder.tvLikeCount.setText(String.valueOf(post.getLikeCount()));
+
+        // Set comment count
+        holder.tvCommentCount.setText(String.valueOf(post.getCommentCount()));
+
+        // Set like button state
+        if (post.isLikedByCurrentUser()) {
+            holder.ivLike.setImageResource(R.drawable.ic_like_filled);  // Đổi icon khi liked
+        } else {
+            holder.ivLike.setImageResource(R.drawable.ic_like);  // Đổi icon khi chưa like
+        }
+
+        // Handle like button click
+        holder.ivLike.setOnClickListener(v -> {
+            toggleLike(post, holder);  // Đảm bảo như toggleLike() đã sửa ở trên
+        });
+
+        // Handle comment button click
+        holder.ivComment.setOnClickListener(v -> {
+            Intent intent = new Intent(context, CommentActivity.class);
+            intent.putExtra("postId", post.getId());
+            context.startActivity(intent);
+        });
+
+        // Handle share button click
+        holder.ivShare.setOnClickListener(v -> {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, post.getContent());
+            context.startActivity(Intent.createChooser(shareIntent, "Chia sẻ qua"));
+        });
+
         // Handle comment input
         holder.btnSendComment.setOnClickListener(v -> {
             String commentText = holder.etComment.getText().toString().trim();
@@ -130,10 +210,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         });
     }
 
+
     private void toggleLike(Post post, PostViewHolder holder) {
         String userId = auth.getCurrentUser().getUid();
         String postId = post.getId();
-        
+
         db.collection("likes")
                 .whereEqualTo("postId", postId)
                 .whereEqualTo("userId", userId)
@@ -145,7 +226,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                         likeData.put("postId", postId);
                         likeData.put("userId", userId);
                         likeData.put("timestamp", new Date());
-                        
+
                         db.collection("likes")
                                 .add(likeData)
                                 .addOnSuccessListener(documentReference -> {
@@ -183,92 +264,54 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     private void addComment(String postId, String commentText) {
         String userId = auth.getCurrentUser().getUid();
-        /*String userName = auth.getCurrentUser().getDisplayName();
-        String userAvatar = auth.getCurrentUser().getPhotoUrl() != null ? 
-                auth.getCurrentUser().getPhotoUrl().toString() : "";*/
-        db.collection("Users").document(auth.getCurrentUser().getUid()).get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        userName = documentSnapshot.getString("userName");
-                        userAvatar = documentSnapshot.getString("avatar");
 
-                        if (userName == null) userName = "Người dùng";
-                        if (userAvatar == null) userAvatar = "";
-                    }
-                });
-        Map<String, Object> commentData = new HashMap<>();
-        commentData.put("postId", postId);
-        commentData.put("userId", userId);
-        commentData.put("userName", userName);
-        commentData.put("userAvatar", userAvatar);
-        commentData.put("content", commentText);
-        commentData.put("timestamp", new Date());
-        
-        db.collection("comments")
-                .add(commentData)
-                .addOnSuccessListener(documentReference -> {
-                    // Update post comment count
-                    db.collection("posts").document(postId)
-                            .get()
-                            .addOnSuccessListener(documentSnapshot -> {
-                                Post post = documentSnapshot.toObject(Post.class);
-                                if (post != null) {
-                                    int newCommentCount = post.getCommentCount() + 1;
-                                    db.collection("posts").document(postId)
-                                            .update("commentCount", newCommentCount);
-                                }
+        db.collection("Users").document(userId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    String userName = documentSnapshot.getString("userName");
+                    String userAvatar = documentSnapshot.getString("avatar");
+
+                    if (userName == null) userName = "Người dùng";
+                    if (userAvatar == null) userAvatar = "";
+
+                    Map<String, Object> commentData = new HashMap<>();
+                    commentData.put("postId", postId);
+                    commentData.put("userId", userId);
+                    commentData.put("userName", userName);
+                    commentData.put("userAvatar", userAvatar);
+                    commentData.put("content", commentText);
+                    commentData.put("timestamp", new Date());
+                    commentData.put("isReply", false);
+                    commentData.put("parentId", null);
+                    commentData.put("replyCount", 0);
+
+                    db.collection("post_comments")
+                            .add(commentData)
+                            .addOnSuccessListener(documentReference -> {
+                                // Cập nhật số lượng bình luận
+                                db.collection("posts").document(postId)
+                                        .get()
+                                        .addOnSuccessListener(documentSnapshotPost -> {
+                                            Post post = documentSnapshotPost.toObject(Post.class);
+                                            if (post != null) {
+                                                int newCommentCount = post.getCommentCount() + 1;
+                                                db.collection("posts").document(postId)
+                                                        .update("commentCount", newCommentCount);
+                                            }
+                                        });
+
+                                // Mở lại giao diện comment
+                                Intent intent = new Intent(context, CommentActivity.class);
+                                intent.putExtra("postId", postId);
+                                context.startActivity(intent);
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(context, "Lỗi khi thêm bình luận: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             });
-                    
-                    // Redirect to comments page
-                    Intent intent = new Intent(context, CommentActivity.class);
-                    intent.putExtra("postId", postId);
-                    context.startActivity(intent);
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(context, "Lỗi khi thêm bình luận: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Không thể lấy thông tin người dùng", Toast.LENGTH_SHORT).show();
                 });
     }
-    /*private void addComment(String commentText) {
-        String userId = currentUser.getUid();
-
-        db.collection("Users").document(currentUser.getUid()).get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        userName = documentSnapshot.getString("userName");
-                        userAvatar = documentSnapshot.getString("avatar");
-
-                        if (userName == null) userName = "Người dùng";
-                        if (userAvatar == null) userAvatar = "";
-
-                        Map<String, Object> commentData = new HashMap<>();
-                        commentData.put("postId", postId);
-                        commentData.put("userId", userId);
-                        commentData.put("userName", userName);
-                        commentData.put("userAvatar", userAvatar);
-                        commentData.put("content", commentText);
-                        commentData.put("timestamp", new Date());
-
-                        db.collection("comments")
-                                .add(commentData)
-                                .addOnSuccessListener(documentReference -> {
-                                    // Update comment count
-                                    db.collection("posts").document(postId)
-                                            .get()
-                                            .addOnSuccessListener(document -> {
-                                                Post post = document.toObject(Post.class);
-                                                if (post != null) {
-                                                    int newCommentCount = post.getCommentCount() + 1;
-                                                    db.collection("posts").document(postId)
-                                                            .update("commentCount", newCommentCount);
-                                                }
-                                            });
-                                })
-                                .addOnFailureListener(e -> {
-                                    Toast.makeText(CommentActivity.this, "Lỗi khi thêm bình luận: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                });
-                    }
-                }); // <-- Phải có dấu này để kết thúc get()
-    }*/
 
     @Override
     public int getItemCount() {
@@ -283,19 +326,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
-            
+
             ivUserAvatar = itemView.findViewById(R.id.ivUserAvatar);
             ivPostImage = itemView.findViewById(R.id.ivPostImage);
             ivLike = itemView.findViewById(R.id.ivLike);
             ivComment = itemView.findViewById(R.id.ivComment);
             ivShare = itemView.findViewById(R.id.ivShare);
-            
+
             tvUserName = itemView.findViewById(R.id.tvUserName);
             tvTimestamp = itemView.findViewById(R.id.tvTimestamp);
             tvContent = itemView.findViewById(R.id.tvContent);
             tvLikeCount = itemView.findViewById(R.id.tvLikeCount);
             tvCommentCount = itemView.findViewById(R.id.tvCommentCount);
-            
+
             etComment = itemView.findViewById(R.id.etComment);
             btnSendComment = itemView.findViewById(R.id.btnSendComment);
         }

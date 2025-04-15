@@ -74,14 +74,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:text="Post content goes here..."
+                android:inputType="textMultiLine|textCapSentences"
+                android:maxLines="5"
+                android:fontFamily="sans-serif"
                 android:textColor="#000000"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:privateImeOptions="nm"/>
 
             <!-- Post Image -->
             <ImageView
                 android:id="@+id/ivPostImage"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="300dp"
                 android:layout_marginTop="12dp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
@@ -106,31 +110,67 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="#FFFFFF"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="12dp">
 
-        <EditText
-            android:id="@+id/etComment"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_edit_text"
-            android:hint="Viết bình luận..."
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:textSize="14sp" />
+        <!-- Reply indicator -->
+        <LinearLayout
+            android:id="@+id/replyIndicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:layout_marginBottom="8dp">
 
-        <TextView
-            android:id="@+id/btnSendComment"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/bg_button"
-            android:gravity="center"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:text="Gửi"
-            android:textColor="#FFFFFF"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/tvReplyingTo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Đang trả lời User"
+                android:textColor="#1E88E5"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:id="@+id/btnCancelReply"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_close" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/etComment"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_edit_text"
+                android:hint="Viết bình luận..."
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:inputType="textMultiLine|textCapSentences"
+                android:maxLines="5"
+                android:fontFamily="sans-serif"
+                android:textSize="14sp"
+                android:imeOptions="actionSend"
+                android:privateImeOptions="nm"/>
+
+            <TextView
+                android:id="@+id/btnSendComment"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_button"
+                android:gravity="center"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:text="Gửi"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp" />
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
