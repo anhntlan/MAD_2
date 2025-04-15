@@ -115,7 +115,7 @@ public class HomeActivity extends BaseActivity {
 //                return true;
             } else if (id == R.id.navigation_draw) {
                 Intent intent = new Intent(HomeActivity.this, ImageActivity.class);
-                
+
                 startActivity(intent);
                 return true;
             } else if (id == R.id.navigation_challenge) {

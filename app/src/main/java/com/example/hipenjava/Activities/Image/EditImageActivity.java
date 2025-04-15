@@ -114,6 +114,7 @@ public class EditImageActivity extends AppCompatActivity {
         findViewById(R.id.buttonGreen).setOnClickListener(v -> drawView.setBrushColor(Color.GREEN));
         findViewById(R.id.buttonPurple).setOnClickListener(v -> drawView.setBrushColor(Color.parseColor("#9C27B0"))); // Màu tím
         findViewById(R.id.buttonYellow).setOnClickListener(v -> drawView.setBrushColor(Color.parseColor("#FFEB3B"))); // Màu vàng
+        findViewById(R.id.buttonUndo).setOnClickListener(v -> drawView.undo());
 
         findViewById(R.id.buttonEraser).setOnClickListener(v -> drawView.setEraserMode(true));
         findViewById(R.id.buttonReset).setOnClickListener(v -> drawView.clearCanvas());
@@ -175,63 +176,7 @@ public class EditImageActivity extends AppCompatActivity {
                 .show();
     }
 
-//    private void saveDrawing(String name) {
-//        Bitmap bitmap = drawView.getBitmap(); // Lấy bitmap từ DrawView
-//        File file = new File(getCacheDir(), name + ".png"); // Lưu ảnh tạm thời vào bộ nhớ cache
-//
-//        try (FileOutputStream out = new FileOutputStream(file)) {
-//            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out); // Nén ảnh và lưu vào file
-//
-//            new Thread(() -> {
-//                try {
-//                    // Upload ảnh lên Cloudinary
-//                    Map uploadResult = cloudinary.uploader().upload(file, ObjectUtils.asMap(
-//                            "public_id", name,
-//                            "overwrite", false
-//                    ));
-//                    String imageUrl = (String) uploadResult.get("secure_url"); // Lấy URL của ảnh đã upload
-//
-//                    Timestamp date = Timestamp.now(); // Lấy thời gian hiện tại
-//                    String uid = auth.getCurrentUser().getUid(); // Lấy UID của người dùng Firebase
-//                    CollectionReference imageRef = firestore.collection("images");
-//
-//                    if (isNew) {
-//                        // Nếu là ảnh mới, tạo document mới trong Firestore
-//                        String newId = imageRef.document().getId();
-//                        ImageModel image = new ImageModel(newId, name, imageUrl, date, uid);
-//
-//                        imageRef.document(newId).set(image)
-//                                .addOnSuccessListener(unused -> runOnUiThread(() -> {
-//                                    Toast.makeText(this, "Đã lưu ảnh!", Toast.LENGTH_SHORT).show();
-//                                    finish();
-//                                }))
-//                                .addOnFailureListener(e -> runOnUiThread(() ->
-//                                        Toast.makeText(this, "Lỗi lưu Firestore!", Toast.LENGTH_SHORT).show()));
-//                    } else {
-//                        // Nếu cập nhật ảnh đã có, cập nhật document trong Firestore
-//                        ImageModel updatedImage = new ImageModel(imageId, name, imageUrl, date, uid);
-//
-//                        imageRef.document(imageId).set(updatedImage)
-//                                .addOnSuccessListener(unused -> runOnUiThread(() -> {
-//                                    Toast.makeText(this, "Đã cập nhật ảnh!", Toast.LENGTH_SHORT).show();
-//                                    finish();
-//                                }))
-//                                .addOnFailureListener(e -> runOnUiThread(() ->
-//                                        Toast.makeText(this, "Lỗi cập nhật Firestore!", Toast.LENGTH_SHORT).show()));
-//                    }
-//
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    runOnUiThread(() ->
-//                            Toast.makeText(this, "Lỗi upload lên Cloudinary!", Toast.LENGTH_SHORT).show());
-//                }
-//            }).start();
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            Toast.makeText(this, "Lỗi lưu ảnh!", Toast.LENGTH_SHORT).show();
-//        }
-//    }
+
     private Bitmap resizeBitmap(Bitmap original, int targetWidth) {
         float aspectRatio = (float) original.getHeight() / original.getWidth();
         int targetHeight = Math.round(targetWidth * aspectRatio);
