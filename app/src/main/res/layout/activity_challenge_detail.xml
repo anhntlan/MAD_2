@@ -70,4 +70,16 @@
         android:padding="10dp"
         android:layout_marginTop="10dp" />
 
+    <!-- Result Button (Initially Hidden) -->
+    <Button
+        android:id="@+id/btnResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Xem kết quả"
+        android:backgroundTint="@color/pink"
+        android:textColor="@color/white"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:visibility="gone" />
+
 </LinearLayout>

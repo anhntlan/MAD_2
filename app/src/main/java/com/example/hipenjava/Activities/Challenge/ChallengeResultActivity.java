@@ -9,24 +9,21 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.hipenjava.Activities.Image.ImageModel;
 import com.example.hipenjava.R;
-import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collections;
 
-public class VoteActivity extends AppCompatActivity {
+public class ChallengeResultActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private SubmittedArtworkAdapter artworkAdapter;
+    private ArtworkResultAdapter artworkAdapter;
     private ArrayList<SubmittedArtwork> artworkList;
     private FirebaseFirestore db;
     private CollectionReference artworksRef;
@@ -42,13 +39,13 @@ public class VoteActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.artworkRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        challengeId = getIntent().getStringExtra("challengeId");
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Bình chọn");
+        getSupportActionBar().setTitle("Kết quả");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(v -> finish());
+
+        challengeId = getIntent().getStringExtra("challengeId");
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         userId = user != null ? user.getUid() : null;
@@ -57,7 +54,7 @@ public class VoteActivity extends AppCompatActivity {
         artworksRef = db.collection("submitted_artwork");
 
         artworkList = new ArrayList<>();
-        artworkAdapter = new SubmittedArtworkAdapter(artworkList, this);
+        artworkAdapter = new ArtworkResultAdapter(artworkList, this);
         recyclerView.setAdapter(artworkAdapter);
 
         fetchArtworkData();
@@ -68,7 +65,7 @@ public class VoteActivity extends AppCompatActivity {
                 .whereEqualTo("challengeID", challengeId)
                 .get().addOnSuccessListener(querySnapshots -> {
             if (querySnapshots == null || querySnapshots.isEmpty()) {
-                Log.w("VoteActivity", "No artworks found.");
+                Log.w("ChallengeResultActivity", "No artworks found.");
                 return;
             }
 
@@ -82,7 +79,7 @@ public class VoteActivity extends AppCompatActivity {
                 Long voteLong = snapshot.getLong("votecount");
 
                 if (id == null || imageId == null || challengeId == null || userId == null || voteLong == null) {
-                    Log.e("VoteActivity", "Incomplete data in submitted_artwork document");
+                    Log.e("ChallengeResultActivity", "Incomplete data in submitted_artwork document");
                     continue;
                 }
 
@@ -99,7 +96,7 @@ public class VoteActivity extends AppCompatActivity {
                 .addOnSuccessListener(imageDoc -> {
                     String imageUrl = imageDoc.getString("imageUrl");
                     if (imageUrl == null) {
-                        Log.e("VoteActivity", "Image URL is null for imageId: " + imageId);
+                        Log.e("ChallengeResultActivity", "Image URL is null for imageId: " + imageId);
                         return;
                     }
 
@@ -107,56 +104,21 @@ public class VoteActivity extends AppCompatActivity {
                             .addOnSuccessListener(userDoc -> {
                                 String authorName = userDoc.getString("fullName");
                                 if (authorName == null) {
-                                    Log.e("VoteActivity", "User full name is null for userID: " + userId);
+                                    Log.e("ChallengeResultActivity", "User full name is null for userID: " + userId);
                                     return;
                                 }
 
                                 SubmittedArtwork artwork = new SubmittedArtwork(id, authorName, imageUrl, challengeId, userId, voteCount);
                                 artworkList.add(artwork);
+                                Collections.sort(artworkList, (a1, a2) -> Integer.compare(a2.getVoteCount(), a1.getVoteCount()));
                                 artworkAdapter.notifyDataSetChanged();
                             })
                             .addOnFailureListener(e ->
-                                    Log.e("VoteActivity", "Failed to fetch user info", e)
+                                    Log.e("ChallengeResultActivity", "Failed to fetch user info", e)
                             );
                 })
                 .addOnFailureListener(e ->
-                        Log.e("VoteActivity", "Failed to fetch image info", e)
+                        Log.e("ChallengeResultActivity", "Failed to fetch image info", e)
                 );
-    }
-
-    public void onVoteClicked(SubmittedArtwork artwork, boolean isVoted) {
-        DocumentReference artworkRef = db.collection("submitted_artwork").document(artwork.getId());
-        if (isVoted) {
-            artwork.setVoteCount(artwork.getVoteCount() + 1);
-            artworkRef.update("votecount", artwork.getVoteCount());
-            saveVote(artwork);
-        } else {
-            artwork.setVoteCount(artwork.getVoteCount() - 1);
-            artworkRef.update("votecount", artwork.getVoteCount());
-            removeVote(artwork);
-        }
-    }
-
-    private void saveVote(SubmittedArtwork artwork) {
-        Map<String, Object> vote = new HashMap<>();
-        vote.put("userId", userId);
-        vote.put("artworkId", artwork.getId());
-        db.collection("artworkVote").add(vote)
-                .addOnSuccessListener(documentReference -> {
-                    Toast.makeText(VoteActivity.this, "Vote saved!", Toast.LENGTH_SHORT).show();
-                }).addOnFailureListener(e -> Toast.makeText(VoteActivity.this, "Error saving vote", Toast.LENGTH_SHORT).show());
-    }
-
-    private void removeVote(SubmittedArtwork artwork) {
-        db.collection("artworkVote")
-                .whereEqualTo("userId", userId)
-                .whereEqualTo("artworkId", artwork.getId())
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
-                        snapshot.getReference().delete()
-                                .addOnSuccessListener(aVoid -> Toast.makeText(VoteActivity.this, "Vote removed!", Toast.LENGTH_SHORT).show());
-                    }
-                });
     }
 }

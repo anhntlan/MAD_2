@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,7 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ChallengeDetailActivity extends AppCompatActivity {
     private TextView textTimer;
-    private Button btnUpload, btnVote;
+    private Button btnUpload, btnVote, btnResult;
 
     private Toolbar toolbar;
 
@@ -32,7 +33,9 @@ public class ChallengeDetailActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(v -> finish());
+        toolbar.setNavigationOnClickListener(v -> {
+            finish();
+        });
 
         getChallengeFromIntent();
     }
@@ -60,6 +63,13 @@ public class ChallengeDetailActivity extends AppCompatActivity {
 
     private void openVoteActivity() {
         Intent intent = new Intent(this, VoteActivity.class);
+        intent.putExtra("challengeId", challenge.getId());
+        startActivity(intent);
+    }
+
+    private void openResultActivity(){
+        Intent intent = new Intent(this, ChallengeResultActivity.class);
+        intent.putExtra("challengeId", challenge.getId());
         startActivity(intent);
     }
 
@@ -99,6 +109,7 @@ public class ChallengeDetailActivity extends AppCompatActivity {
         textTimer = findViewById(R.id.textTimer);
         btnUpload = findViewById(R.id.btnUpload);
         btnVote = findViewById(R.id.btnVote);
+        btnResult = findViewById(R.id.btnResult);
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -108,6 +119,7 @@ public class ChallengeDetailActivity extends AppCompatActivity {
         // Button Click Listeners
         btnUpload.setOnClickListener(v -> openUploadActivity());
         btnVote.setOnClickListener(v -> openVoteActivity());
+        btnResult.setOnClickListener(v -> openResultActivity());
 
         // Start Countdown Timer
         long timeLeft = challenge.getTimeEndInLong() - System.currentTimeMillis();
@@ -120,7 +132,15 @@ public class ChallengeDetailActivity extends AppCompatActivity {
             btnUpload.setEnabled(false);   // Disable interaction
             btnUpload.setClickable(false); // Optional, extra safety
 
+            btnUpload.setVisibility(View.GONE);
+            btnVote.setVisibility(View.GONE);
+            btnResult.setVisibility(View.VISIBLE);
+
         }else{
+            btnUpload.setVisibility(View.VISIBLE);
+            btnVote.setVisibility(View.VISIBLE);
+            btnResult.setVisibility(View.GONE);
+
             startCountdownTimer(timeLeft);
         }
     }

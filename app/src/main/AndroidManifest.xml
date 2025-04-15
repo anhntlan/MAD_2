@@ -92,6 +92,9 @@
         <activity
             android:name=".Activities.Challenge.VoteActivity"
             android:exported="false" />
+        <activity
+            android:name=".Activities.Challenge.ChallengeResultActivity"
+            android:exported="false" />
 
 
         <!-- Default Activity -->
