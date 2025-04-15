@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/light_pink"
+    android:padding="16dp">
+
+    <!-- Toolbar with Back Button -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/light_pink"
+        android:layout_marginTop="45dp"
+        android:textStyle="bold"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:title="Vẽ bầu trời"
+        app:titleTextColor="@android:color/black" />
+
+
+    <!-- Image -->
+    <ImageView
+        android:id="@+id/imageChallenge"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/img_sky" />
+
+    <!-- Description -->
+    <TextView
+        android:id="@+id/textDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bầu trời là một chủ đề nghệ thuật đầy cảm hứng, có thể thể hiện nhiều sắc thái cảm xúc và phong cách khác nhau..."
+        android:textSize="16sp"
+        android:paddingTop="8dp" />
+
+    <!-- Countdown Timer -->
+    <TextView
+        android:id="@+id/textTimer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thời gian còn lại: 06:00:42"
+        android:textStyle="italic"
+        android:paddingTop="8dp"
+        android:textSize="14sp" />
+
+    <!-- Upload Button -->
+    <Button
+        android:id="@+id/btnUpload"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tải lên tác phẩm"
+        android:drawableStart="@drawable/ic_upload"
+        android:backgroundTint="@color/pink"
+        android:textColor="@color/white"
+        android:padding="10dp"
+        android:layout_marginTop="10dp" />
+
+    <!-- Vote Button -->
+    <Button
+        android:id="@+id/btnVote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bình chọn"
+        android:backgroundTint="@color/pink"
+        android:textColor="@color/white"
+        android:padding="10dp"
+        android:layout_marginTop="10dp" />
+
+</LinearLayout>

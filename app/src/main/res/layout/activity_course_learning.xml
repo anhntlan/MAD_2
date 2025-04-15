@@ -1,0 +1,57 @@
+
+<androidx.constraintlayout.widget.ConstraintLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+android:layout_height="match_parent">
+
+    <RelativeLayout
+            android:id="@+id/header_lessons"
+
+            android:layout_width="match_parent"
+            android:layout_height="73dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="16dp"
+            android:background="@color/darkPink"
+        tools:ignore="MissingConstraints">
+
+        <ImageButton
+            android:id="@+id/btnBackLessonlist"
+            android:layout_width="41dp"
+            android:layout_height="33dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="0dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@android:color/black" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Danh sách Bài học "
+                android:layout_centerInParent="true"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header_lessons">
+
+        <LinearLayout
+            android:id="@+id/lessonContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="vertical"
+            android:padding="16dp" />
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
