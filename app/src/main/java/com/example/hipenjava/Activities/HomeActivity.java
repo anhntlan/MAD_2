@@ -120,7 +120,6 @@ public class HomeActivity extends BaseActivity {
                 startActivity(intent);
                 return true;
             } else if (id == R.id.navigation_challenge) {
-                Intent intent = new Intent(HomeActivity.this, CourseHomeActivity.class);
                 Intent intent = new Intent(HomeActivity.this, ChallengeListActivity.class);
                 startActivity(intent);
                 return true;
