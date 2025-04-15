@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/bg"
     android:layout_height="match_parent">
 
     <RelativeLayout
@@ -13,6 +14,7 @@
         android:layout_height="84dp"
         android:paddingHorizontal="16dp"
         android:paddingVertical="16dp"
+        android:background="@color/white"
         tools:ignore="MissingConstraints">
 
         <ImageButton
@@ -29,8 +31,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="94dp"
-            android:layout_toEndOf="@id/btnBacknoti"
+            android:layout_centerInParent="true"
             android:text="Thông báo "
             android:layout_centerVertical="true"
 
@@ -44,21 +45,18 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_noti">
+        app:layout_constraintTop_toBottomOf="@+id/header_noti"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="0dp">
 
-<!--        <LinearLayout-->
-<!--            android:id="@+id/NotificationContainer"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
 
-<!--            android:orientation="vertical"-->
-<!--            android:padding="16dp" />-->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewNotifications"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp"
-            android:clipToPadding="false" />
+            android:clipToPadding="false"
+            />
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,7 +3,6 @@ package com.example.hipenjava.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -12,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.hipenjava.Activities.Challenge.ChallengeListActivity;
 import com.example.hipenjava.Activities.Courses.CourseListActivity;
+import com.example.hipenjava.Activities.Courses.CourseHomeActivity;
 import com.example.hipenjava.Activities.Notification.NotificationActivity;
 import com.example.hipenjava.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -65,13 +65,13 @@ public class BaseActivity extends AppCompatActivity {
             Log.d("BaseActivity", "Bottom Nav Clicked: " + item.getTitle());
 
             if (itemId == R.id.navigation_draw) {
-                startActivity(new Intent(this, CourseListActivity.class));
+                startActivity(new Intent(this, CourseHomeActivity.class));
                 return true;
             } else if (itemId == R.id.navigation_courses) {
-                startActivity(new Intent(this, CourseListActivity.class));
+                startActivity(new Intent(this, CourseHomeActivity.class));
                 return true;
             } else if (itemId == R.id.navigation_community) {
-                startActivity(new Intent(this, CourseListActivity.class));
+                startActivity(new Intent(this, CourseHomeActivity.class));
                 return true;
             } else if (itemId == R.id.navigation_challenge) {
                 startActivity(new Intent(this, ChallengeListActivity.class));
