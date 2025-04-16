@@ -162,33 +162,7 @@ public class ImageActivity extends AppCompatActivity {
         }
     };
 
-//    private void loadImageAndNavigateToEdit(ImageModel imageModel) {
-//        String imageUrl = imageModel.getImageUrl();
-//        Log.d("Image URL", imageUrl);  // Log URL to check its validity
-//
-//        Glide.with(this)
-//                .asBitmap()
-//                .load(imageUrl)
-//                .placeholder(R.drawable.placeholder)  // Placeholder image while loading
-////                .error(R.drawable.error_image)  // Error image in case of failure
-//                .into(new CustomTarget<Bitmap>() {
-//                    @Override
-//                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-//                        try {
-//                            File file = saveImageToCache(resource, imageModel.getName());
-//                            navigateToEditImage(file.getAbsolutePath(), imageModel);
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                            Toast.makeText(ImageActivity.this, "Lỗi tải ảnh", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onLoadCleared(@Nullable Drawable placeholder) {
-//                        // Handle image clearance if needed
-//                    }
-//                });
-//    }
+
 private void loadImageAndNavigateToEdit(ImageModel imageModel) {
     String imageUrl = imageModel.getImageUrl();
     Log.d("Image URL", imageUrl);  // Log để kiểm tra đường dẫn ảnh
