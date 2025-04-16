@@ -23,13 +23,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ContinueLearningActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private CourseAdapter adapter;
     private List<Course> continueLearningList = new ArrayList<>();
+    private List<Course> allCourses = new ArrayList<>();
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -47,8 +50,10 @@ public class ContinueLearningActivity extends AppCompatActivity {
 
         btnBack.setOnClickListener(v -> finish());
 
-        loadContinueLearningCourses(tvNoCourses);
-    }
+        getAllCourses(courses -> {
+            allCourses = courses; // Store all courses
+            loadContinueLearningCourses(tvNoCourses); // Load continue learning courses
+        });    }
 
     private void loadContinueLearningCourses(TextView tvNoCourses) {
         String currentUserId = FirebaseAuth.getInstance().getUid();
@@ -57,28 +62,58 @@ public class ContinueLearningActivity extends AppCompatActivity {
             return;
         }
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("course_user");
-        ref.orderByChild("userID").equalTo(currentUserId)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference lessonsRef = FirebaseDatabase.getInstance().getReference("lesson");
+        DatabaseReference userLessonsRef = FirebaseDatabase.getInstance().getReference("user_lessons").child(currentUserId);
+
+        lessonsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot lessonsSnapshot) {
+                userLessonsRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        getAllCourses(allCourses -> {
-                            continueLearningList.clear();
-                            for (DataSnapshot data : snapshot.getChildren()) {
-                                Integer courseId = data.child("courseID").getValue(Integer.class);
-                                if (courseId != null) {
-                                    for (Course course : allCourses) {
-                                        if (course.getId() == courseId) {
-                                            continueLearningList.add(course);
-                                            break;
-                                        }
+                    public void onDataChange(@NonNull DataSnapshot userLessonsSnapshot) {
+                        HashMap<Integer, List<Integer>> courseLessonsMap = new HashMap<>();
+                        continueLearningList.clear();
+
+                        // Group lessons by courseID
+                        for (DataSnapshot lessonSnapshot : lessonsSnapshot.getChildren()) {
+                            int courseId = lessonSnapshot.child("courseID").getValue(Integer.class);
+                            int lessonId = lessonSnapshot.child("id").getValue(Integer.class);
+
+                            courseLessonsMap.putIfAbsent(courseId, new ArrayList<>());
+                            courseLessonsMap.get(courseId).add(lessonId);
+                        }
+
+                        // Check courses where some lessons are completed but not all
+                        for (Map.Entry<Integer, List<Integer>> entry : courseLessonsMap.entrySet()) {
+                            int courseId = entry.getKey();
+                            List<Integer> lessonIds = entry.getValue();
+
+                            boolean hasCompletedSome = false;
+                            boolean hasUncompleted = false;
+
+                            for (int lessonId : lessonIds) {
+                                if (userLessonsSnapshot.hasChild(String.valueOf(lessonId))) {
+                                    hasCompletedSome = true;
+                                } else {
+                                    hasUncompleted = true;
+                                }
+                                if (hasCompletedSome && hasUncompleted) {
+                                    break;
+                                }
+                            }
+
+                            if (hasCompletedSome && hasUncompleted) {
+                                for (Course course : allCourses) {
+                                    if (course.getId() == courseId) {
+                                        continueLearningList.add(course);
+                                        break;
                                     }
                                 }
                             }
+                        }
+
                         adapter.notifyDataSetChanged();
                         tvNoCourses.setVisibility(continueLearningList.isEmpty() ? View.VISIBLE : View.GONE);
-
-                        });
                     }
 
                     @Override
@@ -86,6 +121,13 @@ public class ContinueLearningActivity extends AppCompatActivity {
                         Toast.makeText(ContinueLearningActivity.this, "Lỗi tải danh sách tiếp tục học", Toast.LENGTH_SHORT).show();
                     }
                 });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(ContinueLearningActivity.this, "Lỗi tải danh sách bài học", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void getAllCourses(OnCoursesLoadedListener listener) {
