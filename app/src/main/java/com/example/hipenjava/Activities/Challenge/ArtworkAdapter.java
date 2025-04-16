@@ -36,7 +36,7 @@ public class ArtworkAdapter extends RecyclerView.Adapter<ArtworkAdapter.ArtViewH
     @NonNull
     @Override
     public ArtViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_artwork, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_artwork_for_upload, parent, false);
         return new ArtViewHolder(view);
     }
 
