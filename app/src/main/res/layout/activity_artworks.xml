@@ -39,10 +39,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/headerLayout"
-        android:padding="12dp"
+        android:padding="16dp"
         android:text="Mô tả thể loại ở đây"
-        android:textColor="#444444"
-        android:textSize="14sp" />
+        android:textColor="#333333"
+        android:textSize="15sp"
+        android:lineSpacingExtra="6dp"
+        android:letterSpacing="0.01"
+        android:fontFamily="sans-serif"
+        android:textStyle="normal" />
+
 
     <!-- Artworks RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView

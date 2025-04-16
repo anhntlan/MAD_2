@@ -28,6 +28,20 @@
         android:layout_gravity="center_horizontal"
         android:paddingBottom="8dp"/>
 
+    <!-- Text hiển thị khi không có ảnh -->
+    <TextView
+        android:id="@+id/txtNoImages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bạn chưa có ảnh nào trong album vẽ cả!"
+        android:textSize="16sp"
+        android:textColor="#888888"
+        android:gravity="center"
+        android:visibility="gone"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"/>
+
+    <!-- RecyclerView hiển thị ảnh -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewImages"
         android:layout_width="match_parent"

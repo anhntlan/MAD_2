@@ -45,7 +45,6 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.2.0-alpha13")
     implementation("androidx.recyclerview:recyclerview:1.3.2") // hoặc phiên bản mới hơn
 
-
     // Firebase (BOM auto-manages versions)
     implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
     implementation("com.google.firebase:firebase-analytics")
@@ -73,8 +72,19 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.15.1")
     annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
 
+    //Cloudinary
+    implementation("com.cloudinary:cloudinary-android:2.3.1")
+
+    implementation ("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation ("com.squareup.okio:okio:2.10.0")
+
+    implementation ("androidx.annotation:annotation:1.3.0")
+    implementation("com.github.bumptech.glide:glide:4.15.1")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
+
     implementation("com.cloudinary:cloudinary-android:2.3.1")
 
 
 }
 
+}

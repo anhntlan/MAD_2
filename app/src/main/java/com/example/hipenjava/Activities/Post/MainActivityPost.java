@@ -104,29 +104,6 @@ public class MainActivityPost extends AppCompatActivity {
             startActivity(intent);
         });
     }
-
-    /*private void loadPosts() {
-        String userId = currentUser.getUid();
-        db.collection("posts")
-                .orderBy("timestamp", Query.Direction.DESCENDING)
-                .addSnapshotListener((value, error) -> {
-                    if (error != null) {
-                        Toast.makeText(this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    if (value != null) {
-                        postList.clear();
-                        for (DocumentSnapshot document : value.getDocuments()) {
-                            Post post = document.toObject(Post.class);
-                            if (post != null) {
-                                post.setId(document.getId());
-                                postList.add(post);
-                            }
-                        }
-                        postAdapter.notifyDataSetChanged();
-                    }
-                });
-    }*/
     private void loadPosts() {
         String userId = currentUser.getUid();
 
@@ -253,8 +230,10 @@ public class MainActivityPost extends AppCompatActivity {
         imageDialog.setContentView(R.layout.dialog_image_picker);
 
         RecyclerView recyclerView = imageDialog.findViewById(R.id.recyclerViewImages);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        TextView txtNoImages = imageDialog.findViewById(R.id.txtNoImages);
         ImageView btnCloseDialog = imageDialog.findViewById(R.id.btnCloseDialog);
+
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
 
         List<String> imageUrls = new ArrayList<>();
         ImageAdapter imageAdapter = new ImageAdapter(imageUrls, url -> {
@@ -264,9 +243,10 @@ public class MainActivityPost extends AppCompatActivity {
             btnRemoveImage.setVisibility(View.VISIBLE);
             imageDialog.dismiss();
         });
-        btnCloseDialog.setOnClickListener(v -> imageDialog.dismiss());
 
         recyclerView.setAdapter(imageAdapter);
+
+        btnCloseDialog.setOnClickListener(v -> imageDialog.dismiss());
 
         db.collection("images")
                 .whereEqualTo("userId", currentUser.getUid())
@@ -277,10 +257,20 @@ public class MainActivityPost extends AppCompatActivity {
                         if (url != null) imageUrls.add(url);
                     }
                     imageAdapter.notifyDataSetChanged();
+
+                    // Hiển thị hoặc ẩn tùy theo danh sách ảnh
+                    if (imageUrls.isEmpty()) {
+                        recyclerView.setVisibility(View.GONE);
+                        txtNoImages.setVisibility(View.VISIBLE);
+                    } else {
+                        recyclerView.setVisibility(View.VISIBLE);
+                        txtNoImages.setVisibility(View.GONE);
+                    }
                 });
 
         imageDialog.show();
     }
+
 
     private void savePostToFirestore(String content, String imageUrl, ProgressBar progressBar, TextView postButton, Dialog dialog) {
         Map<String, Object> postData = new HashMap<>();

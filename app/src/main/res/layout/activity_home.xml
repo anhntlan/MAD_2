@@ -302,6 +302,18 @@
                     android:paddingEnd="8dp"
                     android:clipChildren="false"
                     android:clipToPadding="false"/>
+                <TextView
+                    android:id="@+id/tvNoFavoritesShort"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Không có ảnh nào đã yêu thích!"
+                    android:visibility="gone"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/darker_gray"
+                    android:gravity="center"
+                    android:layout_marginBottom="16dp"
+                    android:paddingTop="16dp" />
+
             </LinearLayout>
 
         </LinearLayout>
