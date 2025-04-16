@@ -1,0 +1,12 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <solid android:color="@android:color/transparent" />
+
+    <!-- Viền dày hơn và màu đậm -->
+    <stroke
+        android:width="2dp"
+        android:color="#757575" /> <!-- Màu xám đậm, bạn có thể đổi sang màu khác -->
+
+    <corners android:radius="8dp" /> <!-- Bo nhẹ -->
+</shape>
