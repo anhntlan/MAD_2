@@ -16,10 +16,11 @@
             android:id="@+id/btnBackMenu"
             android:layout_width="41dp"
             android:layout_height="33dp"
-            android:layout_centerVertical="true"
+            android:layout_gravity="start|top"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_arrow_back"
             app:tint="@android:color/black" />
+
 
         <!-- Ảnh đại diện -->
         <ImageView

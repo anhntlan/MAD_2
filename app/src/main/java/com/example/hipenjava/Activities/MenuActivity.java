@@ -3,6 +3,7 @@ package com.example.hipenjava.Activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -23,6 +24,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -31,6 +37,8 @@ public class MenuActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private TextView userName, userEmail,userCoursesCount;
     private ImageView userProfileImage;
+    private AppCompatButton btnEditProfile;
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -45,6 +53,18 @@ public class MenuActivity extends AppCompatActivity {
         userEmail = findViewById(R.id.userEmail);
         userProfileImage = findViewById(R.id.userProfileImage);
         userCoursesCount = findViewById(R.id.userCoursesCount);
+
+        btnEditProfile = findViewById(R.id.btnEditProfile); // Kết nối với nút
+
+        // Thiết lập sự kiện click cho nút
+        btnEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Chuyển sang EditProfileActivity
+                Intent intent = new Intent(MenuActivity.this, EditProfileActivity.class);
+                startActivity(intent); // Mở EditProfileActivity
+            }
+        });
 
         // Initialize GoogleSignInClient
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -79,10 +99,40 @@ public class MenuActivity extends AppCompatActivity {
 
     }
 
-    private void loadUserInfo() {
+    /*private void loadUserInfo() {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
             userName.setText(user.getDisplayName() != null ? user.getDisplayName() : "No Name");
+            userEmail.setText(user.getEmail() != null ? user.getEmail() : "No Email");
+
+            if (user.getPhotoUrl() != null) {
+                Glide.with(this)
+                        .load(user.getPhotoUrl())
+                        .placeholder(R.drawable.ic_user_placeholder)
+                        .into(userProfileImage);
+            }
+        }
+    }*/
+    private void loadUserInfo() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            // Lấy userName từ Firestore
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            DocumentReference userRef = db.collection("Users").document(user.getUid());
+
+            userRef.get().addOnSuccessListener(documentSnapshot -> {
+                if (documentSnapshot.exists()) {
+                    String userNameFromFirestore = documentSnapshot.getString("userName");
+                    userName.setText(userNameFromFirestore != null ? userNameFromFirestore : "No Name");
+                } else {
+                    userName.setText("No Name");  // Nếu không tìm thấy userName trong Firestore
+                }
+            }).addOnFailureListener(e -> {
+                // Xử lý lỗi nếu không thể lấy dữ liệu từ Firestore
+                userName.setText("Error loading name");
+            });
+
+            // Lấy email và ảnh đại diện từ FirebaseUser
             userEmail.setText(user.getEmail() != null ? user.getEmail() : "No Email");
 
             if (user.getPhotoUrl() != null) {
