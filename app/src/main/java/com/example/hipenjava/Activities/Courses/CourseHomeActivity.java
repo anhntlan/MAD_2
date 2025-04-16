@@ -105,6 +105,7 @@ public class CourseHomeActivity extends AppCompatActivity {
 
         View.OnClickListener completedClickListener = v -> {
             Intent intent = new Intent(CourseHomeActivity.this, CourseCompletedActivity.class);
+
             startActivity(intent);
         };
 
@@ -271,28 +272,56 @@ public class CourseHomeActivity extends AppCompatActivity {
             return;
         }
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("course_user");
-        ref.orderByChild("userID").equalTo(currentUserId)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        continueLearningList.clear();
-                        int count =0;
-                        for (DataSnapshot data : snapshot.getChildren()) {
-                            if(count >= 1) break; // Limit to 5 courses
-                            Integer courseId = data.child("courseID").getValue(Integer.class);
-                            Log.d("ContinueLearning", "Found courseID: " + courseId);
+        DatabaseReference lessonsRef = FirebaseDatabase.getInstance().getReference("lesson");
+        DatabaseReference userLessonsRef = FirebaseDatabase.getInstance().getReference("user_lessons").child(currentUserId);
 
-                            if (courseId != null) {
+        lessonsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot lessonsSnapshot) {
+                userLessonsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot userLessonsSnapshot) {
+                        HashMap<Integer, List<Integer>> courseLessonsMap = new HashMap<>();
+                        continueLearningList.clear();
+
+                        // Group lessons by courseID
+                        for (DataSnapshot lessonSnapshot : lessonsSnapshot.getChildren()) {
+                            int courseId = lessonSnapshot.child("courseID").getValue(Integer.class);
+                            int lessonId = lessonSnapshot.child("id").getValue(Integer.class);
+
+                            courseLessonsMap.putIfAbsent(courseId, new ArrayList<>());
+                            courseLessonsMap.get(courseId).add(lessonId);
+                        }
+
+                        // Check courses where some lessons are completed but not all
+                        for (Map.Entry<Integer, List<Integer>> entry : courseLessonsMap.entrySet()) {
+                            int courseId = entry.getKey();
+                            List<Integer> lessonIds = entry.getValue();
+
+                            boolean hasCompletedSome = false;
+                            boolean hasUncompleted = false;
+
+                            for (int lessonId : lessonIds) {
+                                if (userLessonsSnapshot.hasChild(String.valueOf(lessonId))) {
+                                    hasCompletedSome = true;
+                                } else {
+                                    hasUncompleted = true;
+                                }
+                                if (hasCompletedSome && hasUncompleted) {
+                                    break;
+                                }
+                            }
+
+                            if (hasCompletedSome && hasUncompleted) {
                                 for (Course course : courseList) {
                                     if (course.getId() == courseId) {
                                         continueLearningList.add(course);
-                                        count++;
                                         break;
                                     }
                                 }
                             }
                         }
+
                         continueLearningAdapter.notifyDataSetChanged();
                     }
 
@@ -301,6 +330,13 @@ public class CourseHomeActivity extends AppCompatActivity {
                         Toast.makeText(CourseHomeActivity.this, "Lỗi tải danh sách tiếp tục học", Toast.LENGTH_SHORT).show();
                     }
                 });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(CourseHomeActivity.this, "Lỗi tải danh sách bài học", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

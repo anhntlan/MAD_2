@@ -46,19 +46,19 @@ public class CourseCompletedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_completed_course);
 
         ImageButton btnBack = findViewById(R.id.btnBackCompletedCourse);
-         tvNoCompletedCourse = findViewById(R.id.tvNoCompletedCourse);
+        tvNoCompletedCourse = findViewById(R.id.tvNoCompletedCourse);
 
-        recyclerView = findViewById(R.id.recyclerViewCompletedCourse);
+        recyclerView = findViewById(R.id.recyclerViewCompletedCourselist);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new CourseAdapter(this, completedCourseList);
         recyclerView.setAdapter(adapter);
 
         btnBack.setOnClickListener(v -> finish());
 
-        loadcompletedCourses(tvNoCompletedCourse);
+        loadcompletedCourses();
     }
 
-    private void loadcompletedCourses(TextView tvNoCourses) {
+    private void loadcompletedCourses() {
         String currentUserId = FirebaseAuth.getInstance().getUid();
         if (currentUserId == null) {
             Toast.makeText(this, "Bạn cần đăng nhập!", Toast.LENGTH_SHORT).show();
@@ -67,7 +67,6 @@ public class CourseCompletedActivity extends AppCompatActivity {
 
         DatabaseReference lessonsRef = FirebaseDatabase.getInstance().getReference("lesson");
         DatabaseReference userLessonsRef = FirebaseDatabase.getInstance().getReference("user_lessons").child(currentUserId);
-        DatabaseReference coursesRef = FirebaseDatabase.getInstance().getReference("courses");
 
 
         lessonsRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -76,7 +75,7 @@ public class CourseCompletedActivity extends AppCompatActivity {
                 userLessonsRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot userLessonsSnapshot) {
-//                        HashMap<Integer, List<Integer>> courseLessonsMap = new HashMap<>();
+                        HashMap<Integer, List<Integer>> courseLessonsMap = new HashMap<>();
                         List<Integer> completedCourseIds = new ArrayList<>();
 
                         // Group lessons by courseID
@@ -84,20 +83,32 @@ public class CourseCompletedActivity extends AppCompatActivity {
                             int courseId = lessonSnapshot.child("courseID").getValue(Integer.class);
                             int lessonId = lessonSnapshot.child("id").getValue(Integer.class);
 
-//                            courseLessonsMap.putIfAbsent(courseId, new ArrayList<>());
-//                            courseLessonsMap.get(courseId).add(lessonId);
+                            courseLessonsMap.putIfAbsent(courseId, new ArrayList<>());
+                            courseLessonsMap.get(courseId).add(lessonId);
 
-                            if (userLessonsSnapshot.hasChild(String.valueOf(lessonId))) {
-                                if (!completedCourseIds.contains(courseId)) {
-                                    completedCourseIds.add(courseId);
-                                }
-                            }
                         }
                         // Check if all lessons of a course are completed
 //
+                        for (Map.Entry<Integer, List<Integer>> entry : courseLessonsMap.entrySet()) {
+                            int courseId = entry.getKey();
+                            List<Integer> lessonIds = entry.getValue();
+
+                            boolean allCompleted = true;
+                            for (int lessonId : lessonIds) {
+                                if (!userLessonsSnapshot.hasChild(String.valueOf(lessonId))) {
+                                    allCompleted = false;
+                                    break;
+                                }
+                            }
+
+                            if (allCompleted) {
+                                completedCourseIds.add(courseId);
+                            }
+                        }
 
                         // Load completed courses
                         loadCompletedCoursesDetails(completedCourseIds);
+
                     }
 
                     @Override
@@ -119,15 +130,16 @@ public class CourseCompletedActivity extends AppCompatActivity {
         coursesRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                completedCourseList.clear();
+                List<Course> completedCourses = new ArrayList<>();
                 for (DataSnapshot courseSnapshot : snapshot.getChildren()) {
                     Course course = courseSnapshot.getValue(Course.class);
                     if (course != null && completedCourseIds.contains(course.getId())) {
-                        completedCourseList.add(course);
+                        completedCourses.add(course);
                     }
                 }
 
-                adapter.notifyDataSetChanged();
+                displayCompletedCourses(completedCourses);
+
                 tvNoCompletedCourse.setVisibility(completedCourseList.isEmpty() ? View.VISIBLE : View.GONE);
             }
 
@@ -137,6 +149,13 @@ public class CourseCompletedActivity extends AppCompatActivity {
             }
         });
 
+    }
+    private void displayCompletedCourses(List<Course> completedCourses) {
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewCompletedCourselist);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        CourseAdapter adapter = new CourseAdapter(this, completedCourses);
+        recyclerView.setAdapter(adapter);
     }
 
 
