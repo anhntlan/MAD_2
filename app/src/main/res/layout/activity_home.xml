@@ -22,13 +22,16 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavigation">
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
+        app:layout_constraintTop_toBottomOf="@id/appHeader"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="60dp">
+            android:paddingBottom="16dp"
+            >
 
             <!-- Navigation Categories -->
 
@@ -43,6 +46,7 @@
 
                 <!-- Drawing Category -->
                 <LinearLayout
+                    android:id="@+id/navigation_image"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -117,8 +121,9 @@
                         android:layout_marginBottom="8dp"
                         android:background="@drawable/circle_white">
 
-                        <ImageView
-                            android:layout_width="32dp"
+                        <ImageButton
+                            android:id="@+id/btnCom"
+                            android:layout_width="40dp"
                             android:layout_height="32dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_community"
@@ -170,6 +175,7 @@
                 android:orientation="vertical"
                 android:paddingHorizontal="16dp">
 
+                <!-- Tiêu đề -->
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -186,6 +192,7 @@
                         android:textStyle="bold" />
 
                     <ImageView
+                        android:id="@+id/ViewImage"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_alignParentEnd="true"
@@ -194,40 +201,57 @@
                         app:tint="@android:color/black" />
                 </RelativeLayout>
 
+                <!-- Dãy ảnh -->
                 <LinearLayout
+                    android:id="@+id/imageContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="8dp">
 
                     <ImageView
-                        android:layout_width="0dp"
+                        android:id="@+id/image1"
+                        android:layout_width="120dp"
                         android:layout_height="120dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_weight="1"
-                        android:background="@android:color/white"
+                        android:layout_margin="4dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/img_face" />
+                        android:visibility="gone" />
 
                     <ImageView
-                        android:layout_width="0dp"
+                        android:id="@+id/image2"
+                        android:layout_width="120dp"
                         android:layout_height="120dp"
-                        android:layout_marginHorizontal="4dp"
-                        android:layout_weight="1"
-                        android:background="@android:color/white"
+                        android:layout_margin="4dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/img_face" />
+                        android:visibility="gone" />
 
                     <ImageView
-                        android:layout_width="0dp"
+                        android:id="@+id/image3"
+                        android:layout_width="120dp"
                         android:layout_height="120dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_weight="1"
-                        android:background="@android:color/white"
+                        android:layout_margin="4dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/img_face" />
+                        android:visibility="gone" />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textNoImages"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chưa có ảnh nào"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/darker_gray"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
             </LinearLayout>
 
+
+
+
+
+            <!-- Favorite Works Section -->
             <!-- Favorite Works Section -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -236,10 +260,15 @@
                 android:orientation="vertical"
                 android:paddingHorizontal="16dp">
 
+                <!-- Header: title + chevron (click để xem tất cả) -->
                 <RelativeLayout
+                    android:id="@+id/favoriteSection"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingVertical="12dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -260,39 +289,33 @@
                         app:tint="@android:color/black" />
                 </RelativeLayout>
 
+                <!-- Ảnh yêu thích (tối đa 3 ảnh) -->
                 <LinearLayout
+                    android:id="@+id/favoriteImagesContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="4dp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"/>
+                <TextView
+                    android:id="@+id/tvNoFavoritesShort"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Không có ảnh nào đã yêu thích!"
+                    android:visibility="gone"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/darker_gray"
+                    android:gravity="center"
+                    android:layout_marginBottom="16dp"
+                    android:paddingTop="16dp" />
 
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="120dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_weight="1"
-                        android:background="@android:color/white"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/img_face" />
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="120dp"
-                        android:layout_marginHorizontal="4dp"
-                        android:layout_weight="1"
-                        android:background="@android:color/white"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/img_face" />
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="120dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_weight="1"
-                        android:background="@android:color/white"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/img_face" />
-                </LinearLayout>
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 

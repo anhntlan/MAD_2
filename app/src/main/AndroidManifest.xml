@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,11 +15,47 @@
         android:theme="@style/Theme.HipenJava"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.Courses.CourseCompletedActivity"
+            android:exported="false" />
+
+        <meta-data
+            android:name="com.google.android.gms.auth.api.credentials.CREDENTIAL_PICKER_ENABLED"
+            android:value="true" />
+
+        <activity
+            android:name=".Activities.Courses.CourseListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Courses.ContinueLearningActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.MenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Notification.NotificationDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Courses.FullScreenVideoActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Activities.Courses.LessonDetailActivity"
+            android:configChanges="orientation|screenSize"
+            android:exported="false"
+            android:screenOrientation="sensor" />
+        <activity
+            android:name=".Activities.Courses.CourseDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Courses.CourseLearningActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.BaseActivity"
             android:exported="false" />
 
         <activity
-            android:name=".Activities.Courses.CourseListActivity"
+            android:name=".Activities.Courses.CourseHomeActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.Notification.NotificationActivity"
@@ -34,8 +72,52 @@
         <activity
             android:name=".Activities.Auth.RegisterActivity3"
             android:exported="false" />
+        <activity android:name=".Activities.Image.ImageActivity" />
+        <activity android:name=".Activities.Image.EditImageActivity" />
+
         <activity
             android:name=".Activities.HomeActivity"
+            android:exported="false" />
+
+        <!-- Challenge Activities -->
+        <activity
+            android:name=".Activities.Challenge.ChallengeListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Challenge.ChallengeDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Challenge.UploadArtworkActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Challenge.VoteActivity"
+            android:exported="false" />
+
+
+        <!-- Default Activity -->
+        <activity
+            android:name=".Activities.Post.MainActivityPost"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Post.CreatePostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Post.CommentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Gallery.ArtworkDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Gallery.ArtGalleryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Gallery.ArtworksActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Favorite.FavoritePostsActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.Auth.LoginActivity"
@@ -46,6 +128,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

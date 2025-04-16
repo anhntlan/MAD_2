@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:gravity="center">
+
+    <FrameLayout
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:elevation="6dp"
+        android:layout_marginTop="4dp">
+
+        <ImageView
+            android:id="@+id/artImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:background="@drawable/rounded_button_bg" />
+
+        <ImageView
+            android:id="@+id/tickOverlay"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="end|top"
+            android:visibility="gone"
+            android:src="@drawable/ic_checked"
+            app:tint="@color/black" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/artName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="image.jpg"
+        android:textAlignment="center"
+        android:textColor="@android:color/black" />
+</LinearLayout>

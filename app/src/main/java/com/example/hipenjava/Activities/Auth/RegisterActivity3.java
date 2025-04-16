@@ -12,9 +12,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.hipenjava.DatabaseHelper;
+import com.example.hipenjava.Models.User;
 import com.example.hipenjava.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 
 
 public class RegisterActivity3 extends AppCompatActivity {
@@ -24,6 +27,8 @@ public class RegisterActivity3 extends AppCompatActivity {
     private String userEmail, userName; // Stores email and name from previous activity
   //  private DatabaseHelper databaseHelper;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,9 @@ public class RegisterActivity3 extends AppCompatActivity {
         // Initialize DatabaseHelper
        // databaseHelper = new DatabaseHelper(this);
         mAuth = FirebaseAuth.getInstance();
+        //initialize firestore
+        db = FirebaseFirestore.getInstance();
+
 
         // Initialize UI components
         etPassword = findViewById(R.id.etEmail); // This should be renamed to etPassword in XML
@@ -46,28 +54,7 @@ public class RegisterActivity3 extends AppCompatActivity {
             userEmail = intent.getStringExtra("EMAIL");
             userName = intent.getStringExtra("NAME");
         }
-        // Continue button click event
-//        btnContinue.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String password = etPassword.getText().toString().trim();
-//
-//                if (TextUtils.isEmpty(password) || password.length() < 6) {
-//                    etPassword.setError("Mật khẩu phải có ít nhất 6 ký tự!");
-//                    return;
-//                }
-//                // Insert user data into SQLite
-//                //boolean inserted = databaseHelper.insertUser(userEmail, userName, password,"user");
-//
-//                if (inserted) {
-//                    Toast.makeText(RegisterActivity3.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
-//                    startActivity(new Intent(RegisterActivity3.this, LoginActivity.class)); // Redirect to Login
-//                    finish();
-//                } else {
-//                    Toast.makeText(RegisterActivity3.this, "Registration Failed!", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
+
         btnContinue.setOnClickListener(v -> registerUser());
         // Back button click event
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +67,11 @@ public class RegisterActivity3 extends AppCompatActivity {
 
     private void registerUser() {
         String password = etPassword.getText().toString().trim();
-
+// Default values or optional empty strings for the new fields
+        String address = "";  // Default empty address
+        String fullName = ""; // Default empty full name
+        String avatar = "";   // Default empty avatar (could be an empty URL)
+        String role = "user"; // Default role, you can choose another value like "admin" if needed
         if (TextUtils.isEmpty(password) || password.length() < 6) {
             etPassword.setError("Mật khẩu phải có ít nhất 6 ký tự!");
             return;
@@ -102,6 +93,9 @@ public class RegisterActivity3 extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
+                        saveUserData(user, password, address, fullName, avatar, role);  // Pass the new fields
+
+
                         Toast.makeText(RegisterActivity3.this, "Đăng ký thành công.", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(RegisterActivity3.this, LoginActivity.class);
                         startActivity(intent);
@@ -113,4 +107,21 @@ public class RegisterActivity3 extends AppCompatActivity {
                     }
                 });
         }
+    private void saveUserData(FirebaseUser user, String password, String address, String fullName, String avatar, String role) {
+        // Create a User object to store data
+        User userData = new User(userName, userEmail, user.getUid(), password, address, fullName, avatar, role);
+
+        // Save user data to Firestore
+        db.collection("Users")
+                .document(user.getUid())  // Use user UID as document ID
+                .set(userData)
+                .addOnSuccessListener(aVoid -> {
+                    // Successfully saved user data to Firestore
+                    Toast.makeText(RegisterActivity3.this, "Thông tin người dùng đã được lưu.", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    // Failed to save user data
+                    Toast.makeText(RegisterActivity3.this, "Lỗi lưu dữ liệu người dùng", Toast.LENGTH_SHORT).show();
+                });
+    }
     }
