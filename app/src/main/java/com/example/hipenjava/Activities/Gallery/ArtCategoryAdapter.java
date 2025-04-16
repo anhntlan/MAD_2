@@ -16,6 +16,8 @@ import com.example.hipenjava.Models.Category;
 import com.example.hipenjava.R;
 
 import java.util.List;
+import com.example.hipenjava.Models.Category;
+import com.example.hipenjava.Activities.Gallery.ArtCategoryAdapter;
 
 public class ArtCategoryAdapter extends RecyclerView.Adapter<ArtCategoryAdapter.CategoryViewHolder> {
 

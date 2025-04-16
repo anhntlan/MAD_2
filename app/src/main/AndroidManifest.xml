@@ -114,6 +114,9 @@
             android:name=".Activities.Gallery.ArtworksActivity"
             android:exported="false" />
         <activity
+            android:name=".Activities.EditProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.Favorite.FavoritePostsActivity"
             android:exported="false" />
         <activity

@@ -99,6 +99,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.hipenjava.Activities.Favorite.FavoriteImageAdapter;
 import com.example.hipenjava.Models.Post;
+import com.example.hipenjava.Models.User;
 import com.example.hipenjava.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
