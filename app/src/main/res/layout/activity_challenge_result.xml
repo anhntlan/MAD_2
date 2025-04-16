@@ -51,4 +51,15 @@
         android:padding="8dp"
         android:clipToPadding="false"
         android:layout_gravity="center" /> <!-- Important: center the RecyclerView -->
+
+    <TextView
+        android:id="@+id/emptyTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Chưa có ai tham gia thử thách này"
+        android:textSize="16sp"
+        android:textColor="@android:color/darker_gray"
+        android:gravity="center"
+        android:padding="16dp"
+        android:visibility="gone" />
 </LinearLayout>

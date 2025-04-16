@@ -38,8 +38,7 @@ public class ArtworkResultAdapter extends RecyclerView.Adapter<ArtworkResultAdap
         Glide.with(context).load(artwork.getImageUrl()).into(holder.artworkImage);
 
         holder.voteIcon.setOnClickListener(v -> {
-            boolean isVoted = !holder.voteIcon.isSelected();
-            holder.voteIcon.setSelected(isVoted);
+            //holder.voteIcon.setSelected(isVoted);
         });
 
         if (holder.topTag == null){

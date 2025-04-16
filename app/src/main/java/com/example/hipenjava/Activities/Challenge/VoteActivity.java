@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +25,7 @@ import java.util.Map;
 
 public class VoteActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
+    private TextView emptyTextView;
     private SubmittedArtworkAdapter artworkAdapter;
     private ArrayList<SubmittedArtwork> artworkList;
     private FirebaseFirestore db;
@@ -39,6 +41,8 @@ public class VoteActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.artworkRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        emptyTextView = findViewById(R.id.emptyTextView);
 
         challengeId = getIntent().getStringExtra("challengeId");
 
@@ -69,6 +73,7 @@ public class VoteActivity extends AppCompatActivity {
                 .get().addOnSuccessListener(querySnapshots -> {
             if (querySnapshots == null || querySnapshots.isEmpty()) {
                 Log.w("VoteActivity", "No artworks found.");
+                updateUI();
                 return;
             }
 
@@ -113,6 +118,7 @@ public class VoteActivity extends AppCompatActivity {
 
                                 SubmittedArtwork artwork = new SubmittedArtwork(id, authorName, imageUrl, challengeId, userId, voteCount);
                                 artworkList.add(artwork);
+                                updateUI();
                                 artworkAdapter.notifyDataSetChanged();
                             })
                             .addOnFailureListener(e ->
@@ -158,5 +164,15 @@ public class VoteActivity extends AppCompatActivity {
                                 .addOnSuccessListener(aVoid -> Toast.makeText(VoteActivity.this, "Đã bỏ Vote!", Toast.LENGTH_SHORT).show());
                     }
                 });
+    }
+
+    private void updateUI(){
+        if (artworkList.isEmpty()) {
+            recyclerView.setVisibility(View.GONE);
+            emptyTextView.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyTextView.setVisibility(View.GONE);
+        }
     }
 }

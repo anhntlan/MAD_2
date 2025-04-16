@@ -3,6 +3,8 @@ package com.example.hipenjava.Activities.Challenge;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,6 +31,8 @@ import java.util.Map;
 
 public class ChallengeListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
+
+    private TextView emptyTextView;
     private ChallengeAdapter adapter;
     private List<Challenge> challengeList;
 
@@ -46,6 +50,8 @@ public class ChallengeListActivity extends AppCompatActivity {
     private void setupChallengeList() {
         recyclerView = findViewById(R.id.recyclerViewChallenges);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        emptyTextView = findViewById(R.id.emptyTextView);
 
         // Sample data
         challengeList = new ArrayList<>();
@@ -73,6 +79,7 @@ public class ChallengeListActivity extends AppCompatActivity {
                     adapter = new ChallengeAdapter(challengeList, this);
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
+                    updateUI();
                 })
                 .addOnFailureListener(e -> {
                     Log.e("Firestore", "Error getting documents", e);
@@ -103,5 +110,15 @@ public class ChallengeListActivity extends AppCompatActivity {
             }
             return false;
         });
+    }
+
+    private void updateUI(){
+        if (challengeList.isEmpty()) {
+            recyclerView.setVisibility(View.GONE);
+            emptyTextView.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyTextView.setVisibility(View.GONE);
+        }
     }
 }

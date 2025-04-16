@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +26,8 @@ import java.util.Collections;
 
 public class ChallengeResultActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
+
+    private TextView emptyTextView;
     private ArtworkResultAdapter artworkAdapter;
     private ArrayList<SubmittedArtwork> artworkList;
     private FirebaseFirestore db;
@@ -40,6 +43,8 @@ public class ChallengeResultActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.artworkRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        emptyTextView = findViewById(R.id.emptyTextView);
 
         challengeId = getIntent().getStringExtra("challengeId");
 
@@ -70,6 +75,7 @@ public class ChallengeResultActivity extends AppCompatActivity {
                 .get().addOnSuccessListener(querySnapshots -> {
             if (querySnapshots == null || querySnapshots.isEmpty()) {
                 Log.w("ChallengeResultActivity", "No artworks found.");
+                updateUI();
                 return;
             }
 
@@ -90,8 +96,11 @@ public class ChallengeResultActivity extends AppCompatActivity {
                 int voteCount = voteLong.intValue();
                 fetchImageAndUser(id, imageId, challengeId, userId, voteCount);
             }
-        }).addOnFailureListener(e ->
-                Toast.makeText(this, "Error fetching artwork data", Toast.LENGTH_SHORT).show()
+        }).addOnFailureListener(e ->{
+                    Toast.makeText(this, "Error fetching artwork data", Toast.LENGTH_SHORT).show();
+                    updateUI();
+        }
+
         );
     }
 
@@ -116,13 +125,32 @@ public class ChallengeResultActivity extends AppCompatActivity {
                                 artworkList.add(artwork);
                                 Collections.sort(artworkList, (a1, a2) -> Integer.compare(a2.getVoteCount(), a1.getVoteCount()));
                                 artworkAdapter.notifyDataSetChanged();
+                                updateUI();
                             })
-                            .addOnFailureListener(e ->
-                                    Log.e("ChallengeResultActivity", "Failed to fetch user info", e)
+                            .addOnFailureListener(e ->{
+                                Log.e("ChallengeResultActivity", "Failed to fetch user info", e);
+                                updateUI();
+                            }
+
                             );
                 })
-                .addOnFailureListener(e ->
-                        Log.e("ChallengeResultActivity", "Failed to fetch image info", e)
+                .addOnFailureListener(e ->{
+                    Log.e("ChallengeResultActivity", "Failed to fetch image info", e);
+                    updateUI();
+                }
+
                 );
+    }
+
+    private void updateUI(){
+        if (artworkList.isEmpty()) {
+            Log.d("bbb", "list empty");
+            recyclerView.setVisibility(View.GONE);
+            emptyTextView.setVisibility(View.VISIBLE);
+        } else {
+            Log.d("bbb", "list not empty");
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyTextView.setVisibility(View.GONE);
+        }
     }
 }
