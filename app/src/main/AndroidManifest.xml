@@ -53,6 +53,7 @@
         <activity
             android:name=".Activities.BaseActivity"
             android:exported="false" />
+
         <activity
             android:name=".Activities.Courses.CourseHomeActivity"
             android:exported="false" />
@@ -71,9 +72,32 @@
         <activity
             android:name=".Activities.Auth.RegisterActivity3"
             android:exported="false" />
+        <activity android:name=".Activities.Image.ImageActivity" />
+        <activity android:name=".Activities.Image.EditImageActivity" />
+
         <activity
             android:name=".Activities.HomeActivity"
-            android:exported="true" />
+            android:exported="false" />
+
+        <!-- Challenge Activities -->
+        <activity
+            android:name=".Activities.Challenge.ChallengeListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Challenge.ChallengeDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Challenge.UploadArtworkActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Challenge.VoteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Challenge.ChallengeResultActivity"
+            android:exported="false" />
+
+
+        <!-- Default Activity -->
         <activity
             android:name=".Activities.Auth.LoginActivity"
             android:exported="true">
@@ -83,6 +107,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>
