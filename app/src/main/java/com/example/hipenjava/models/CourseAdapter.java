@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+
 import com.example.hipenjava.Activities.Courses.CourseDetailActivity;
 import com.example.hipenjava.R;
 
@@ -21,9 +22,9 @@ import java.util.List;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
     private Context context;
-    private List<Course> courseList;
+    private List<com.example.hipenjava.models.Course> courseList;
 
-    public CourseAdapter(Context context, List<Course> courseList) {
+    public CourseAdapter(Context context, List<com.example.hipenjava.models.Course> courseList) {
         this.context = context;
         this.courseList = courseList;
     }
@@ -31,7 +32,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onItemClick(Course course);
+        void onItemClick(com.example.hipenjava.models.Course course);
     }
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
@@ -45,7 +46,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
     @Override
     public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
-        Course course = courseList.get(position);
+        com.example.hipenjava.models.Course course = courseList.get(position);
         holder.courseTitle.setText(course.getName());
         holder.courseSubtitle.setText(course.getDuration()+" giờ");
 

@@ -19,8 +19,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.example.hipenjava.models.Notification;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder> {
     private List<Notification> notifications;
@@ -42,7 +48,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public void onBindViewHolder(@NonNull NotificationViewHolder holder, int position) {
         Notification notification = notifications.get(position);
         holder.name.setText(notification.getName());
-//        holder.timeUp.setText(notification.getTimeUp());
 
         String userId = FirebaseAuth.getInstance().getUid();
         DatabaseReference userNotificationRef = FirebaseDatabase.getInstance()
@@ -55,6 +60,30 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             holder.icon.setImageResource(R.drawable.noti_zoom);
         }
 
+
+        // Parse the timeUp value from Firebase
+        String timeUp = notification.getTimeUp();
+        if (timeUp != null && !timeUp.isEmpty()) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            try {
+                Date notificationDate = dateFormat.parse(timeUp);
+                Date currentDate = new Date();
+
+                // Calculate the difference in days
+                long diffInMillis = currentDate.getTime() - notificationDate.getTime();
+                long daysDiff = TimeUnit.MILLISECONDS.toDays(diffInMillis);
+
+                // Display "Hôm nay" or "... ngày trước"
+                String timeText = (daysDiff == 0) ? "Hôm nay" : daysDiff + " ngày trước";
+                holder.timeUp.setText(timeText);
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+                holder.timeUp.setText("N/A"); // Handle parsing error
+            }
+        } else {
+            holder.timeUp.setText("null"); // Handle null or empty timeUp
+        }
         // Check if the notification is read for the current user
         userNotificationRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -97,7 +126,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         public NotificationViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.notification_name);
-//            timeUp = itemView.findViewById(R.id.notification_timeup);
+            timeUp = itemView.findViewById(R.id.notification_time);
             icon = itemView.findViewById(R.id.notification_icon);
         }
     }

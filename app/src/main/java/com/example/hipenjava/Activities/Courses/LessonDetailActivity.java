@@ -41,6 +41,7 @@ public class LessonDetailActivity extends AppCompatActivity {
     private TextView lessonNameText, lessonTextContent;
     private VideoView lessonVideoContent;
     private Button btnComplete;
+
     private ImageButton btnBack;
     private int lessonID;
     ImageButton fullscreenBtn ;
@@ -67,11 +68,27 @@ public class LessonDetailActivity extends AppCompatActivity {
         fullscreenBtn = findViewById(R.id.fullscreenBtn);
         btnBack.setOnClickListener(v -> finish());
 
+
+        DatabaseReference userLessonsRef = FirebaseDatabase.getInstance().getReference("user_lessons");
+
+        String userId = FirebaseAuth.getInstance().getUid();
+
+        // Check if the lesson is already completed
+        userLessonsRef.child(userId).child(String.valueOf(lessonID)).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    btnComplete.setText("Đã hoàn thành");
+                    btnComplete.setEnabled(false); // Disable the button if already completed
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(LessonDetailActivity.this, "Lỗi kiểm tra trạng thái bài học", Toast.LENGTH_SHORT).show();
+            }
+        });
         btnComplete.setOnClickListener(v ->{
-            String userId = FirebaseAuth.getInstance().getUid();
-
-            DatabaseReference userLessonsRef = FirebaseDatabase.getInstance().getReference("user_lessons");
-
             // Lưu trạng thái hoàn thành bài học
             userLessonsRef.child(userId).child(String.valueOf(lessonID)).setValue(true)
                     .addOnCompleteListener(task -> {

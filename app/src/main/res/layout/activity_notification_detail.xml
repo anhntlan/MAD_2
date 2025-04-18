@@ -71,6 +71,7 @@
                 android:textSize="18sp"
                 android:paddingBottom="30dp"
                 android:paddingHorizontal="10dp"
+                android:autoLink="web"
                 android:paddingTop="20dp" />
         </LinearLayout>
     </ScrollView>

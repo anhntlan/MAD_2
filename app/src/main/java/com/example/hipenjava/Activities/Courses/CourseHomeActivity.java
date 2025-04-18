@@ -65,7 +65,7 @@ public class CourseHomeActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         courseList = new ArrayList<>();
-        adapter = new CourseAdapter(this, filteredList);
+        adapter = new CourseAdapter(CourseHomeActivity.this, filteredList);
         recyclerView.setAdapter(adapter);
 
         // continueLearning courses
@@ -83,7 +83,7 @@ public class CourseHomeActivity extends AppCompatActivity {
         // 1 continue courses
         recyclerViewContinueLearning = findViewById(R.id.recyclerViewContinueLearning);
         recyclerViewContinueLearning.setLayoutManager(new LinearLayoutManager(this));
-        continueLearningAdapter = new CourseAdapter(this, continueLearningList);
+        continueLearningAdapter = new CourseAdapter(CourseHomeActivity.this, continueLearningList);
         recyclerViewContinueLearning.setAdapter(continueLearningAdapter);
         loadContinueLearningCourses();
 
@@ -113,7 +113,7 @@ public class CourseHomeActivity extends AppCompatActivity {
         completedLearningArrow.setOnClickListener(completedClickListener);
         recyclerViewCompletedLearning = findViewById(R.id.recyclerViewCompletedCourses);
         recyclerViewCompletedLearning.setLayoutManager(new LinearLayoutManager(this));
-        completedCourseAdapter = new CourseAdapter(this, completedCourseList);
+        completedCourseAdapter = new CourseAdapter(CourseHomeActivity.this, completedCourseList);
         recyclerViewCompletedLearning.setAdapter(completedCourseAdapter);
         loadCompletedCourses();
 
@@ -204,6 +204,8 @@ public class CourseHomeActivity extends AppCompatActivity {
 
                             if (allCompleted) {
                                 completedCourseIds.add(courseId);
+                                break;
+
                             }
                         }
 
@@ -238,7 +240,6 @@ public class CourseHomeActivity extends AppCompatActivity {
                     }
                 }
 
-                // Display completed courses (e.g., in a RecyclerView)
                 displayCompletedCourses(completedCourses);
             }
 
@@ -250,11 +251,9 @@ public class CourseHomeActivity extends AppCompatActivity {
     }
 
     private void displayCompletedCourses(List<Course> completedCourses) {
-        // Implement logic to display the completed courses in your UI (e.g., RecyclerView)
-        // Example:
         RecyclerView recyclerView = findViewById(R.id.recyclerViewCompletedCourses);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        CourseAdapter adapter = new CourseAdapter(this, completedCourses);
+        CourseAdapter adapter = new CourseAdapter(CourseHomeActivity.this, completedCourses);
         recyclerView.setAdapter(adapter);
     }
 

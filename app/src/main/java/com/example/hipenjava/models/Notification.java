@@ -3,23 +3,21 @@ package com.example.hipenjava.models;
 
 public class Notification {
     private int id;
-    private String name;
-//    private String timeUp;
+    private String name,timeup;
     private String detail;
     private String type;
 
-    private boolean read;
     public Notification() {
     }
 
 
-    public Notification(int id, String name, String detail,boolean read) {
+
+    public Notification(int id, String name, String detail, String timeUp) {
         this.id = id;
         this.name = name;
         this.detail = detail;
-//        this.timeUp = timeUp;
+        this.timeup = timeUp;
     }
-
 
     public int getId() {
         return id;
@@ -37,13 +35,13 @@ public class Notification {
         this.name = name;
     }
 
-//    public String getTimeUp() {
-//        return timeUp;
-//    }
-//
-//    public void setTimeUp(String timeUp) {
-//        this.timeUp = timeUp;
-//    }
+
+    public String getTimeUp() {
+        return timeup;
+    }
+    public void setTimeUp(String timeUp) {
+        this.timeup = timeUp;
+    }
 
     public String getDetail() {
         return detail;
