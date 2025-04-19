@@ -61,12 +61,10 @@ public class CourseHomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.course_home);
 
-        recyclerView = findViewById(R.id.recyclerViewCourses);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         courseList = new ArrayList<>();
         adapter = new CourseAdapter(CourseHomeActivity.this, filteredList);
-        recyclerView.setAdapter(adapter);
+//        recyclerView.setAdapter(adapter);
 
         // continueLearning courses
         TextView continueLearningLabel = findViewById(R.id.continueLearningLabel);
@@ -80,12 +78,7 @@ public class CourseHomeActivity extends AppCompatActivity {
         continueLearningLabel.setOnClickListener(continueLearningClickListener);
         continueLearningArrow.setOnClickListener(continueLearningClickListener);
 
-        // 1 continue courses
-        recyclerViewContinueLearning = findViewById(R.id.recyclerViewContinueLearning);
-        recyclerViewContinueLearning.setLayoutManager(new LinearLayoutManager(this));
-        continueLearningAdapter = new CourseAdapter(CourseHomeActivity.this, continueLearningList);
-        recyclerViewContinueLearning.setAdapter(continueLearningAdapter);
-//        loadContinueLearningCourses();
+
 
         //click to go to course list
         TextView coursesLabel = findViewById(R.id.coursesLabel);
@@ -111,19 +104,12 @@ public class CourseHomeActivity extends AppCompatActivity {
 
         completedLearningLabel.setOnClickListener(completedClickListener);
         completedLearningArrow.setOnClickListener(completedClickListener);
-        recyclerViewCompletedLearning = findViewById(R.id.recyclerViewCompletedCourses);
-        recyclerViewCompletedLearning.setLayoutManager(new LinearLayoutManager(this));
-        completedCourseAdapter = new CourseAdapter(CourseHomeActivity.this, completedCourseList);
-        recyclerViewCompletedLearning.setAdapter(completedCourseAdapter);
-//        loadCompletedCourses();
 
-        loadCourses();
         btnMenu = findViewById(R.id.btnMenu);
         btnMenu.setOnClickListener(v -> {
             Intent intent = new Intent(CourseHomeActivity.this, MenuActivity.class);
             startActivity(intent);
         });
-
 
 
         // notification
@@ -162,225 +148,10 @@ public class CourseHomeActivity extends AppCompatActivity {
 
     }
 
-    private void loadCompletedCourses() {
-        String currentUserId = FirebaseAuth.getInstance().getUid();
-        if (currentUserId == null) {
-            Toast.makeText(this, "Bạn cần đăng nhập!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        DatabaseReference lessonsRef = FirebaseDatabase.getInstance().getReference("lesson");
-        DatabaseReference userLessonsRef = FirebaseDatabase.getInstance().getReference("user_lessons").child(currentUserId);
-
-        lessonsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot lessonsSnapshot) {
-                userLessonsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot userLessonsSnapshot) {
-                        HashMap<Integer, List<Integer>> courseLessonsMap = new HashMap<>();
-                        List<Integer> completedCourseIds = new ArrayList<>();
-
-                        // Group lessons by courseID
-                        for (DataSnapshot lessonSnapshot : lessonsSnapshot.getChildren()) {
-                            int courseId = lessonSnapshot.child("courseID").getValue(Integer.class);
-                            int lessonId = lessonSnapshot.child("id").getValue(Integer.class);
-
-                            courseLessonsMap.putIfAbsent(courseId, new ArrayList<>());
-                            courseLessonsMap.get(courseId).add(lessonId);
-                        }
-
-                        // Check if all lessons of a course are completed
-                        for (Map.Entry<Integer, List<Integer>> entry : courseLessonsMap.entrySet()) {
-                            int courseId = entry.getKey();
-                            List<Integer> lessonIds = entry.getValue();
-
-                            boolean allCompleted = true;
-                            for (int lessonId : lessonIds) {
-                                if (!userLessonsSnapshot.hasChild(String.valueOf(lessonId))) {
-                                    allCompleted = false;
-                                    break;
-                                }
-                            }
-
-                            if (allCompleted) {
-                                completedCourseIds.add(courseId);
-                                break;
-
-                            }
-                        }
-
-                        // Load completed courses
-                        loadCompletedCoursesDetails(completedCourseIds);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(CourseHomeActivity.this, "Lỗi tải danh sách bài học đã hoàn thành", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(CourseHomeActivity.this, "Lỗi tải danh sách bài học", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void loadCompletedCoursesDetails(List<Integer> completedCourseIds) {
-        DatabaseReference coursesRef = FirebaseDatabase.getInstance().getReference("courses");
-        coursesRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                List<Course> completedCourses = new ArrayList<>();
-                for (DataSnapshot courseSnapshot : snapshot.getChildren()) {
-                    Course course = courseSnapshot.getValue(Course.class);
-                    if (course != null && completedCourseIds.contains(course.getId())) {
-                        completedCourses.add(course);
-                    }
-                }
-
-                displayCompletedCourses(completedCourses);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(CourseHomeActivity.this, "Lỗi tải danh sách khóa học", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void displayCompletedCourses(List<Course> completedCourses) {
-        RecyclerView recyclerView = findViewById(R.id.recyclerViewCompletedCourses);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        CourseAdapter adapter = new CourseAdapter(CourseHomeActivity.this, completedCourses);
-        recyclerView.setAdapter(adapter);
-    }
-
-
-
     @Override
     protected void onResume() {
         super.onResume();
-        loadCourses();
+
     }
-    private void loadContinueLearningCourses() {
-        String currentUserId = FirebaseAuth.getInstance().getUid();
-        if (currentUserId == null){
-            Log.e("ContinueLearning", "User not logged in");
-            return;
-        }
-
-        DatabaseReference lessonsRef = FirebaseDatabase.getInstance().getReference("lesson");
-        DatabaseReference userLessonsRef = FirebaseDatabase.getInstance().getReference("user_lessons").child(currentUserId);
-
-        lessonsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot lessonsSnapshot) {
-                userLessonsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot userLessonsSnapshot) {
-                        HashMap<Integer, List<Integer>> courseLessonsMap = new HashMap<>();
-                        continueLearningList.clear();
-
-                        // Group lessons by courseID
-                        for (DataSnapshot lessonSnapshot : lessonsSnapshot.getChildren()) {
-                            Integer courseId = lessonSnapshot.child("courseID").getValue(Integer.class);
-                            Integer lessonId = lessonSnapshot.child("id").getValue(Integer.class);
-
-
-                            if (courseId != null && lessonId != null) {
-                                courseLessonsMap.putIfAbsent(courseId, new ArrayList<>());
-                                courseLessonsMap.get(courseId).add(lessonId);
-                            }
-//                            courseLessonsMap.putIfAbsent(courseId, new ArrayList<>());
-//                            courseLessonsMap.get(courseId).add(lessonId);
-                        }
-
-                        // Check courses where some lessons are completed but not all
-                        int count = 0;
-                        for (Map.Entry<Integer, List<Integer>> entry : courseLessonsMap.entrySet()) {
-                            if(count>=1) break;
-                            int courseId = entry.getKey();
-                            List<Integer> lessonIds = entry.getValue();
-
-                            boolean hasCompletedSome = false;
-                            boolean hasUncompleted = false;
-
-                            for (int lessonId : lessonIds) {
-                                if (userLessonsSnapshot.hasChild(String.valueOf(lessonId))) {
-                                    hasCompletedSome = true;
-                                } else {
-                                    hasUncompleted = true;
-                                }
-                                if (hasCompletedSome && hasUncompleted) {
-                                    break;
-                                }
-                            }
-
-                            if (hasCompletedSome && hasUncompleted) {
-                                for (Course course : courseList) {
-                                    if (course.getId() == courseId) {
-                                        continueLearningList.add(course);
-                                        count++;
-                                    }
-                                }
-                            }
-                        }
-
-                        continueLearningAdapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(CourseHomeActivity.this, "Lỗi tải danh sách tiếp tục học", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(CourseHomeActivity.this, "Lỗi tải danh sách bài học", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-
-
-    private void loadCourses() {
-        DatabaseReference courseRef = FirebaseDatabase.getInstance().getReference("courses");
-
-        courseRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                courseList.clear();
-                int count = 0;
-
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    if(count >= 1) break; // Limit to 5 courses
-
-                    Course course = dataSnapshot.getValue(Course.class);
-                    if (course != null) {
-                        courseList.add(course);
-                        count++;
-                    }
-
-                }
-                filteredList.clear();
-                filteredList.addAll(courseList);
-                adapter.notifyDataSetChanged();
-
-               loadContinueLearningCourses();
-                loadCompletedCourses();
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
-        });
-    }
-
-
 
 }
