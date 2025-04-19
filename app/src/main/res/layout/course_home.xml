@@ -23,86 +23,111 @@
         android:layout_marginTop="10dp"
         android:fillViewport="true">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="16dp"
-            android:paddingBottom="16dp">
+            android:orientation="vertical"
+            android:padding="30dp">
 
-            <!-- continueLearning Courses Section -->
-
-            <TextView
-                android:id="@+id/coursesLabel"
-                android:layout_width="0dp"
+            <!-- Item 1: Tất cả khóa học -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="Tất cả khóa học"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"/>
+                android:padding="30dp"
+                app:cardCornerRadius="36dp"
+                android:background="@drawable/rounded_button_bg"
+                android:layout_marginTop="14dp">
 
+                <TextView
+                    android:id="@+id/coursesLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Tất cả khóa học"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/coursesArrow"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
+                <ImageView
+                    android:id="@+id/coursesArrow"
+                    android:layout_width="43dp"
+                    android:layout_height="43dp"
+                    android:src="@drawable/ic_arrow_right"
+                    app:tint="@android:color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <ImageView
-                android:id="@+id/coursesArrow"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="24dp"
-                android:src="@drawable/ic_arrow_right"
-                app:tint="@android:color/black"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
-
-
-            <TextView
-                android:id="@+id/continueLearningLabel"
-                android:layout_width="wrap_content"
+            <!-- Item 2: Khóa học đang học -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Khóa học đang học"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/coursesArrow" />
+                android:background="@drawable/rounded_button_bg"
+                android:padding="30dp"
+                android:layout_marginTop="38dp">
 
-            <ImageView
-                android:id="@+id/continueLearningArrow"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/ic_arrow_right"
-                app:tint="@android:color/black"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/coursesArrow" />
+                <TextView
+                    android:id="@+id/continueLearningLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Khóa học đang học"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/continueLearningArrow"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
+                <ImageView
+                    android:id="@+id/continueLearningArrow"
+                    android:layout_width="43dp"
+                    android:layout_height="43dp"
+                    android:src="@drawable/ic_arrow_right"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@android:color/black" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/coursesCompletedLabel"
-                android:layout_width="wrap_content"
+            <!-- Item 3: Khóa học đã hoàn thành -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Các khóa học đã hoàn thành"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/continueLearningLabel" />
+                android:background="@drawable/rounded_button_bg"
+                android:padding="30dp"
+                android:layout_marginTop="38dp">
 
-            <ImageView
-                android:id="@+id/coursesCompletedArrow"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/ic_arrow_right"
-                app:tint="@android:color/black"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/continueLearningLabel" />
+                <TextView
+                    android:id="@+id/coursesCompletedLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Khóa học đã hoàn thành"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/coursesCompletedArrow"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
+                <ImageView
+                    android:id="@+id/coursesCompletedArrow"
+                    android:layout_width="43dp"
+                    android:layout_height="43dp"
+                    android:src="@drawable/ic_arrow_right"
+                    app:tint="@android:color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
+        </LinearLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
     <!-- Bottom Navigation -->
