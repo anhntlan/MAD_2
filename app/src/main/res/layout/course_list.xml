@@ -7,20 +7,16 @@
     android:background="#F2F2F2">
 
     <!-- Include Header -->
-    <include
-        android:id="@+id/appHeader"
-        layout="@layout/header"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+
 
     <!-- Main Content -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/appHeader"
+        android:fillViewport="true"
+        android:layout_marginTop="26dp"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
-        android:fillViewport="true">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -34,19 +30,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="12dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginEnd="12dp">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
+                    app:cardBackgroundColor="#FFFFFF"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="0dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:cardBackgroundColor="#FFFFFF">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -57,30 +53,29 @@
                             android:id="@+id/searchIcon"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
+                            android:contentDescription="Search"
                             android:src="@drawable/ic_search"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            android:contentDescription="Search" />
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <EditText
                             android:id="@+id/searchEditText"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
+                            android:layout_marginStart="8dp"
                             android:background="@null"
                             android:hint="Nhập tìm khóa học"
-                            android:textSize="16sp"
-                            android:layout_marginStart="8dp"
-                            app:layout_constraintStart_toEndOf="@id/searchIcon"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
                             android:importantForAutofill="no"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:textSize="16sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/searchIcon"
+                            app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
             <!-- Level Filter Section -->
@@ -103,9 +98,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
                         android:layout_marginEnd="12dp"
+                        app:cardBackgroundColor="@color/darkPink"
                         app:cardCornerRadius="20dp"
-                        app:cardElevation="0dp"
-                        app:cardBackgroundColor="@color/darkPink">
+                        app:cardElevation="0dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -122,9 +117,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
                         android:layout_marginEnd="12dp"
+                        app:cardBackgroundColor="@android:color/white"
                         app:cardCornerRadius="20dp"
-                        app:cardElevation="0dp"
-                        app:cardBackgroundColor="@android:color/white">
+                        app:cardElevation="0dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -141,9 +136,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
                         android:layout_marginEnd="12dp"
+                        app:cardBackgroundColor="@android:color/white"
                         app:cardCornerRadius="20dp"
-                        app:cardElevation="0dp"
-                        app:cardBackgroundColor="@android:color/white">
+                        app:cardElevation="0dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -160,9 +155,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
                         android:layout_marginEnd="12dp"
+                        app:cardBackgroundColor="@android:color/white"
                         app:cardCornerRadius="20dp"
-                        app:cardElevation="0dp"
-                        app:cardBackgroundColor="@android:color/white">
+                        app:cardElevation="0dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -177,7 +172,6 @@
             </HorizontalScrollView>
 
 
-
             <!-- Course List -->
             <TextView
                 android:id="@+id/coursesLabel"
@@ -190,14 +184,15 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/levelFilterContainer" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewCoursesList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/coursesLabel"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/coursesLabel" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

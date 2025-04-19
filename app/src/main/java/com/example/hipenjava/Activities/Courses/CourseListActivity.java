@@ -81,11 +81,7 @@ public class CourseListActivity extends AppCompatActivity {
                 public void afterTextChanged(Editable s) {}
             });
 
-            btnMenu = findViewById(R.id.btnMenu);
-            btnMenu.setOnClickListener(v -> {
-                Intent intent = new Intent(com.example.hipenjava.Activities.Courses.CourseListActivity.this, MenuActivity.class);
-                startActivity(intent);
-            });
+
 
 
             //  filter buttons
@@ -118,17 +114,9 @@ public class CourseListActivity extends AppCompatActivity {
                 filterCoursesLevel(searchEditText.getText().toString());
             });
 
-            // notification
-            btnNotification = findViewById(R.id.btnNotification);
+
             bottomNavigation = findViewById(R.id.bottomNavigation);
 
-            btnNotification.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(com.example.hipenjava.Activities.Courses.CourseListActivity.this, NotificationActivity.class);
-                    startActivity(intent);
-                }
-            });
             bottomNavigation.setOnNavigationItemSelectedListener(item -> {
                 int id = item.getItemId();
 

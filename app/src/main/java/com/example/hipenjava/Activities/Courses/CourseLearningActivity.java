@@ -72,7 +72,6 @@ public class CourseLearningActivity extends AppCompatActivity {
         DatabaseReference userLessonsRef = FirebaseDatabase.getInstance().getReference("user_lessons");
         String userId = FirebaseAuth.getInstance().getUid();
 
-        // Always clear the container first to prevent duplicates
         if (lessonContainer != null) {
             lessonContainer.removeAllViews();
         }

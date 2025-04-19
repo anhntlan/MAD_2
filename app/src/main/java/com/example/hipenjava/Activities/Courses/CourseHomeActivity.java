@@ -59,7 +59,7 @@ public class CourseHomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.course_home); // tạo layout này chứa RecyclerView
+        setContentView(R.layout.course_home);
 
         recyclerView = findViewById(R.id.recyclerViewCourses);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -85,7 +85,7 @@ public class CourseHomeActivity extends AppCompatActivity {
         recyclerViewContinueLearning.setLayoutManager(new LinearLayoutManager(this));
         continueLearningAdapter = new CourseAdapter(CourseHomeActivity.this, continueLearningList);
         recyclerViewContinueLearning.setAdapter(continueLearningAdapter);
-        loadContinueLearningCourses();
+//        loadContinueLearningCourses();
 
         //click to go to course list
         TextView coursesLabel = findViewById(R.id.coursesLabel);
@@ -115,8 +115,9 @@ public class CourseHomeActivity extends AppCompatActivity {
         recyclerViewCompletedLearning.setLayoutManager(new LinearLayoutManager(this));
         completedCourseAdapter = new CourseAdapter(CourseHomeActivity.this, completedCourseList);
         recyclerViewCompletedLearning.setAdapter(completedCourseAdapter);
-        loadCompletedCourses();
+//        loadCompletedCourses();
 
+        loadCourses();
         btnMenu = findViewById(R.id.btnMenu);
         btnMenu.setOnClickListener(v -> {
             Intent intent = new Intent(CourseHomeActivity.this, MenuActivity.class);
@@ -285,15 +286,22 @@ public class CourseHomeActivity extends AppCompatActivity {
 
                         // Group lessons by courseID
                         for (DataSnapshot lessonSnapshot : lessonsSnapshot.getChildren()) {
-                            int courseId = lessonSnapshot.child("courseID").getValue(Integer.class);
-                            int lessonId = lessonSnapshot.child("id").getValue(Integer.class);
+                            Integer courseId = lessonSnapshot.child("courseID").getValue(Integer.class);
+                            Integer lessonId = lessonSnapshot.child("id").getValue(Integer.class);
 
-                            courseLessonsMap.putIfAbsent(courseId, new ArrayList<>());
-                            courseLessonsMap.get(courseId).add(lessonId);
+
+                            if (courseId != null && lessonId != null) {
+                                courseLessonsMap.putIfAbsent(courseId, new ArrayList<>());
+                                courseLessonsMap.get(courseId).add(lessonId);
+                            }
+//                            courseLessonsMap.putIfAbsent(courseId, new ArrayList<>());
+//                            courseLessonsMap.get(courseId).add(lessonId);
                         }
 
                         // Check courses where some lessons are completed but not all
+                        int count = 0;
                         for (Map.Entry<Integer, List<Integer>> entry : courseLessonsMap.entrySet()) {
+                            if(count>=1) break;
                             int courseId = entry.getKey();
                             List<Integer> lessonIds = entry.getValue();
 
@@ -315,7 +323,7 @@ public class CourseHomeActivity extends AppCompatActivity {
                                 for (Course course : courseList) {
                                     if (course.getId() == courseId) {
                                         continueLearningList.add(course);
-                                        break;
+                                        count++;
                                     }
                                 }
                             }
@@ -353,8 +361,10 @@ public class CourseHomeActivity extends AppCompatActivity {
                     if(count >= 1) break; // Limit to 5 courses
 
                     Course course = dataSnapshot.getValue(Course.class);
-                    courseList.add(course);
-                    count++;
+                    if (course != null) {
+                        courseList.add(course);
+                        count++;
+                    }
 
                 }
                 filteredList.clear();

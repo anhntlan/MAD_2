@@ -30,9 +30,9 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
 
+            android:layout_marginStart="60dp"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            android:layout_marginStart="66dp"
             android:textStyle="bold" />
 
         <TextView
@@ -41,10 +41,10 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:textColor="@android:color/darker_gray"
-            android:layout_marginStart="46dp"
+            android:layout_marginStart="32dp"
             android:layout_toRightOf="@id/notification_name"
 
-            android:textSize="14sp" />
+            android:textSize="10sp" />
 
 
     </RelativeLayout>

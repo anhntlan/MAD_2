@@ -16,10 +16,10 @@ import com.example.hipenjava.R;
 import java.util.List;
 
 public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.LessonViewHolder> {
-    private List<Lesson> lessons;
+    private List<com.example.hipenjava.models.Lesson> lessons;
     private Context context;
 
-    public LessonAdapter(Context context, List<Lesson> lessons) {
+    public LessonAdapter(Context context, List<com.example.hipenjava.models.Lesson> lessons) {
         this.context = context;
         this.lessons = lessons;
     }
@@ -33,7 +33,7 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.LessonView
 
     @Override
     public void onBindViewHolder(@NonNull LessonViewHolder holder, int position) {
-        Lesson lesson = lessons.get(position);
+        com.example.hipenjava.models.Lesson lesson = lessons.get(position);
         holder.name.setText(lesson.getName());
         holder.duration.setText(lesson.getDuration() + " giờ");
 
