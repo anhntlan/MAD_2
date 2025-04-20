@@ -1,5 +1,6 @@
 package com.example.hipenjava.Activities.Courses;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -45,13 +46,14 @@ public class CourseListActivity extends AppCompatActivity {
         private List<Course> filteredList = new ArrayList<>();
         private EditText searchEditText;
         private DatabaseReference courseRef;
-        private ImageButton btnNotification,btnMenu;
+        private ImageButton btnNotification,btnMenu,btnBackCourseList;
 
         private List<Course> continueLearningList = new ArrayList<>();
         private CardView allLevelFilter, beginnerFilter, intermediateFilter, advancedFilter;
         private String currentLevel = "all";
         private RecyclerView recyclerViewContinueLearning;
         private CourseAdapter continueLearningAdapter;
+        @SuppressLint("MissingInflatedId")
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -64,6 +66,10 @@ public class CourseListActivity extends AppCompatActivity {
             adapter = new CourseAdapter(this, filteredList);
             recyclerView.setAdapter(adapter);
 
+
+            btnBackCourseList = findViewById(R.id.btnBackCourseList);
+
+            btnBackCourseList.setOnClickListener(v -> finish());
 
 //        SEARCH BAR
             searchEditText = findViewById(R.id.searchEditText);
@@ -104,7 +110,7 @@ public class CourseListActivity extends AppCompatActivity {
 
             intermediateFilter.setOnClickListener(v -> {
                 setActiveFilter(intermediateFilter);
-                currentLevel = "trung bình";
+                currentLevel = "trung cấp";
                 filterCoursesLevel(searchEditText.getText().toString());
             });
 

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,6 +37,7 @@ public class CourseLearningActivity extends AppCompatActivity {
     private boolean needsRefresh = false;
 
 
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,8 @@ public class CourseLearningActivity extends AppCompatActivity {
         setContentView(R.layout.activity_course_learning);
 
         ImageButton btnBack = findViewById(R.id.btnBackLessonlist);
+        AppCompatButton btnChooseAnotherCourse = findViewById(R.id.btnChooseAnotherCourse);
+
         lessonContainer = findViewById(R.id.lessonContainer);
 
         courseID = getIntent().getIntExtra("courseID", -1);
@@ -50,6 +54,10 @@ public class CourseLearningActivity extends AppCompatActivity {
         loadLessons();
 
         btnBack.setOnClickListener(v -> finish());
+        btnChooseAnotherCourse.setOnClickListener(v -> {
+            Intent intent = new Intent(CourseLearningActivity.this, CourseHomeActivity.class);
+            startActivity(intent);
+        });
     }
 
     @Override
@@ -141,7 +149,7 @@ public class CourseLearningActivity extends AppCompatActivity {
         lessonName.setTypeface(null, Typeface.BOLD);
 
         TextView lessonDuration = new TextView(this);
-        lessonDuration.setText(lesson.getDuration() + " giờ");
+        lessonDuration.setText(lesson.getDuration() + " phút");
         lessonDuration.setTextSize(16);
         lessonDuration.setTextColor(getResources().getColor(android.R.color.black));
 
