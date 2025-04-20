@@ -26,6 +26,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.example.hipenjava.Activities.Challenge.ChallengeListActivity;
+import com.example.hipenjava.Activities.Courses.CourseHomeActivity;
 import com.example.hipenjava.Activities.Courses.CourseListActivity;
 import com.example.hipenjava.Activities.HomeActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -60,7 +62,7 @@ public class ImageActivity extends AppCompatActivity {
         bottomNavigation.setOnNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.navigation_courses) {
-                Intent intent = new Intent(ImageActivity.this, CourseListActivity.class);
+                Intent intent = new Intent(ImageActivity.this, CourseHomeActivity.class);
                 startActivity(intent);
                 return true;
             } else if (id == R.id.navigation_home) {
@@ -72,13 +74,13 @@ public class ImageActivity extends AppCompatActivity {
 //                startActivity(intent);
 //                return true;
             } else if (id == R.id.navigation_challenge) {
-                Intent intent = new Intent(ImageActivity.this, CourseListActivity.class);
+                Intent intent = new Intent(ImageActivity.this, ChallengeListActivity.class);
                 startActivity(intent);
                 return true;
-            } else if (id == R.id.navigation_community) {
-                Intent intent = new Intent(ImageActivity.this, CourseListActivity.class);
-                startActivity(intent);
-                return true;
+//            } else if (id == R.id.navigation_community) {
+//                Intent intent = new Intent(ImageActivity.this, CourseListActivity.class);
+//                startActivity(intent);
+//                return true;
             }
             return false;
         });

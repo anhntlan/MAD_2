@@ -19,7 +19,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hipenjava.Activities.Auth.LoginActivity;
+import com.example.hipenjava.Activities.Challenge.ChallengeListActivity;
 import com.example.hipenjava.Activities.HomeActivity;
+import com.example.hipenjava.Activities.Image.ImageActivity;
 import com.example.hipenjava.Activities.MenuActivity;
 import com.example.hipenjava.Activities.Notification.NotificationActivity;
 import com.example.hipenjava.R;
@@ -60,7 +62,6 @@ public class CourseHomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.course_home);
-
 
         courseList = new ArrayList<>();
         adapter = new CourseAdapter(CourseHomeActivity.this, filteredList);
@@ -116,6 +117,7 @@ public class CourseHomeActivity extends AppCompatActivity {
         btnNotification = findViewById(R.id.btnNotification);
         bottomNavigation = findViewById(R.id.bottomNavigation);
 
+        bottomNavigation.setSelectedItemId(R.id.navigation_courses);
         btnNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,17 +133,17 @@ public class CourseHomeActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             } else if (id == R.id.navigation_draw) {
-                Intent intent = new Intent(CourseHomeActivity.this, HomeActivity.class);
+                Intent intent = new Intent(CourseHomeActivity.this, ImageActivity.class);
                 startActivity(intent);
                 return true;
             } else if (id == R.id.navigation_challenge) {
-                Intent intent = new Intent(CourseHomeActivity.this, HomeActivity.class);
+                Intent intent = new Intent(CourseHomeActivity.this, ChallengeListActivity.class);
                 startActivity(intent);
                 return true;
-            } else if (id == R.id.navigation_community) {
-                Intent intent = new Intent(CourseHomeActivity.this, HomeActivity.class);
-                startActivity(intent);
-                return true;
+//            } else if (id == R.id.navigation_community) {
+//                Intent intent = new Intent(CourseHomeActivity.this, HomeActivity.class);
+//                startActivity(intent);
+//                return true;
             }
             return false;
         });

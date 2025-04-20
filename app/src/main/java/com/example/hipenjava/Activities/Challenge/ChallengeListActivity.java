@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hipenjava.Activities.BaseActivity;
+import com.example.hipenjava.Activities.Courses.CourseHomeActivity;
 import com.example.hipenjava.Activities.Courses.CourseListActivity;
 import com.example.hipenjava.Activities.HomeActivity;
 import com.example.hipenjava.Activities.Image.ImageActivity;
@@ -81,6 +82,8 @@ public class ChallengeListActivity extends AppCompatActivity {
 
     private void setupListenerForBottomNav() {
         bottomNavigation = findViewById(R.id.bottomNavigation);
+        bottomNavigation.setSelectedItemId(R.id.navigation_challenge);
+
         bottomNavigation.setOnNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
 
@@ -93,13 +96,13 @@ public class ChallengeListActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             } else if (id == R.id.navigation_courses) {
-                Intent intent = new Intent(ChallengeListActivity.this, CourseListActivity.class);
+                Intent intent = new Intent(ChallengeListActivity.this, CourseHomeActivity.class);
                 startActivity(intent);
                 return true;
-            } else if (id == R.id.navigation_community) {
-                Intent intent = new Intent(ChallengeListActivity.this, HomeActivity.class);
-                startActivity(intent);
-                return true;
+//            } else if (id == R.id.navigation_community) {
+//                Intent intent = new Intent(ChallengeListActivity.this, HomeActivity.class);
+//                startActivity(intent);
+//                return true;
             }
             return false;
         });

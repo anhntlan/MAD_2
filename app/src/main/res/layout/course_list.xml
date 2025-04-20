@@ -206,7 +206,6 @@
         app:menu="@menu/bottom_nav_menu"
         app:labelVisibilityMode="unlabeled"
         android:background="#FFFFFF"
-        style="@style/NoShadowBottomNavigationView"
         android:elevation="0dp"
         />
 

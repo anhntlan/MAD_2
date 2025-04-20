@@ -116,6 +116,7 @@ public class CourseListActivity extends AppCompatActivity {
 
 
             bottomNavigation = findViewById(R.id.bottomNavigation);
+            bottomNavigation.setSelectedItemId(R.id.navigation_courses);
 
             bottomNavigation.setOnNavigationItemSelectedListener(item -> {
                 int id = item.getItemId();

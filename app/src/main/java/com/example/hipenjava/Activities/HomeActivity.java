@@ -59,6 +59,7 @@ public class HomeActivity extends BaseActivity {
         // both header, bottom navigation
         loadLatestImages();
         bottomNavigation = findViewById(R.id.bottomNavigation);
+        bottomNavigation.setSelectedItemId(R.id.navigation_home);
         getLayoutInflater().inflate(R.layout.activity_main, findViewById(R.id.contentFrame));
 
         btnNotification = findViewById(R.id.btnNotification);
@@ -123,10 +124,10 @@ public class HomeActivity extends BaseActivity {
                 Intent intent = new Intent(HomeActivity.this, ChallengeListActivity.class);
                 startActivity(intent);
                 return true;
-            } else if (id == R.id.navigation_community) {
-                Intent intent = new Intent(HomeActivity.this, CourseHomeActivity.class);
-                startActivity(intent);
-                return true;
+//            } else if (id == R.id.navigation_community) {
+//                Intent intent = new Intent(HomeActivity.this, Ho.class);
+//                startActivity(intent);
+//                return true;
             }
             return false;
         });
