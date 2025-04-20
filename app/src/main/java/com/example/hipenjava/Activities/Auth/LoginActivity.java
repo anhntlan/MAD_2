@@ -52,6 +52,12 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         tvRegister = findViewById(R.id.tvRegister);
 
+        TextView forgotPassword = findViewById(R.id.txtForgotPassword);
+
+        forgotPassword.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+            startActivity(intent);
+        });
 
         // Initialize SQLite Database Helper
         //databaseHelper = new com.example.hipenjava.DatabaseHelper(this);

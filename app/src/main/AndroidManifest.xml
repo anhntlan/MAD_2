@@ -15,6 +15,9 @@
         android:theme="@style/Theme.HipenJava"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.Auth.ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.Courses.CourseCompletedActivity"
             android:exported="false" />
 
@@ -53,7 +56,6 @@
         <activity
             android:name=".Activities.BaseActivity"
             android:exported="false" />
-
         <activity
             android:name=".Activities.Courses.CourseHomeActivity"
             android:exported="false" />
@@ -74,12 +76,9 @@
             android:exported="false" />
         <activity android:name=".Activities.Image.ImageActivity" />
         <activity android:name=".Activities.Image.EditImageActivity" />
-
         <activity
             android:name=".Activities.HomeActivity"
-            android:exported="false" />
-
-        <!-- Challenge Activities -->
+            android:exported="false" /> <!-- Challenge Activities -->
         <activity
             android:name=".Activities.Challenge.ChallengeListActivity"
             android:exported="false" />
@@ -94,10 +93,7 @@
             android:exported="false" />
         <activity
             android:name=".Activities.Challenge.ChallengeResultActivity"
-            android:exported="false" />
-
-
-        <!-- Default Activity -->
+            android:exported="false" /> <!-- Default Activity -->
         <activity
             android:name=".Activities.Auth.LoginActivity"
             android:exported="true">
@@ -107,7 +103,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>
